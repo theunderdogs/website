@@ -414,6 +414,156 @@ From Medium Devices Up To Larger Devices
 		margin-right: 40px;
 	}
 
+
+	/***
+	Sidebar Dissapear
+	***/
+
+	.page-sidebar-dissapear .page-sidebar-menu > li > a > .title,
+	.page-sidebar-dissapear .page-sidebar-menu > li > a > .arrow {
+	  display: none !important;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu {
+	  width: 40px !important;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li > a {
+	  padding-left: 10px;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu.page-sidebar-menu-circle-icons > li > a {
+		padding-left: 8px;
+	}	
+
+	.page-sidebar-fixed.page-sidebar-dissapear .page-sidebar-menu > li > a {
+	  -webkit-transition: all 0.2s ease;
+	     -moz-transition: all 0.2s ease;
+	       -o-transition: all 0.2s ease;
+	          transition: all 0.2s ease;
+	}
+
+	.page-sidebar-reversed.page-sidebar-fixed.page-sidebar-dissapear .page-sidebar-menu > li > a {
+	    -webkit-transition: none;
+	        -moz-transition: none;
+	          -o-transition: none;
+	             transition: none;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover {
+	  width: 241px !important;
+	  position: relative !important;
+	  z-index: 2000;
+	  display: block !important;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover .sidebar-toggler {
+	  float: left;
+	  margin-left: 17px;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover .selected {
+	  display: none;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover > a > i {
+	  margin-right: 10px;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover .title {
+	  display: inline !important;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li > .sub-menu {
+	  display: none !important;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover > .sub-menu {  
+	  width: 200px;
+	  position: absolute;
+	  z-index: 2000;
+	  left: 41px;
+	  margin-top: 0;
+	  top: 100%;
+	  display: block !important;
+	  border-radius: 0 0 4px 4px;
+	}
+
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover > .sub-menu > li > .sub-menu,
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover > .sub-menu > li > .sub-menu > li > .sub-menu {
+	  width: 200px;
+	}
+
+	/* 2rd level sub menu*/
+	.page-sidebar-dissapear .page-sidebar-menu > li:hover > .sub-menu > li > a {
+	  padding-left: 15px !important;
+	}
+
+	/* 3rd level sub menu*/
+	.page-sidebar-v .page-sidebar-menu > li > ul.sub-menu > li > .sub-menu > li > a {  
+	  padding-left: 30px !important;
+	}
+
+	/* 4rd level sub menu*/
+	.page-sidebar-dissapear .page-sidebar-menu > li > ul.sub-menu > li > .sub-menu > li > .sub-menu > li > a {  
+	  padding-left: 45px !important;
+	}
+
+	/* sidebar container */
+	 
+	.page-sidebar-dissapear  .page-sidebar {
+	  width: 40px;
+	}
+
+	.page-sidebar-dissapear  .page-content {
+	  margin-left: 0px !important;
+	}
+
+	/*** 
+	Sidebar Reversed & Sidebar dissapear
+	***/
+
+	.page-sidebar-reversed.page-sidebar-dissapear  .page-sidebar {
+	  margin-left: 0px;
+	  width: 40px;
+	}
+
+	.page-sidebar-reversed.page-sidebar-dissapear  .page-content {
+	  margin-left: 0 !important;
+	  margin-right: 0px !important;
+	}
+
+	.page-sidebar-reversed.page-sidebar-dissapear .page-sidebar-menu > li:hover {
+	  margin-left: -201px;
+	}
+
+	.page-sidebar-reversed.page-sidebar-dissapear .page-sidebar-menu > li.sidebar-toggler-wrapper:hover {
+	  margin-left: -17px !important;
+	  width: 0px !important;
+	}
+
+	.page-sidebar-reversed.page-sidebar-dissapear .page-sidebar .sidebar-search.open .form-container {
+	  margin-left: -220px;
+	}
+
+	.page-sidebar-reversed.page-sidebar-dissapear .page-sidebar .sidebar-search.open .form-container .submit {
+	  margin: 11px 8px 9px 12px !important;
+	  float: left !important;
+	}
+
+	.page-sidebar-reversed.page-sidebar-dissapear .page-sidebar .sidebar-search.open .form-container .remove {
+	  margin: 12px 6px 9px 8px !important;
+	  float: right !important;
+	}
+
+	.page-sidebar-reversed.page-sidebar-dissapear .page-sidebar-menu > li:hover > .sub-menu {  
+	  left:auto;
+	  right: 41px;
+	}
+
+	.page-sidebar-reversed.page-sidebar-fixed.page-sidebar-dissapear .footer {
+		margin-right: 0px;
+	}
 }
 
 /***

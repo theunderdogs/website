@@ -1,5 +1,5 @@
     <!-- BEGIN SIDEBAR -->
-    <div class="page-sidebar-wrapper" data-bind="visible: helper.showSidebar">
+    <div class="page-sidebar-wrapper" data-bind="visible: showSidebar">
         <div class="page-sidebar navbar-collapse collapse">
             <!-- BEGIN SIDEBAR MENU -->
             <!-- DOC: for circle icon style menu apply page-sidebar-menu-circle-icons class right after sidebar-toggler-wrapper -->
@@ -34,6 +34,12 @@
                             <a data-bind="attr: { href : router.navigationModel()[1].hash}, html: router.navigationModel()[1].title"></a>
                         </li>
                     </ul>
+                </li>
+                <li class="last ">
+                    <a data-bind="attr: { href : router.navigationModel()[2].hash}">
+                    <i class="icon-user"></i>
+                    <span class="title" data-bind="html: router.navigationModel()[2].title"></span>
+                    </a>
                 </li>
             </ul>
             <!-- END SIDEBAR MENU -->

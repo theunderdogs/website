@@ -57,7 +57,27 @@ tasks.prototype = {
                 .pipe(gulpif(!config.debug, uglify({ mangle: false }).on('error', gutil.log)))
                 .pipe(chmod(777))
                 .pipe(gulp.dest('build/public/app'))){
-                return Promise.resolve(true);
+
+                //custom widgets
+                if(gulp.src('src/public/app/customWidgets/**/*.*', {base : './src/public/app/customWidgets'})
+                .pipe(plumber())
+                //.pipe(rename({suffix:'.min'}))
+                .pipe(gulpif(!config.debug, uglify({ mangle: false }).on('error', gutil.log)))
+                .pipe(chmod(777))
+                .pipe(gulp.dest('build/public/app/customWidgets'))){
+
+                    //classes
+                    if(gulp.src('src/public/app/classes/**/*.*', {base : './src/public/app/customWidgets'})
+                        .pipe(plumber())
+                        //.pipe(rename({suffix:'.min'}))
+                        .pipe(gulpif(!config.debug, uglify({ mangle: false }).on('error', gutil.log)))
+                        .pipe(chmod(777))
+                        .pipe(gulp.dest('build/public/app/classes'))){
+
+                            return Promise.resolve(true);
+                        }
+                    }
+                
             }
         }
     },
@@ -146,7 +166,7 @@ tasks.prototype = {
             notify: true,
             reloadDelay: 1000,
             reloadDebounce: 1000,
-            browser: ["google chrome"]
+            browser: ["chrome"]
             //server: {
             //    baseDir: "./build/public"
             //}
@@ -156,6 +176,7 @@ tasks.prototype = {
             //_this.buildui(config)
             _this.buildHtml()
             .then(function(result) { return _this.buildViewmodels(config)} )
+            .then(function(result) { return _this.buildCss() })
             .then(function(result){
                 browserSync.reload();
             });
