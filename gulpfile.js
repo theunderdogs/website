@@ -153,8 +153,9 @@ tasks.prototype = {
         });
 
         gulp.watch('./src/public/**/*.*', function(){
-            //browserSync.reload()
-            _this.buildui(config)
+            //_this.buildui(config)
+            _this.buildHtml()
+            .then(function(result) { return _this.buildViewmodels(config)} )
             .then(function(result){
                 browserSync.reload();
             });
