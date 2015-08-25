@@ -44,13 +44,13 @@ tasks.prototype = {
         // !css/style.css  exclude style.css
         // *.+(js|css)  include js and css files
 
-        if(gulp.src('src/public/app/viewmodels/*.js')
+        if(gulp.src('./src/public/app/viewmodels/**/*.*', { base: './src/public/app/viewmodels'})
                 //gulp.src(['src/app/viewmodels/*.js', '!src/app/viewmodels/*.min.js'])
                 .pipe(plumber()) //plumber is initialized before JS is checked for errors by renaming and uglify modules
                 //.pipe(rename({suffix:'.min'}))
                 .pipe(gulpif(!config.debug, uglify({ mangle: false }).on('error', gutil.log)))
                 .pipe(chmod(777))
-                .pipe(gulp.dest('build/public/app/viewmodels'))){
+                .pipe(gulp.dest('./build/public/app/viewmodels'))){
             if(gulp.src('src/public/app/*.js')
                 .pipe(plumber())
                 //.pipe(rename({suffix:'.min'}))
@@ -64,10 +64,10 @@ tasks.prototype = {
                 //.pipe(rename({suffix:'.min'}))
                 .pipe(gulpif(!config.debug, uglify({ mangle: false }).on('error', gutil.log)))
                 .pipe(chmod(777))
-                .pipe(gulp.dest('build/public/app/customWidgets'))){
+                .pipe(gulp.dest('./build/public/app/customWidgets'))){
 
                     //classes
-                    if(gulp.src('src/public/app/classes/**/*.*', {base : './src/public/app/customWidgets'})
+                    if(gulp.src('src/public/app/classes/**/*.*', {base : './src/public/app/classes'})
                         .pipe(plumber())
                         //.pipe(rename({suffix:'.min'}))
                         .pipe(gulpif(!config.debug, uglify({ mangle: false }).on('error', gutil.log)))
@@ -92,10 +92,10 @@ tasks.prototype = {
             .pipe(chmod(777))
             .pipe(gulp.dest('build/public'))){
         
-            if(gulp.src('src/public/app/views/*.html')
+            if(gulp.src('./src/public/app/views/**/*.*', { base : './src/public/app/views' })
                     .pipe(plumber())  //plumber is initialized
                     .pipe(chmod(777))
-                    .pipe(gulp.dest('build/public/app/views'))){
+                    .pipe(gulp.dest('./build/public/app/views'))){
                 return Promise.resolve(true);
             }
         }
@@ -185,7 +185,7 @@ tasks.prototype = {
     },
     cleanServerFolder : function(){
         console.log("cleanServerFolder started");
-        if(del.sync(['build/private/**'])){
+        if(del.sync(['build/private/**/*.*', '!build/private/node_modules'])){
             return Promise.resolve(true);
         }
     },
@@ -215,11 +215,25 @@ tasks.prototype = {
                 .pipe(gulpif(!config.debug, uglify({ mangle: false }).on('error', gutil.log)))
                 .pipe(gulp.dest('build/private'))){
 
-                    //build node modules
-                    if(gulp.src(['src/private/node_modules', 'src/private/package.json'])
+                    //package.json
+                    if(gulp.src('src/private/package.json')
                         .pipe(plumber())
                         .pipe(gulp.dest('build/private'))){
-                        return Promise.resolve(true);
+
+                        //routes
+                        if(gulp.src('./src/private/routes/**/*.*', { base: './src/private/routes' })
+                            .pipe(plumber())
+                            .pipe(gulp.dest('./build/private/routes'))){
+
+                            //logic
+                            if(gulp.src('./src/private/logic/**/*.*', { base: './src/private/logic' })
+                                .pipe(plumber())
+                                .pipe(gulp.dest('./build/private/logic'))){
+
+                                return Promise.resolve(true);
+                            } 
+                        } 
+                    
                     }        
 
                  }

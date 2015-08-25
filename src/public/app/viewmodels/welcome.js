@@ -4,6 +4,7 @@
     var ctor = function () {
         this.toggleSidebar = function(){
            navbar.showSidebar(!navbar.showSidebar());
+           this.cacheViews = true;
         };
         this.displayName = 'Welcome to the Durandal Starter Kit!';
         this.description = 'Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.';
