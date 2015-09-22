@@ -196,8 +196,8 @@ var freakTasks = function(){
             open: true,
             notify: true,
             reloadDelay: 1000,
-            reloadDebounce: 1000//,
-            //browser: ["chrome"]
+            reloadDebounce: 1000,
+            browser: ["chrome"]
             //server: {
             //    baseDir: "./build/public"
             //}

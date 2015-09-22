@@ -37,7 +37,7 @@ module.exports = function(router, passport) {
 			res.statusCode(400).send({ success  : false })
 		}  	
 	});
-
+  
 	router.get('/logout', function(req, res){
 
 	    console.info('logging out..');
