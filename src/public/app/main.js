@@ -13,6 +13,13 @@
         'slimscroll': '../lib/jquery-slimscroll/jquery.slimscroll.min',
         'blockui': '../lib/blockUI/jquery.blockui.min',
         'uniform': '../lib/uniform/jquery.uniform.min',
+        'storage': '../app/classes/storageManager',
+        'promise': '../lib/pollyfills/es6-promise/es6-promise.min',
+        /**
+          Jade compiler and custom view engine next two lines
+        **/
+        //'jade': ['../lib/jade-0.35.0', '../lib/jade'],
+        //'durandal/viewEngine': '../lib/durandal/js/jadeViewEngine',
         'appScript': 'app'
     },
     shim: {
@@ -46,17 +53,20 @@
     }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'promise'],  function (system, app, viewLocator, p) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
 
-    app.title = 'Durandal Starter Kit';
+    app.title = 'The Underdogs Rescue';
 
     app.configurePlugins({
         router:true,
-        dialog: true
+        dialog: true,
+        widget: true
     });
+
+    p.polyfill();
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

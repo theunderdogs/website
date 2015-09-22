@@ -1,5 +1,5 @@
 var userLogic = require('../logic/userLogic.js');
-
+	
 module.exports = function(router, passport){
 
 	router.get('/getUsers', passport.authenticate('bearer', { session: false }), function(req, res){
@@ -8,4 +8,6 @@ module.exports = function(router, passport){
 			res.json(users);
 		});	
 	});
+
+	
 }

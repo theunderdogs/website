@@ -6,3 +6,4 @@ build
 src\private\node_modules
 
 *.7z
+*.bat

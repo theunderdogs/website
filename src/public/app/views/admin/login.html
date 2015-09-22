@@ -463,6 +463,9 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../../../app/classes/loose/app.js" type="text/javascript"></script>
 <script src="../../../app/classes/loose/login.js" type="text/javascript"></script>
+<script src="../../../app/classes/loose/json2.js" type="text/javascript"></script>
+<script src="../../../app/classes/storageManager.js" type="text/javascript"></script>
+<script src="../../../lib/modernizr/modernizr.custom.61867.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() {     
@@ -479,25 +482,45 @@ jQuery(document).ready(function() {
   //     $('.forget-form').show();
   // }
 
+  if(Modernizr.localStorage) {
+    console.log("localStorage/localStorage present");
+  } else {
+	console.log("localStorage/localStorage not present");
+  }
+
+  var func = function () {
+  		var k = {
+		  	USER_ROLE: 'ANON',
+		  	token: null
+		  };
+
+	    Storage.local("userConfig", k);
+  };
+
+  Modernizr.load({
+	  test: Modernizr.localStorage,
+	  nope: '../../../lib/pollyfills/localStorage/localStorage.min.js?swfURL=../../../lib/pollyfills/localStorage/localStorage.swf',
+	  complete: function () {
+	  		
+	  	if ( window.localStorage.isLoaded ) {
+		    window.localStorage.isLoaded(
+		        func
+		    );
+		} else {
+		    func.call(this);
+		}
+	  }
+  });
+
   $("#loginBtn")[0].onclick = function (){
 	  $.post( "/login", { username: $("#username").val(), password: $("#password").val() })
-	  .done(function( data ) {
-	     console.log( "Data Loaded: ", data );
+	  .done(function( result ) {
+	  	 if(result.success){
+	     	console.log( "result from server: ", result );
+	     	Storage.local("userConfig", result.data);
+	     	window.location.href = '/';
+	     }
 	  });
-
-	   // $.ajax({
-    //         url: "/login",
-    //         type: "POST",
-    //         success: function(result){
-    //         	console.log('success');
-    //         },
-    //         error: function(err){
-    //         	console.log(err);
-    //         },
-    //         dataType: 'json',
-    //         //statusCode: statusCode,
-    //         data: { userid: $('#username').val(), password: $('#password').val() }
-    //     });
 
 	return false;
   }      

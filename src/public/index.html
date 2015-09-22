@@ -29,6 +29,18 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END THEME STYLES -->
 <!-- <link rel="shortcut icon" href="favicon.ico"/> -->
 </head>
+
+<script type="text/javascript">
+//   function getParameterByName(name) {
+//     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+//     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+//         results = regex.exec(location.search);
+//     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+// }
+
+// alert(getParameterByName('y'));
+</script>
+
 <!-- END HEAD -->
 
 	<div id="applicationHost">
@@ -42,6 +54,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <!-- BEGIN BODY -->
 <body class="page-header-fixed">
+    <script src="app/classes/loose/json2.js"></script>
+    <script src="app/classes/storageManager.js"></script>
     <script src="lib/require/require.js" data-main="app/main"></script>
     <!-- END BODY -->
 </body>

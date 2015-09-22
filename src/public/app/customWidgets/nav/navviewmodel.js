@@ -2,8 +2,9 @@ define(function(require) {
     var ko = require('knockout'),
     	$ = require('jquery');
 
-    var vm = function(){
-    	this.showSidebar = ko.observable(true);
+    var vm = function(settings){
+        this.settings = settings;
+    	this.showSidebar = ko.observable();
 
     	this.showSidebar.subscribe(function(newValue){
     		if(newValue){

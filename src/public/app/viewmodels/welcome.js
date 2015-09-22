@@ -1,11 +1,15 @@
 ﻿define(function(require) {
     var navbar = require('customWidgets/nav/navviewmodel');
+    var $ = require('jquery'),
+        storage = require("storage");
  
     var ctor = function () {
+
         this.toggleSidebar = function(){
            navbar.showSidebar(!navbar.showSidebar());
            this.cacheViews = true;
         };
+
         this.displayName = 'Welcome to the Durandal Starter Kit!';
         this.description = 'Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.';
         this.features = [
@@ -21,6 +25,9 @@
             'Integrates with other libraries such as SammyJS & Bootstrap',
             'Make jQuery & Bootstrap widgets templatable and bindable (or build your own widgets).'
         ];
+
+
+        
     };
 
     //Note: This module exports a function. That means that you, the developer, can create multiple instances.
