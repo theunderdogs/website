@@ -1,19 +1,11 @@
 define(function(require) {
-    var ko = require('knockout'),
-    	$ = require('jquery');
+    //var ko = require('knockout'),
+    	//$ = require('jquery');
+    var uiconfig = require('classes/uiconfig');
 
     var vm = function(settings){
         this.settings = settings;
-    	this.showSidebar = ko.observable();
-
-    	this.showSidebar.subscribe(function(newValue){
-    		if(newValue){
-    			$('body').removeClass('page-sidebar-closed, page-sidebar-dissapear');
-    		}else{
-    			$('body').removeClass('page-sidebar-closed').addClass('page-sidebar-dissapear');
-    		}
-    	});
-
+    	this.uiconfig = uiconfig;
     	this.router = null;
     };
 

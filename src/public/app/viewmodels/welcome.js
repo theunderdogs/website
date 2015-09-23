@@ -1,12 +1,12 @@
 ﻿define(function(require) {
     var navbar = require('customWidgets/nav/navviewmodel');
-    var $ = require('jquery'),
+    var uiconfig = require('classes/uiconfig'),
         storage = require("storage");
  
     var ctor = function () {
 
         this.toggleSidebar = function(){
-           navbar.showSidebar(!navbar.showSidebar());
+           uiconfig.showSidebar(!uiconfig.showSidebar());
            this.cacheViews = true;
         };
 

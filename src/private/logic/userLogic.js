@@ -116,7 +116,8 @@ module.exports = {
 			        return resolve({
 			          	USER_ROLE : user.role,
 			          	token : token,
-			          	_durandalRoutes : durandalRoutes[user.role].routes
+			          	_durandalRoutes : durandalRoutes[user.role].routes,
+			          	_uiconfig : durandalRoutes[user.role].uiconfig
 			          });
 			        // res.json({
 			        //   success: true,

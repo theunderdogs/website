@@ -53,7 +53,7 @@
     }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'promise'],  function (system, app, viewLocator, p) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'jquery', 'promise'],  function (system, app, viewLocator, ko, $, p) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
@@ -67,6 +67,9 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'promise'],  
     });
 
     p.polyfill();
+
+    window.ko = ko;
+    window.$ = $;
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

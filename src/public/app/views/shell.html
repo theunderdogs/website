@@ -17,14 +17,14 @@
 
         
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav" data-bind="visible: uiconfig.showTopMenu">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#">Link</a></li>
             <li><a href="#">Link</a></li>
           </ul>
           <ul class="nav navbar-nav pull-right">
             <!-- BEGIN NOTIFICATION DROPDOWN -->
-            <li class="dropdown" id="header_notification_bar">
+            <li class="dropdown" id="header_notification_bar" data-bind='visible: uiconfig.showNotificationIcon'>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                 <i class="icon-bell"></i>
                 <span class="badge badge-success">
@@ -128,7 +128,7 @@
             </li>
             <!-- END NOTIFICATION DROPDOWN -->
             <!-- BEGIN INBOX DROPDOWN -->
-            <li class="dropdown" id="header_inbox_bar">
+            <!-- <li class="dropdown" id="header_inbox_bar">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                 <i class="icon-envelope-open"></i>
                 <span class="badge badge-info">
@@ -223,10 +223,10 @@
                         <a href="inbox.html">See all messages <i class="fa fa-angle-right"></i></a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
             <!-- END INBOX DROPDOWN -->
             <!-- BEGIN TODO DROPDOWN -->
-            <li class="dropdown" id="header_task_bar">
+            <!-- <li class="dropdown" id="header_task_bar">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                 <i class="icon-calendar"></i>
                 <span class="badge badge-warning">
@@ -358,13 +358,13 @@
                         <a href="#">See all tasks <i class="fa fa-angle-right"></i></a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
             <!-- END TODO DROPDOWN -->
             <li class="devider">
                  &nbsp;
             </li>
             <!-- BEGIN USER LOGIN DROPDOWN -->
-            <li class="dropdown user">
+            <li class="dropdown user" data-bind="visible: uiconfig.showLogout">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                 <img alt="" src="../../app/assets/images/avatar3_small.jpg"/>
                 <span class="username username-hide-on-mobile">Nick </span>
@@ -401,15 +401,10 @@
 
         <!-- END LOGO -->
         <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-        <a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" data-bind='visible: navbar.showSidebar'>
+        <a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <img src="../../app/assets/images/menu-toggler.png" alt=""/>
         </a>
         <!-- END RESPONSIVE MENU TOGGLER -->
-        <!-- BEGIN TOP NAVIGATION MENU -->
-        <!-- <ul class="nav navbar-nav pull-right">
-            
-        </ul> -->
-        <!-- END TOP NAVIGATION MENU -->
     </div>
     <!-- END TOP NAVIGATION BAR -->
 </div>

@@ -1,7 +1,7 @@
 ﻿define(function(require) {
     var router = require('plugins/router'),
-        app = require('durandal/app'), 
-        $ = require('jquery');
+        app = require('durandal/app');
+        //$ = require('jquery');
         require('bootstrap');
         require('jqueryui');
         require('jqueryMigrate');
@@ -11,11 +11,13 @@
         require('blockui');
         require('uniform');
         var p = require('appScript'),
+        uiconfig = require('classes/uiconfig'),
         navbar = require('customWidgets/nav/navviewmodel'),
         storage = require("storage");
 
     var shell = function(){
         this.init();
+        this.uiconfig = uiconfig;
         navbar.router = router;
     };
 
@@ -48,15 +50,44 @@
             //app.init();
             p.init();
 
-            if(storage.local("userConfig") && storage.local("userConfig").USER_ROLE){
-                if(storage.local("userConfig").USER_ROLE == 'ADMIN'){
-                    navbar.showSidebar(true);
+            if(storage.local("userConfig") && storage.local("userConfig")._uiconfig){
+                if(storage.local("userConfig")._uiconfig.showSidebar){
+                    uiconfig.showSidebar(true);
                 }else{
-                    navbar.showSidebar(false);
+                    uiconfig.showSidebar(false);
+                }
+
+                if(storage.local("userConfig")._uiconfig.showNotificationIcon){
+                    uiconfig.showNotificationIcon(true);
+                }else{
+                    uiconfig.showNotificationIcon(false);
+                }
+
+                if(storage.local("userConfig")._uiconfig.showTopMenu){
+                    uiconfig.showTopMenu(true);
+                }else{
+                    uiconfig.showTopMenu(false);
+                }
+
+                if(storage.local("userConfig")._uiconfig.showLogout){
+                    uiconfig.showLogout(true);
+                }else{
+                    uiconfig.showLogout(false);
                 }
             }else{
-                navbar.showSidebar(false);
+                uiconfig.showSidebar(false);
+                uiconfig.showTopMenu(true);
             }
+        
+            // if(storage.local("userConfig") && storage.local("userConfig").USER_ROLE){
+            //     if(storage.local("userConfig").USER_ROLE == 'ADMIN'){
+            //         uiconfig.showSidebar(true);
+            //     }else{
+            //         uiconfig.showSidebar(false);
+            //     }
+            // }else{
+            //     uiconfig.showSidebar(false);
+            // }
 
             console.log(storage.local("userConfig"));
         }
