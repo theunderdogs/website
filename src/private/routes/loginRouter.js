@@ -9,6 +9,7 @@ module.exports = function(router, passport) {
 		// res.statusCode = 200; 
 	 //    res.setHeader("Location", "/app/views/admin/login.html");
 	 //    res.end();
+	 	
 	 	res.redirect("/app/views/admin/login.html");
 	});
 
@@ -48,7 +49,7 @@ module.exports = function(router, passport) {
 		.then(function(result){
 			console.log("logout then", result.secret);
 			//res.logout(); 
-			res.redirect("/app/views/admin/login.html");
+			res.redirect("/app/views/admin/login.html");  
 		})
 		.catch(function(err){
 			console.log("logout catch");

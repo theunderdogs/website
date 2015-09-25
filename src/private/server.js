@@ -5,7 +5,8 @@ var express = require('express')
 	,passHttp = require('passport-http').BasicStrategy
 	,fs = require('fs')
 	,bodyParser = require("body-parser")
-	,expressSession = require("express-session");
+	,expressSession = require("express-session")
+	,Promise = require('promise/lib/es6-extensions');
 
 //set model directory
 fs.readdirSync(__dirname + '/models').forEach(function(filename){
@@ -50,7 +51,8 @@ app.use('/secure', secureRouter);
 
 
 app.get('/setup', function(req, res) {
-  var User = mongoose.model('User');
+  var User = mongoose.model('User'),
+      Animal = mongoose.model('Animal');
   // create a sample user
   var kiran = new User({ 
     firstname: 'kiran', 
@@ -64,13 +66,36 @@ app.get('/setup', function(req, res) {
     secret: 'heyya'
   });
 
-  // save the sample user
-  kiran.save(function(err) {
-    if (err) throw err;
 
-    console.log('User saved successfully');
-    res.json({ success: true });
+  var userPromise = new Promise(function(resolve, reject){
+  	  // save the sample user
+	  kiran.save(function(err) {
+		    if (err) {
+		    	return reject(err);
+		    	//throw err;
+		    }
+
+	    	console.log('User saved successfully');
+	    	return resolve(kiran);
+	  });
   });
+
+  userPromise.then(function(user){
+	var dog = new Animal({ 
+	    kind: 'dog', 
+		name: 'rambo', 
+		user: user
+	  });
+
+	dog.save(function(err) {
+	    if (err) throw err;
+
+	    console.log('Animal saved successfully');
+	    res.json({ success: true });
+	  });
+
+  });
+
 });
 
 app.listen(3000);

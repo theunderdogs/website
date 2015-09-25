@@ -1,35 +1,30 @@
 define(function(require) {
-	var ko = require('knockout'),
-    	$ = require('jquery'),
-    	storage = require("storage");
+	//var ko = require('knockout'),
+    //	$ = require('jquery'),
+    	//storage = require("storage");
 
-	var dashBoard = function(){
-		this.token = null;
-        
-        if(storage.local("userConfig") && storage.local("userConfig").USER_ROLE){
-            if(storage.local("userConfig").USER_ROLE == 'ADMIN'){
-                this.token = storage.local("userConfig").token;          
-            }
-        }
-
-		this.getUsers = function(){
-            return $.get("secure/getUsers?access_token=fool&token=" + this.token);
-        }
+    var services = require('services');
+    var dashBoard = function(){
+		this.users = null;
 	};
 
 	dashBoard.prototype = {
 		getView: function(){
 			return 'views/admin/dashboard.html';
 		},
-		attached: function(view){
-			var self= this;
-            this.getUsers()
-            .then(function(result){
-                $(view).find('.respose').html(result[0].firstname);
-                $(view).find('.logout').attr('href', 'logout?access_token=fool&token=' + self.token);
+        activate : function(){
+            var self = this;
+            return  services.getUsers().then(function(result){
+                self.users = result;
             }, function(err){
-                $(view).find('.respose').html(err);
-            })
+                throw new Error('Error while retrieving users' + err);
+            });
+        },
+        logout : function(){
+            window.location = services.getLogoutLink();
+        },
+		attached: function(view){
+			$(view).find('.respose').html(this.users[0].firstname);
         }
 	}
 

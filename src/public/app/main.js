@@ -15,6 +15,7 @@
         'uniform': '../lib/uniform/jquery.uniform.min',
         'storage': '../app/classes/storageManager',
         'promise': '../lib/pollyfills/es6-promise/es6-promise.min',
+        'services' : '../app/classes/services',
         /**
           Jade compiler and custom view engine next two lines
         **/
@@ -53,7 +54,7 @@
     }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'jquery', 'promise'],  function (system, app, viewLocator, ko, $, p) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'jquery', 'storage', 'promise'],  function (system, app, viewLocator, ko, $, storage, p) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
@@ -70,6 +71,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', '
 
     window.ko = ko;
     window.$ = $;
+    window.storage = storage;
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

@@ -12,8 +12,8 @@
         require('uniform');
         var p = require('appScript'),
         uiconfig = require('classes/uiconfig'),
-        navbar = require('customWidgets/nav/navviewmodel'),
-        storage = require("storage");
+        navbar = require('customWidgets/nav/navviewmodel');
+        //storage = require("storage");
 
     var shell = function(){
         this.init();
