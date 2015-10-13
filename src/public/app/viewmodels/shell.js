@@ -12,17 +12,19 @@
         require('uniform');
         var p = require('appScript'),
         uiconfig = require('classes/uiconfig'),
-        navbar = require('customWidgets/nav/navviewmodel');
+        navbarViewModel = require('customWidgets/nav/navviewmodel');
         //storage = require("storage");
 
     var shell = function(){
         this.init();
         this.uiconfig = uiconfig;
-        navbar.router = router;
+        var navbarInstance = new navbarViewModel({ router: router });
+        this.navbar = navbarInstance.navbar;
+        console.log(this.navbar);
     };
 
     shell.prototype = {
-        navbar: navbar,
+        //navbar: (new navbar({ router: router })).navbar,
         init: function(){
             this.configureRoutes();
         },
@@ -35,9 +37,7 @@
 
             if(storage.local("userConfig") && storage.local("userConfig").USER_ROLE){
                 if(storage.local("userConfig").USER_ROLE == 'ADMIN'){
-                    routes = [
-                        { route: '', title:'Welcome', moduleId: 'viewmodels/admin/dashboard', nav: true }
-                    ];
+                    routes = storage.local("userConfig")._durandalRoutes;
                 }
             }
 

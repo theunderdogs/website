@@ -1,0 +1,18 @@
+// ORIGINAL: locally managed, modified copy (bad), no @import in output (good)
+
+// WORKAROUND: vendor-managed (good): @import in output (bad but acceptable)
+@import 'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all';
+@import '../../lib/font-awesome/css/font-awesome.min.css';
+@import '../../lib/simple-line-icons/simple-line-icons.min.css';
+@import '../../lib/bootstrap/css/bootstrap.min.css';
+@import '../../lib/uniform/css/uniform.default.css';
+@import '../../lib/jcropper/css/cropper.css';
+@import '../../lib/durandal/css/durandal.css';
+
+@import 'style-conquer.css';
+@import 'style.css';
+@import 'style-responsive.css';
+@import 'plugins.css';  
+@import 'themes/default.css';
+@import 'custom.css'; 
+@import 'starterkit.css'; 

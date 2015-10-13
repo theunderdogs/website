@@ -1,4 +1,5 @@
-var userLogic = require('../logic/userLogic.js');
+var userLogic = require('../logic/userLogic.js')
+   ,multiparty = require('multiparty');
 	
 module.exports = function(router, passport){
 
@@ -9,5 +10,18 @@ module.exports = function(router, passport){
 		});	
 	});
 
-	
+	router.post('/saveNewPet', passport.authenticate('bearer', { session: false }), function(req, res){
+		
+		var form = new multiparty.Form();
+
+		form.parse(req, function(err, fields, files){
+			res.statusCode = 200;
+			res.end();
+		});
+
+		// userLogic.getUsers().then(function(users){
+		// 	console.log(users);
+		// 	res.json(users);
+		// });	
+	});
 }
