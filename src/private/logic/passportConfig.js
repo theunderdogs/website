@@ -28,12 +28,12 @@ module.exports = function(passport, app){
 			done(new Error('you are a fool'));
 		}
 	  // insert your MongoDB check here. For now, just a simple hardcoded check.
-	  console.log("im herer", token);
+	  //console.log("im herer", token);
 	  //console.log("x-access-token", req.headers['x-access-token']);
 	  
 	  var user_token = req.headers['x-access-token'] || req.body.token || req.query.token;
 
-	  console.log("user_token ", user_token);
+	  //console.log("user_token ", user_token);
 
 	  if (user_token) {
 
@@ -42,7 +42,7 @@ module.exports = function(passport, app){
 	      if (err) {
 	      	console.log(err);
 	        //return done(new Error("Failed to authenticate token."));
-	        return done({ success: false, message: 'Failed to authenticate public token.' }); 
+	        done({ success: false, message: 'Failed to authenticate public token.' }); 
 	        //res.json({ success: false, message: 'Failed to authenticate token.' });
 	      } else {
 	        // if everything is good, save to request for use in other routes
@@ -61,14 +61,16 @@ module.exports = function(passport, app){
 	        			return done({ success: false, message: 'Failed to private authenticate token.' }); 
 	        		}
 
-	        		console.log('decoded_user_token', decoded_user_token);
+	        		//console.log('decoded_user_token', decoded_user_token);
 
 	        		if(decoded_user_token == user.username){
-	        			console.log("success");
+	        			//console.log("success");
+	        			req.appData = {};
+	        			req.appData.user = user;
 	        			done(null, user.username, { scope: 'all' });
 	        		}else{
 	        			//return done(new Error("very close."));
-	        			return done({ success: false, message: 'very close'}); 
+	        			done({ success: false, message: 'very close'}); 
 	        		}
 			     });
 			  }); 
@@ -76,7 +78,7 @@ module.exports = function(passport, app){
 	    });
 
 	  } else {
-	    return done({ success: false, message: 'No token provided.' }); 
+	    done({ success: false, message: 'No token provided.' }); 
 	  }
 
 	})); /*passport end*/

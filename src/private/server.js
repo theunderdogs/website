@@ -1,10 +1,5 @@
 var express = require('express')
-    ,app = express()//.createServer(
-	  // connect-form (http://github.com/visionmedia/connect-form)
-	  // middleware uses the formidable middleware to parse urlencoded
-	  // and multipart form data
-  	//	form({ keepExtensions: true })
-	//)
+    ,app = express()
     ,mongoose = require('mongoose')
 	,passport = require('passport')
 	,passHttp = require('passport-http').BasicStrategy

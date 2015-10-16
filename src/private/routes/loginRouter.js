@@ -28,14 +28,19 @@ module.exports = function(router, passport) {
 		        });
 			})
 			.catch(function(err){
-				console.log('Error while logging in', result);
+				console.log('Error while logging in', err);
 			    //forbidden
-			    res.statusCode(403).send({ success  : false })
+			    //res.statusCode(403).send({ success  : false })
+			    res.statusCode = 403;
+			    res.json({ success  : false, message: err.message });
+				res.end();
 			});
-		
 		}else{
 			//bad request
-			res.statusCode(400).send({ success  : false })
+			//res.statusCode(400).send({ success  : false })
+			res.statusCode = 400;
+			res.json({ success  : false, message: 'Bad Request' });
+			res.end();
 		}  	
 	});
   

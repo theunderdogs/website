@@ -8,6 +8,7 @@ define(function(require) {
     
 	var vm = function(){
 		this.name = ko.observable();
+		this.kind = ko.observable();
 		this.photoUrl = ko.observable('../app/assets/images/gallery/image4.jpg');
 		this.fileUpload;
 		this.modal;
@@ -72,21 +73,29 @@ define(function(require) {
     	submitForm : function(data, e){
     		var formData = new FormData();
 
-    		formData.append('data', ko.unwrap(data.name()));
+    		formData.append('data', JSON.stringify({ name : ko.unwrap(data.name()),
+    								  kind : ko.unwrap(data.kind()) 
+    								}));
+
+    		var promiseArray = [];
 
     		$.each(data.picArray(), function( index, value ) {
-			  value.toBlob(function(blob){
-			  	formData.append('file[]', blob);
-			  });
-			  
+				promiseArray.push(new Promise(function(resolve, reject){  
+					  value.toBlob(function(blob){
+					  	formData.append('filesToBeUploaded', blob);
+					  	resolve();
+					  });
+				}));
 			});
         	
-        	services.saveNewPet(formData).then(function(result){
-                console.log(result);
-                alert('success***********');
-            }, function(err){
-                throw new Error('Error saving pet' + err);
-            });
+    		Promise.all(promiseArray).then(function(){
+    			services.saveNewPet(formData).then(function(result){
+                	console.log(result);
+                	alert('success***********');
+	            }, function(err){
+	                throw new Error('Error saving pet' + err);
+	            });
+    		});
     	}
     }
 

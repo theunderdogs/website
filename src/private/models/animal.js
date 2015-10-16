@@ -16,6 +16,9 @@ module.exports = mongoose.model('Animal', new Schema({
         type: String,
         trim: true
     }, 
+    photoUrls : {
+        type: [String]
+    },
 	user : {
 		type: Schema.ObjectId,
         ref: 'User'

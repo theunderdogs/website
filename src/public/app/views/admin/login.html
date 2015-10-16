@@ -520,6 +520,9 @@ jQuery(document).ready(function() {
 	     	Storage.local("userConfig", result.data);
 	     	window.location.href = '/';
 	     }
+	  })
+	  .fail(function( error ){
+	  	 console.log(error);
 	  });
 
 	return false;

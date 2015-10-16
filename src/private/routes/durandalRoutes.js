@@ -9,7 +9,6 @@ module.exports = {
 			   routes : [{ route: '', title:'Welcome', moduleId: 'viewmodels/admin/dashboard', nav: true },
 			   { route: 'addNewPet', title:'Add New Pet', moduleId: 'viewmodels/admin/addNewPet', nav: true },
 			   { route: 'addNewUser', title:'Add New User', moduleId: 'viewmodels/admin/addNewUser', nav: true }]
-            
             },
 	ANON : {
 			   uiconfig : {

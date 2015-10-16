@@ -1,5 +1,8 @@
 var userLogic = require('../logic/userLogic.js')
-   ,multiparty = require('multiparty');
+   ,petLogic = require('../logic/petLogic.js')
+   ,multiparty = require('multiparty')
+   ,fs = require('fs')
+   ,Promise = require('promise/lib/es6-extensions');
 	
 module.exports = function(router, passport){
 
@@ -12,16 +15,28 @@ module.exports = function(router, passport){
 
 	router.post('/saveNewPet', passport.authenticate('bearer', { session: false }), function(req, res){
 		
-		var form = new multiparty.Form();
+		var form = new multiparty.Form(),
+			user = req.appData.user;
 
 		form.parse(req, function(err, fields, files){
-			res.statusCode = 200;
-			res.end();
-		});
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
 
-		// userLogic.getUsers().then(function(users){
-		// 	console.log(users);
-		// 	res.json(users);
-		// });	
+			petLogic.saveNewPet(JSON.parse(fields.data), user, files.filesToBeUploaded)			
+			.then(function(result){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'Pet saved successfully', object: result });
+				res.end();	
+			})
+			.catch(function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while uploading files' });
+				res.end();	
+			});
+		});
 	});
 }
