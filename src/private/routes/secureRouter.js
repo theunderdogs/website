@@ -1,9 +1,11 @@
 var userLogic = require('../logic/userLogic.js')
    ,petLogic = require('../logic/petLogic.js')
+   ,rules = require('../logic/rules.js')
+   ,middleware = require('../logic/middleware.js')
    ,multiparty = require('multiparty')
    ,fs = require('fs')
    ,Promise = require('promise/lib/es6-extensions');
-	
+
 module.exports = function(router, passport){
 
 	router.get('/getUsers', passport.authenticate('bearer', { session: false }), function(req, res){
@@ -13,7 +15,7 @@ module.exports = function(router, passport){
 		});	
 	});
 
-	router.post('/saveNewPet', passport.authenticate('bearer', { session: false }), function(req, res){
+	router.post('/saveNewPet', passport.authenticate('bearer', { session: false }), middleware.hasPermission(rules.saveNewPet), function(req, res){
 		
 		var form = new multiparty.Form(),
 			user = req.appData.user;
