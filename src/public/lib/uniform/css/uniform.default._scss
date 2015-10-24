@@ -34,7 +34,7 @@ $upload-filename-padding: 0 10px;
 $upload-height: 28px;
 $upload-width: 190px;
 
-@import "../../_base/css/uniform._base.scss";
+@import "../../_base/css/uniform._base.scss"; 
 
 /* INPUT & TEXTAREA */
 

@@ -6,7 +6,9 @@ var express = require('express')
 	,fs = require('fs')
 	,bodyParser = require("body-parser")
 	,expressSession = require("express-session")
-	,Promise = require('promise/lib/es6-extensions');
+	,Promise = require('promise/lib/es6-extensions')
+	,qt = require('quickthumb');
+
 
 //set model directory
 fs.readdirSync(__dirname + '/models').forEach(function(filename){
@@ -17,7 +19,7 @@ fs.readdirSync(__dirname + '/models').forEach(function(filename){
 mongoose.connect('mongodb://localhost:27017/underdogsdb');
 
 //html directory
-app.use(express.static(__dirname + "/../public/"));
+app.use(express.static(__dirname + "/../public"));
 
 //set view engnes for res.render(html path)
 // app.engine('html', require('ejs').renderFile);

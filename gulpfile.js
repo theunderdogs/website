@@ -1,468 +1,205 @@
-var gulp = require("gulp"),
-    //for minifying js
-    uglify = require("gulp-uglify"),
-    //renaming file , for instance min.js
-    rename = require('gulp-rename'),
-    //for compiling and minify scss files
-    compass = require('gulp-compass'),
-    //if compile errors, plumber won't stop the server
-    plumber = require('gulp-plumber'),
-    //delete files module
-    del = require('del'),
-    //run the tasks in sequence
-    runSequence = require('run-sequence'),
-    //reload browser after client code changes
-    browserSync = require('browser-sync').create(),
-    //reload = browserSync.reload,
-    //this module can parse arguments
-    argv = require('yargs').argv,
-    //if else conditions in gulp
-    gulpif = require('gulp-if'),
-    //gulp-util logs errors
-    gutil = require('gulp-util'),
-    //set permissions on files and folders
-    chmod = require('gulp-chmod'),
-    //execute command line commands
+var gulp = require('gulp'),
+	del = require('del'),
+	config = require('./gulpConfig.js'),
+	run = require('gulp-run'),
+	argv = require('yargs').argv,
+	runSequence = require('run-sequence'),
+	requirejsOptimize = require('gulp-requirejs-optimize'),
+	gulpFilter = require('gulp-filter'),
+	ifElse = require('gulp-if'),
+	uglify = require('gulp-uglify'),
+	minifyCss = require('gulp-minify-css'),
+	minifyHTML = require('gulp-minify-html'),
+	nsSass = require('gulp-ruby-sass-ns'),
+	browserSync = require('browser-sync').create(),
     server = require('gulp-develop-server'),
-    //promise
     promise = require('promise/lib/es6-extensions'),
-    //gulp callback
-    gcallback = require('gulp-callback'),
-    notify = require('gulp-notify');
-    //sass = require('node-sass');
+	move = function(obj, options){
+		var isMinify = function(){
+			return options && options.minify;
+		};
 
+		var jsFilter = gulpFilter('**/*.js', {restore: true}),
+		    cssFilter = gulpFilter('**/*.css', {restore: true}),
+		    htmlFilter = gulpFilter('**/*.html', {restore: true}),
+		    scssFilter = gulpFilter('**/*.scss', {restore: true});
 
-var freakTasks = function(){
-    var self = this;
+		return gulp.src(obj.src)
+				   .pipe(ifElse(isMinify(), jsFilter))
+	        	   .pipe(ifElse(isMinify(), uglify()))
+	        	   .pipe(ifElse(isMinify(), jsFilter.restore))
 
-    self.getGulpPromise = function(obj){
-        return new Promise(function(resolve, reject){
-            gulp.src(obj.src, {base : obj.base})
-                .pipe(plumber())  //plumber is initialized before compass compiles
-                .pipe(chmod(777))
-                .pipe(gulp.dest(obj.dest))
-                .on('finish', function() {
-                    resolve(obj.res);
-                })
-                .on('error',function(e){
-                    reject(new Error(obj.err));
-                });
-        });
+	        	   .pipe(ifElse(isMinify(), cssFilter))
+	        	   .pipe(ifElse(isMinify(), minifyCss({compatibility: 'ie8'})))
+	        	   .pipe(ifElse(isMinify(), cssFilter.restore))
+
+	        	   .pipe(ifElse(isMinify(), htmlFilter))
+	        	   .pipe(ifElse(isMinify(), minifyHTML({ empty: true, cdata: true, conditionals: true, spare: true, quotes: true, loose : true })))
+	        	   .pipe(ifElse(isMinify(), htmlFilter.restore))
+
+	        	   .pipe(scssFilter)
+	        	   .pipe(nsSass({ style: 'compact' }))
+	        	   .pipe(ifElse(isMinify(), minifyCss({compatibility: 'ie8'})))
+	        	   .pipe(gulp.dest(obj.dest))   
+	        	   .pipe(scssFilter.restore)
+
+	               .pipe(gulp.dest(obj.dest));    
     };
 
-    self.cleanDurandal = function(){
-        return del(['build/public/**']);
-    };
+/*
+* This gulp task will only be used for debug and minify - NO CONCAT
+* Example: gulp move --task=moveuiFiles.durandalViewmodels --f=minify
+*/
+gulp.task('move', function(){
+	if(!argv.task) throw new Error('Arguments not found');
 
-    self.buildUIlib = function(){
-        var p1 = self.getGulpPromise({ src: './src/public/lib/**/*.*',
-            base: './src/public/lib', 
-            dest: './build/public/lib', 
-            res: 'copying libs finished', 
-            err: 'copying libs error'});
+    if(argv.task.indexOf('.') == -1) throw new Error('. not found in property');
 
-        var p2 = self.getGulpPromise({ src: './bower_components/**/*.*',
-            base: './bower_components', 
-            dest: './build/public/lib', 
-            res: 'copying bower finished', 
-            err: 'copying bower error'});
+    if(!config.hasOwnProperty(argv.task.split('.')[0])) throw new Error(argv.task.split('.')[0] + ' Property not found');
 
-        return Promise.all([p1, p2]);
-    };
+    if(!config[argv.task.split('.')[0]].hasOwnProperty(argv.task.split('.')[1])) throw new Error(argv.task.split('.')[0] + ' Property not found');
 
-    self.buildHtml = function(){
-        var p1 = new Promise(function(resolve, reject){
-            gulp.src('src/public/*.+(js|html)')
-            .pipe(plumber())  //plumber is initialized
-            .pipe(chmod(777))
-            .pipe(gulp.dest('build/public'))
-            .on('finish', function() {
-                resolve("copying js/html finished");
-            })
-            .on('error',function(e){
-                reject(new Error('copying js/html error'));
-            });
-        });
+	return move(config[argv.task.split('.')[0]][argv.task.split('.')[1]], { minify : (argv.f == 'minify' ? true : false) });
+});
 
-        var p2 = self.getGulpPromise({ src: './src/public/app/views/**/*.*',
-            base: './src/public/app/views', 
-            dest: './build/public/app/views', 
-            res: 'copying views finished', 
-            err: 'copying views error'});
+/*
+* Example: gulp clean --t=deleteserverFiles
+*/
+gulp.task('clean', function(cb) {
+    if(!argv.t) throw new Error('Arguments not found');
 
-        return Promise.all([p1, p2]);
-    };
+    if(!config.hasOwnProperty(argv.t)) throw new Error(argv.t + ' Property not found');
 
-    self.buildViewmodels = function(config){
-        // glob patterns
-        // css/*.css   include css files
-        // css/**/*.css include all css from subdirectories too
-        // !css/style.css  exclude style.css
-        // *.+(js|css)  include js and css files
+	return del(config[argv.t], { force : true});  //del returns a promise
+});
 
-        var p1 = self.getGulpPromise({ src: './src/public/app/viewmodels/**/*.*',
-            base: './src/public/app/viewmodels', 
-            dest: './build/public/app/viewmodels', 
-            res: 'copying viewmodels finished', 
-            err: 'copying viewmodels error'});
+/*
+* Example: gulp build --f=minify|debug --t=ui|server|all
+		   gulp build --f=singleui
+*/
+gulp.task('build', function(cb){
+	if(!argv.f) throw new Error('Argument f not found');
 
-        var p2 = new Promise(function(resolve, reject){
-            gulp.src('src/public/app/*.js')
-                .pipe(plumber())
-                //.pipe(rename({suffix:'.min'}))
-                .pipe(gulpif(!config.debug, uglify({ mangle: false }).on('error', gutil.log)))
-                .pipe(chmod(777))
-                .pipe(gulp.dest('build/public/app'))
-                .on('finish', function() {
-                    resolve("copying js finished");
-                })
-                .on('error',function(e){
-                    reject(new Error('copying js error'));
-                });
-        });
+    if(argv.f == 'minify' || argv.f == 'debug'){
+        if(!argv.t) throw new Error('Argument t not found');
 
-        var p3 = self.getGulpPromise({ src: 'src/public/app/customWidgets/**/*.*',
-            base: './src/public/app/customWidgets', 
-            dest: './build/public/app/customWidgets', 
-            res: 'copying customWidgets finished', 
-            err: 'copying customWidgets error'});
-
-        var p4 = self.getGulpPromise({ src: 'src/public/app/classes/**/*.*',
-            base: './src/public/app/classes', 
-            dest: 'build/public/app/classes', 
-            res: 'copying classes finished', 
-            err: 'copying classes error'});
-
-        return Promise.all([p1, p2, p3, p4]);
-    };
-
-    self.buildCss = function(){
-        var p1 = new Promise(function(resolve, reject){
-            gulp.src('./src/public/app/scss/*.scss')
-                .pipe(plumber())  //plumber is initialized before compass compiles
-                .pipe(compass({
-                    config_file: './config.rb',
-                    css: './build/public/app/css',
-                    sass: './src/public/app/scss',
-                    require: ['susy']
-                }))
-                .pipe(chmod(777))
-                .pipe(gulp.dest('./build/public/app/css'))
-                .on('finish', function() {
-                    resolve("copying scss finished");
-                })
-                .on('error',function(e){
-                    reject(new Error('copying scss error'));
-                });
-        });
-
-        var p2 = new Promise(function(resolve, reject){
-            gulp.src(['./src/public/app/css/**'])
-                .pipe(plumber())  //plumber is initialized before compass compiles
-                .pipe(chmod(777))
-                .pipe(gulp.dest('./build/public/app/css'))
-                .on('finish', function() {
-                    resolve("copying css finished");
-                })
-                .on('error',function(e){
-                    reject(new Error('copying css error'));
-                });
-        });
-
-        //compile css
-        return Promise.all([p1, p2]);
-    };
-
-    self.buildAssets = function() {
-        return new Promise(function(resolve, reject){
-            gulp.src('./src/public/app/assets/**/*.*', { base: './src/public/app/assets' })
-            .pipe(plumber())  //plumber is initialized before compass compiles
-            .pipe(chmod(777))
-            .pipe(gulp.dest('./build/public/app/assets'))
-            .on('finish', function() {
-                resolve("copying assets finished");
-            })
-            .on('error',function(e){
-                reject(new Error('copying assets error'));
-            });
-        });
-    };
-
-    self.watchUI = function(config){
-        console.log("watchUI started");
-        
-        browserSync.init({
-            proxy: 'localhost:3000',
-            port: 44085,
-            open: true,
-            notify: true,
-            reloadDelay: 1000,
-            reloadDebounce: 1000,
-            browser: ["firefox"]
-            //server: {
-            //    baseDir: "./build/public"
-            //}
-        });
-
-        // gulp.watch('./src/public/**/*.*', function(){
-        //     console.log('REBUILDING DURANDAL');
-        //     Promise.all([self.buildHtml(), self.buildViewmodels(config), self.buildCss()])
-        //     .then(function(r){
-        //         console.log('DURANDAL BUILD SUCCESSFUL..watching..', r);
-        //         browserSync.reload();
-        //     })
-        //     .catch(function(r) { 
-        //         console.log('DURANDAL BUILD FAILED..', r);
-        //      });
-        // });
-
-        gulp.watch('./src/public/app/views/**/*.*', function(){
-            console.log('REBUILDING VIEWS');
-            self.buildHtml()
-            .then(function(r){
-                console.log('VIEWS BUILD SUCCESSFUL..watching..', r);
-                browserSync.reload();
-            })
-            .catch(function(r) { 
-                console.log('VIEWS BUILD FAILED..', r);
-             });
-        });
-
-        gulp.watch('./src/public/app/viewmodels/**/*.*', function(){
-            console.log('REBUILDING VIEWS');
-            self.buildViewmodels(config)
-            .then(function(r){
-                console.log('VIEWMODELS BUILD SUCCESSFUL..watching..', r);
-                browserSync.reload();
-            })
-            .catch(function(r) { 
-                console.log('VIEWMODELS BUILD FAILED..', r);
-             });
-        });
-
-        gulp.watch('src/public/app/*.js', function(){
-            console.log('REBUILDING VIEWS');
-            self.buildViewmodels(config)
-            .then(function(r){
-                console.log('app/*.js BUILD SUCCESSFUL..watching..', r);
-                browserSync.reload();
-            })
-            .catch(function(r) { 
-                console.log('app/*.js BUILD FAILED..', r);
-             });
-        });
-
-        gulp.watch('src/public/app/customWidgets/**/*.*', function(){
-            console.log('REBUILDING VIEWS');
-            self.buildViewmodels(config)
-            .then(function(r){
-                console.log('CUSTOMWIDGETS BUILD SUCCESSFUL..watching..', r);
-                browserSync.reload();
-            })
-            .catch(function(r) { 
-                console.log('CUSTOMWIDGETS BUILD FAILED..', r);
-             });
-        });
-
-
-        gulp.watch('src/public/app/classes/**/*.*', function(){
-            console.log('REBUILDING VIEWS');
-            self.buildViewmodels(config)
-            .then(function(r){
-                console.log('CLASSES BUILD SUCCESSFUL..watching..', r);
-                browserSync.reload();
-            })
-            .catch(function(r) { 
-                console.log('CLASSES BUILD FAILED..', r);
-             });
-        });
-    };
-
-    self.deployServerFiles = function(config){
-        
-        var p1 = new Promise(function(resolve, reject){
-            gulp.src('src/private/controllers/*.js')
-            //gulp.src(['src/app/viewmodels/*.js', '!src/app/viewmodels/*.min.js'])
-            .pipe(plumber()) //plumber is initialized before JS is checked for errors by renaming and uglify modules
-            //.pipe(rename({suffix:'.min'}))
-            .pipe(gulpif(!config.debug, uglify({ mangle: false })))
-            .pipe(chmod(777))
-            .pipe(gulp.dest('build/private/controllers'))
-            .on('finish', function() {
-                resolve("copying controllers finished");
-            })
-            .on('error',function(e){
-                reject(new Error('copying controllers error'));
-            });
-        });
-
-        var p2 = new Promise(function(resolve, reject){
-            gulp.src('src/private/models/*.js')
-            .pipe(plumber())
-            //.pipe(rename({suffix:'.min'}))
-            .pipe(gulpif(!config.debug, uglify({ mangle: false })))
-            .pipe(gulp.dest('build/private/models'))
-            .on('finish', function() {
-                resolve("copying models finished");
-            })
-            .on('error',function(e){
-                reject(new Error('copying models error'));
-            });
-        });
-
-        var p3 = new Promise(function(resolve, reject){
-            gulp.src('src/private/server.js')
-            .pipe(plumber())
-            //.pipe(rename({suffix:'.min'}))
-            .pipe(gulpif(!config.debug, uglify({ mangle: false })))
-            .pipe(gulp.dest('build/private'))
-            .on('finish', function() {
-                resolve("copying server finished");
-            })
-            .on('error',function(e){
-                reject(new Error('copying server error'));
-            });
-        });
-
-        var p3 = new Promise(function(resolve, reject){
-            gulp.src('src/private/package.json')
-            .pipe(plumber())
-            .pipe(gulp.dest('build/private'))
-            .on('finish', function() {
-                resolve("copying package.json finished");
-            })
-            .on('error',function(e){
-                reject(new Error('copying package.json error'));
-            });
-        });
-
-        var p4 = new Promise(function(resolve, reject){
-            gulp.src('./src/private/routes/**/*.*', { base: './src/private/routes' })
-            .pipe(plumber())
-            .pipe(gulp.dest('./build/private/routes'))
-            .on('finish', function() {
-                resolve("copying routes finished");
-            })
-            .on('error',function(e){
-                reject(new Error('copying routes error'));
-            });
-        });
-
-        var p5 = new Promise(function(resolve, reject){
-            gulp.src('./src/private/logic/**/*.*', { base: './src/private/logic' })
-            .pipe(plumber())
-            .pipe(gulp.dest('./build/private/logic'))
-            .on('finish', function() {
-                resolve("copying logic finished");
-            })
-            .on('error',function(e){
-                reject(new Error('copying logic error'));
-            });
-        });
-
-        return Promise.all([p1, p2, p3, p4, p5]);      
-    };
-
-    self.serverStart = function(){
-        console.log("serverStart started");
-        server.listen({ path:  './build/private/server.js', execArgv : ['--debug'] });
-    };
-
-    self.serverRestart = function(){
-        console.log("serverRestart started");
-        return new Promise(function (resolve, reject) {
-            server.restart( function( error ) {
-                if( ! error ) {
-                    resolve();
+        if(argv.t == 'ui' || argv.t == 'all'){
+            run('gulp clean --t=deleteuiFiles').exec('', function(){
+                for(var property in config.moveuiFiles){
+                    console.log('EXECUTING ' + property);
+                    move(config.moveuiFiles[property], { minify : (argv.f == 'minify' ? true : false) });           
                 }
-                else reject();
             });
-        });
-    };
+        }
 
-    self.watchServer = function(config){
-        console.log("watchServer started");
-        //watch the src folder for changes and compile it to build, also restart server
-        gulp.watch('src/private/**/*.js', function(){
-            self.deployServerFiles(config)
-            .then(function(r){
-                console.log('SERVER BUILD SUCCESSFUL', r);
-                return self.serverRestart();
-            })
-            .then(function(r){
-                browserSync.reload();
-            })
-            .catch(function(r){
-                console.log('SERVER BUILD FAILED', r);
+        if(argv.t == 'server' || argv.t == 'all'){
+            run('gulp clean --t=deleteserverFiles').exec('', function(){
+                for(var property in config.moveserverFiles){
+                    console.log('EXECUTING ' + property);
+                    move(config.moveserverFiles[property], { minify : (argv.f == 'minify' ? true : false) });           
+                }
             });
-            //runSequence('deployServerFiles', 'server:restart');
-        });
-    }; 
-};
+        }
+	} else if(argv.f == 'singleui'){
+	
+		console.log('\nNOTE : THIS PROCESS WILL ONLY CONOLIDATE ONLY UI FILES THAT ARE LISTED IN THE CONFIGURATION. PLEASE MAKE SURE TO ALSO INCLUDE UI FILES THAT ARE NOT CONSOLIDATED WHILE DEPLOYING\n');
 
-gulp.task('freak', function(){
-
-    var config = { debug : false };
-
-    if(argv.debug){
-        config.debug = true;
-    }
-
-    var freaks = new freakTasks();
-
-    freaks.cleanDurandal()
-    .then(function(paths) {
-        console.log(paths.join('\n'));
-        return Promise.all([freaks.buildUIlib(config), freaks.buildHtml(), freaks.buildViewmodels(config), freaks.buildCss(), freaks.buildAssets()]);
-    })
-    .then(function(r) { console.log('DURANDAL BUILD SUCCESSFUL', r); })
-    .catch(function(r) { console.log('DURANDAL BUILD FAILED..', r); });
+		return gulp.src(config.createSingle.src_main_module)
+				.pipe(requirejsOptimize(config.createSingle.buildConfig)).on('error', function(er){ console.log(er);  })
+				.pipe(gulp.dest(config.createSingle.dest));
+		
+	} else throw new Error('Arguments not supported');
 });
 
-gulp.task("freakdefault", function(){
-    var config = { debug : false };
+/*
+* produces debug build only
+*/
+gulp.task('watch', function(){
+	browserSync.init(config.bsConfig);
 
-    if(argv.debug){
-        config.debug = true;
-    }
-
-    var freaks = new freakTasks();
-
-    return freaks.cleanDurandal()
-    .then(function(paths) {
-        //console.log(paths.join('\n'));
-        return Promise.all([freaks.buildUIlib(config), freaks.buildHtml(), freaks.buildViewmodels(config), freaks.buildCss(), freaks.buildAssets()]);
-    })
-    .then(function(r) { 
-        console.log('DURANDAL BUILD SUCCESSFUL', r); 
-        return freaks.deployServerFiles(config);
-    })
-    .then(function(r){
-        console.log('SERVER BUILD SUCCESSFUL', r); 
-        freaks.serverStart();
-        
-        /*watching server*/
-        freaks.watchServer(config);
-
-        /*watching durandal files*/
-        freaks.watchUI(config);
-    })
-    .catch(function(r) { 
-        console.log('SOMETHING WENT WRONG!!!', r); 
+    Object.keys(config.moveuiFiles).forEach(function(taskName) {
+        // gulp.watch(config.paths[taskName].src, [taskName]);
+        gulp.watch(config.moveuiFiles[taskName].src, function() {
+            //'gulp clean && gulp build --f=debug --t=ui'
+            run('gulp move --task=moveuiFiles.' + taskName).exec('', function(){
+            	browserSync.reload();	
+            });
+        });
     });
 
+    Object.keys(config.moveserverFiles).forEach(function(taskName) {
+        // gulp.watch(config.paths[taskName].src, [taskName]);
+        gulp.watch(config.moveserverFiles[taskName].src, function() {
+            //'gulp clean && gulp build --f=debug --t=server'
+            run('gulp move --task=moveserverFiles.' + taskName + ' && gulp server --t=restart').exec('', function(){
+                browserSync.reload();   
+            });
+        });
+    });
 });
 
+/*
+* server start,restart
+* gulp server --t=restart|start
+*/
+gulp.task('server', function(){
+    if(!argv.t) throw new Error('Arguments not found');
 
+    if(argv.t == 'start'){
+        //server.listen({ path:  './build/private/server.js', execArgv : ['--debug'] });
+        server.listen({ path:  config.serverjs });
+    }else if(argv.t == 'restart'){
+        server.restart( function( error ) {
+                if( ! error ) {
+                    throw new Error('Error while restarting server');
+                }
+        });
+    }
+});
 
-gulp.task("cssbana", function(){
-    var freaks = new freakTasks();
-
-    freaks.buildCss()
-    .then(function(r){
-        console.log('YES', r);
-    })
-    .catch(function(r){
-        console.log('LAG GAYE', r);
+/*
+* default task
+*/
+gulp.task('default', function(){
+    var p1 = new Promise(function(resolve, reject){
+        run('gulp clean --t=deleteserverFiles').exec('', function(err){
+            if(err){
+                reject();
+            }else{
+                resolve();
+            }
+        })        
     });
+
+    var p2 = new Promise(function(resolve, reject){
+        run('gulp clean --t=deleteuiFiles').exec('', function(err){
+            if(err){
+                reject();
+            }else{
+                resolve();
+            }
+        })        
+    });
+
+    var p3 = new Promise(function(resolve, reject){
+        run('gulp build --f=debug --t=all').exec('', function(err){
+            if(err){
+                reject();
+            }else{
+                resolve();
+            }
+        })        
+    });
+
+    p1
+    .then(function(){
+        return p2;
+    })
+    .then(function(){
+        return p3;
+    })
+    .then(function(){
+        run('gulp server --t=start').exec();
+        run('gulp watch').exec();
+    })
 });

@@ -5,6 +5,7 @@
         'plugins' : '../lib/durandal/js/plugins',
         'transitions' : '../lib/durandal/js/transitions',
         'knockout': '../lib/knockout/dist/knockout.debug',
+        'knockout.validation': '../lib/knockout.validation/knockout.validation',
         'bootstrap': '../lib/bootstrap/js/bootstrap',
         'jquery': '../lib/jquery/dist/jquery',
         'jqueryMigrate': '../lib/jquery/jquery-migrate-1.2.1.min',
@@ -55,7 +56,7 @@
     }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'jquery', 'storage', 'promise'],  function (system, app, viewLocator, ko, $, storage, p) {
+define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'knockout.validation','jquery', 'storage', 'promise'],  function (system, app, viewLocator, ko, kovalidation, $, storage, p) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
@@ -70,9 +71,17 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', '
 
     p.polyfill();
 
+    ko.validation = kovalidation;
+    ko.validation.init({
+        insertMessages: false,
+        errorsAsTitle: false,
+        messagesOnModified: true
+    });
+
     window.ko = ko;
     window.$ = $;
     window.storage = storage;
+    window.promise = p;
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

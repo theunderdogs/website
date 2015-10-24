@@ -1,5 +1,5 @@
-var rules = require('./rules.js');
-var ruleUserConfig = require('./ruleUserConfig.js');
+var rules = require('./rules.js'),
+	ruleUserConfig = require('./ruleUserConfig.js');
 
 module.exports = {
 	hasPermission : function (permission) {
@@ -32,5 +32,5 @@ module.exports = {
     	}
 	    else next();
 	  };
-	}
+	},
 }
