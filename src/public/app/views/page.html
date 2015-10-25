@@ -1,0 +1,29 @@
+<h3 class="page-title" data-bind="insertText: headerTitle">
+	<small data-bind="text: smallHeaderTitle"></small>
+</h3>
+<div class="page-bar">
+	<ul class="page-breadcrumb" data-bind="foreach: breadCrumbs">
+		<li>
+			<!-- ko if: $data.hasOwnProperty('class1') -->
+				<i data-bind="attr : { class : class1 }"></i>
+			<!-- /ko -->
+			<!-- ko if: $data.hasOwnProperty('title') -->
+				<a href="index.html" data-bind="text: title"></a>
+			<!-- /ko -->
+			<!-- ko if: $data.hasOwnProperty('class2') -->
+				<i data-bind="attr : { class : class2 }"></i>
+			<!-- /ko -->
+		</li>
+	</ul>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+
+
+<div data-bind="foreach: widgetCollection">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- ko widget: $data --><!-- /ko -->
+		</div>
+	</div>
+</div>

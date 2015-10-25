@@ -1,20 +1,25 @@
 define(function(require) {
-	//var ko = require('knockout'),
-    //	$ = require('jquery'),
-    	//storage = require("storage");
-
-    var services = require('services');
+    var page = require('viewmodels/page');
     
-	var vm = function(){
+    vm = function() {
+		page.call(this, {
+			headerTitle : 'Add a pet',
+			smallHeaderTitle : 'Add a pet'
+		});
 
-
+		//this.headerTitle('Add a pet');
+		//this.smallHeaderTitle('Add a pet');
+		
+		this.widgetCollection.push({ kind : 'addPet', data: {} });
     };
 
-    vm.prototype = {
-    	getView : function(){
-    		return 'views/admin/addNewPet.html';
-    	}
-    }
+    vm.prototype = Object.create(page.prototype);
 
-    return new vm();
+    // var _super_ = page.prototype;
+
+    // John.prototype.walk = function() {
+    //     return _super_.walk.call(this) + ' quickly';
+    // };
+
+    return vm;  //vm extends page
 });
