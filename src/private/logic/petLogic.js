@@ -53,10 +53,18 @@ module.exports = {
 		})
 		.then(function(){
 			return new Promise(function(resolve, reject){
-
 				var newPet = new Animal({ 
-				    kind: JSON.parse(fields.kind), 
 					name: fields.name,
+					gender : JSON.parse(fields.gender), 
+				    kind: JSON.parse(fields.kind), 
+				    specifyKind: fields.specifyKind,
+				    breed : fields.breed,
+					color : fields.color,
+					weight : fields.weight,
+					dateFound : fields.dateFound,
+					age : fields.age,				  
+				    status : JSON.parse(fields.status), 
+				    notes : fields.notes, 
 					photoUrls: urlArray, 
 					user: user
 				}).save(function(err) {
@@ -74,30 +82,5 @@ module.exports = {
 			console.log(err);
 			return reject(err);
 		});
-		
-
-		// return Promise.all(promiseArray)
-		// .then(function(){
-		// 	return new Promise(function(resolve, reject){
-
-		// 		var newPet = new Animal({ 
-		// 		    kind: fields.kind, 
-		// 			name: fields.name,
-		// 			photoUrls: urlArray, 
-		// 			user: user
-		// 		}).save(function(err) {
-		// 		    if (err) {
-		// 		    	//throw err;
-		// 		    	return reject(err);
-		// 		    }else{
-		// 		    	console.log('Animal saved successfully');
-		// 		    	return resolve();	
-		// 		    }
-		// 		 });
-		// 	});
-		// })
-		// .catch(function(err){
-		// 	return reject(err);
-		// });
 	}
 }

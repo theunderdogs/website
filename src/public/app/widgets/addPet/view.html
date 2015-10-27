@@ -134,11 +134,29 @@
 					<!--/span-->
 					<div class="col-md-6">
 						<div class="form-group">
-							<!-- <label class="control-label col-md-3">Date found</label>
+							<label class="control-label col-md-3">Status</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. black" data-bind='value: dateFound'>
-								<span class="help-block" data-bind="validationMessage: dateFound"></span>
-							</div> -->
+								<select class="form-control" 
+									data-bind="options: availableStatuses,
+											   optionsText: 'optionValue',
+    										   value: selectedStatus,
+    										   optionsCaption: 'Choose...'
+										">
+								</select>
+								<span class="help-block" data-bind="validationMessage: selectedStatus"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<h3 class="form-section">Notes</h3>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-1"></label>
+							<div class="col-md-11">
+								<textarea class="form-control" rows="5" data-bind='value: notes'></textarea>
+							</div>
 						</div>
 					</div>
 					<!--/span-->
@@ -152,6 +170,7 @@
 						<!-- <a class="btn btn-default" data-toggle="modal" href="#responsive">View Demo</a> -->
 					</div>
 					<div class="col-md-12">
+						<br>
 						<div class="row mix-grid">
 							<!-- ko if: picArray().length > 0 -->
 								<!-- <div data-bind=" foreach: picArray">

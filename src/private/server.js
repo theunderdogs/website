@@ -56,6 +56,87 @@ app.get('/setup', function(req, res) {
   var User = mongoose.model('User'),
       Animal = mongoose.model('Animal'),
       DataType = mongoose.model('DataType');
+  
+  var datatypes = [ new DataType({ 
+				    type: 'animalKind', 
+				    order : 2,
+					optionValue: 'DOG'
+				  }),
+				  new DataType({ 
+				    type: 'animalKind', 
+				    order : 1,
+					optionValue: 'CAT'
+				  }),
+				  new DataType({ 
+				    type: 'animalKind', 
+				    order : 3,
+					optionValue: 'OTHER'
+				  }),
+
+				  new DataType({ 
+				    type: 'userRole', 
+				    order : 1,
+					optionValue: 'ANON'
+				  }),
+				  new DataType({ 
+				    type: 'userRole', 
+				    order : 2,
+					optionValue: 'ADMIN'
+				  }),
+
+				  new DataType({ 
+				    type: 'gender', 
+				    order : 1,
+					optionValue: 'MALE'
+				  }),
+				  new DataType({ 
+				    type: 'gender', 
+				    order : 2,
+					optionValue: 'FEMALE'
+				  }),
+				  new DataType({ 
+				    type: 'gender', 
+				    order : 3,
+					optionValue: 'UNKNOWN'
+				  }),
+
+				  new DataType({ 
+				    type: 'animalStatus', 
+				    order : 1,
+					optionValue: 'AVAILABLE'
+				  }),
+				  new DataType({ 
+				    type: 'animalStatus', 
+				    order : 2,
+					optionValue: 'ADOPTED'
+				  }),
+				  new DataType({ 
+				    type: 'animalStatus', 
+				    order : 3,
+					optionValue: 'TRIAL'
+				  }),
+				  new DataType({ 
+				    type: 'animalStatus', 
+				    order : 4,
+					optionValue: 'OTHER'
+				  })
+	];
+
+  var dataTypePromises = [];
+
+   for(var i = 0; i < datatypes.length; i++){
+   		dataTypePromises.push(
+	   		new Promise(function(resolve, reject){ 
+	   			datatypes[i].save(function(err) {
+			    if (err) throw err;
+
+			    console.log('Data type saved successfully');
+			     resolve();//res.json({ success: true });
+			  });
+	   		})
+   		);
+   }
+
   // create a sample user
   var kiran = new User({ 
     firstname: 'kiran', 
@@ -68,7 +149,6 @@ app.get('/setup', function(req, res) {
     role: 'ADMIN',
     secret: 'heyya'
   });
-
 
   var userPromise = new Promise(function(resolve, reject){
   	  // save the sample user
@@ -83,9 +163,13 @@ app.get('/setup', function(req, res) {
 	  });
   });
 
-  userPromise.then(function(user){
+  Promise.all(dataTypePromises)
+  .then(function(){
+  	return userPromise;
+  })
+  .then(function(user){
 	var dog = new Animal({ 
-	    kind: 'dog', 
+	    kind: datatypes[0], 
 		name: 'rambo', 
 		user: user
 	  });
@@ -102,74 +186,9 @@ app.get('/setup', function(req, res) {
 		  });
 	});
   })
-  .then(function(result){
-  	console.log(result);
-  		var datatypes = [ new DataType({ 
-				    type: 'animalKind', 
-				    order : 2,
-					optionValue: 'DOG'
-				  }),
-				  new DataType({ 
-				    type: 'animalKind', 
-				    order : 1,
-					optionValue: 'CAT'
-				  }),
-				  new DataType({ 
-				    type: 'animalKind', 
-				    order : 3,
-					optionValue: 'OTHER'
-				  }),
-				  new DataType({ 
-				    type: 'userRole', 
-				    order : 1,
-					optionValue: 'ANON'
-				  }),
-				  new DataType({ 
-				    type: 'userRole', 
-				    order : 2,
-					optionValue: 'ADMIN'
-				  }),
-				  new DataType({ 
-				    type: 'gender', 
-				    order : 1,
-					optionValue: 'MALE'
-				  }),
-				  new DataType({ 
-				    type: 'gender', 
-				    order : 2,
-					optionValue: 'FEMALE'
-				  }),
-				  new DataType({ 
-				    type: 'gender', 
-				    order : 3,
-					optionValue: 'UNKNOWN'
-				  }) ];
-
-	   var dataTypePromises = [];
-
-	   console.log(datatypes);
-
-	   for(var i = 0; i < datatypes.length; i++){
-	   		dataTypePromises.push(
-		   		new Promise(function(resolve, reject){ 
-		   			datatypes[i].save(function(err) {
-				    if (err) throw err;
-
-				    console.log('Data type saved successfully');
-				     resolve();//res.json({ success: true });
-				  });
-		   		})
-	   		);
-	   }
-
-	   return Promise.all(dataTypePromises);
-  })
   .then(function(){
   		res.json({ success: true });
   });
-
-  
-
 });
 
 app.listen(3000);

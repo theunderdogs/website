@@ -34,6 +34,11 @@ define(function (require) {
 		this.availableGenders = ko.observableArray(sortedAvailabelGenders);
 		this.selectedGender = ko.observable();
 
+		var availableStatuses = _.findByValues(services.dataTypes(), "type", ["animalStatus"]);
+		var sortedAvailableStatuses = _.sortBy(availableStatuses, 'order');
+		this.availableStatuses = ko.observableArray(sortedAvailableStatuses);
+		this.selectedStatus = ko.observable();
+
 		this.age = ko.observable();
 		this.color = ko.observable();
 
@@ -41,6 +46,7 @@ define(function (require) {
 		this.dateFound = ko.observable();
 
 		this.breed = ko.observable();
+		this.notes = ko.observable();
 	};
 
 	vm.prototype = {
@@ -111,11 +117,19 @@ define(function (require) {
 
     		//var validationGroup = ko.validation.group(data);
 
-
     		var formData = new FormData();
     		//return;
     		formData.append('data', JSON.stringify({ name : ko.unwrap(data.name()),
-    								  kind : JSON.stringify( ko.unwrap(data.selectedKind()) ) 
+    								  gender : JSON.stringify( ko.unwrap(data.selectedGender()) ),
+    								  kind : JSON.stringify( ko.unwrap(data.selectedKind()) ),
+    								  specifyKind : ko.unwrap(data.specifyKind()),
+    								  breed : ko.unwrap(data.breed()),
+									  color : ko.unwrap(data.color()),
+									  weight : ko.unwrap(data.weight()),
+									  dateFound : ko.unwrap(data.dateFound()),
+									  age : ko.unwrap(data.age()),
+									  status : JSON.stringify( ko.unwrap(data.selectedStatus()) ),
+    								  notes : ko.unwrap(data.notes())
     								}));
 
     		var promiseArray = [];
