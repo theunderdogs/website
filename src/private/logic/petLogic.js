@@ -20,12 +20,12 @@ module.exports = {
 
 			promiseArray.push(new Promise(function(resolve, reject){
 
-					if(files[i].headers['content-type'] != 'image/png'){
+					if(files[i].headers['content-type'] != 'image/jpeg'){
 						reject(new Error('Only images allowed.'));
 					}else{
 						//throw error
 						tempPath = files[i].path;
-						targetPath = __dirname + '/../../public/cdn/protected' + '\\' + i + '.png';
+						targetPath = __dirname + '/../../public/cdn/protected' + '\\' + i + '.jpeg';
 
 						fs.rename(tempPath, targetPath, function(err) {
 				            if(err) {
@@ -55,7 +55,7 @@ module.exports = {
 			return new Promise(function(resolve, reject){
 
 				var newPet = new Animal({ 
-				    kind: fields.kind, 
+				    kind: JSON.parse(fields.kind), 
 					name: fields.name,
 					photoUrls: urlArray, 
 					user: user

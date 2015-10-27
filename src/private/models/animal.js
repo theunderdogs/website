@@ -9,8 +9,8 @@ module.exports = mongoose.model('Animal', new Schema({
         default: Date.now
     },
 	kind: {
-        type: String,
-        trim: true
+        type: Schema.ObjectId,
+        ref: 'DataType'
     },
     name: {
         type: String,

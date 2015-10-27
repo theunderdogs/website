@@ -27,38 +27,17 @@
 					</div>
 					<!--/span-->
 					<div class="col-md-6">
-						<div class="form-group has-error">
-							<label class="control-label col-md-3">Kind</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. Ranger" data-bind='value: kind'>
-								<!-- <span class="help-block">
-								This field has error. </span> -->
-							</div>
-						</div>
-					</div>
-					<!--/span-->
-				</div>
-				<!--/row-->
-				<div class="row">
-					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label col-md-3">Gender</label>
 							<div class="col-md-9">
-								<select class="form-control">
-									<option value="">Male</option>
-									<option value="">Female</option>
+								<select class="form-control" 
+									data-bind="options: availableGenders,
+											   optionsText: 'optionValue',
+    										   value: selectedGender,
+    										   optionsCaption: 'Choose...'
+										">
 								</select>
-								<!-- <span class="help-block">
-								Select your gender. </span> -->
-							</div>
-						</div>
-					</div>
-					<!--/span-->
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label col-md-3">Date of Birth</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="dd/mm/yyyy">
+								<span class="help-block" data-bind="validationMessage: selectedGender"></span>
 							</div>
 						</div>
 					</div>
@@ -68,31 +47,98 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label col-md-3">Category</label>
+							<label class="control-label col-md-3">Kind</label>
 							<div class="col-md-9">
-								<select class="select2_category form-control" data-placeholder="Choose a Category" tabindex="1">
-									<option value="Category 1">Category 1</option>
-									<option value="Category 2">Category 2</option>
-									<option value="Category 3">Category 5</option>
-									<option value="Category 4">Category 4</option>
+								<select class="form-control" 
+									data-bind="options: availableKinds,
+											   optionsText: 'optionValue',
+    										   value: selectedKind,
+    										   optionsCaption: 'Choose...'
+										">
 								</select>
+								<span class="help-block" data-bind="validationMessage: selectedKind"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group" >
+							<!-- ko if: selectedKind() != null && selectedKind().optionValue === 'OTHER'  -->
+							<label class="control-label col-md-3">Specify kind</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. Red fox" data-bind='value: specifyKind'>
+								<span class="help-block" data-bind="validationMessage: specifyKind"></span>
+							</div>
+							<!-- /ko -->
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Breed</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. Pitbull mix" data-bind='value: breed'>
+								<span class="help-block" data-bind="validationMessage: breed"></span>
 							</div>
 						</div>
 					</div>
 					<!--/span-->
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label col-md-3">Membership</label>
+							<label class="control-label col-md-3">Color</label>
 							<div class="col-md-9">
-								<div class="radio-list">
-									<label class="radio-inline">
-									<input type="radio" name="optionsRadios2" value="option1"/>
-									Free </label>
-									<label class="radio-inline">
-									<input type="radio" name="optionsRadios2" value="option2" checked/>
-									Professional </label>
-								</div>
+								<input type="text" class="form-control" placeholder="Ex. black" data-bind='value: color'>
+								<span class="help-block" data-bind="validationMessage: color"></span>
 							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Weight</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. 25 lbs" data-bind='value: weight'>
+								<span class="help-block" data-bind="validationMessage: weight"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Date found</label>
+							<div class="col-md-9">
+								<input class="form-control date-picker" size="16" type="text" data-bind='value: dateFound'/>
+								<span class="help-block" data-bind="validationMessage: dateFound"></span> 
+							</div>
+						</div>
+					</div>
+				</div>	
+				<!--/row-->
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Age</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. 2 years 4 months" data-bind='value: age'>
+								<span class="help-block" data-bind="validationMessage: age"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<!-- <label class="control-label col-md-3">Date found</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. black" data-bind='value: dateFound'>
+								<span class="help-block" data-bind="validationMessage: dateFound"></span>
+							</div> -->
 						</div>
 					</div>
 					<!--/span-->
@@ -106,11 +152,26 @@
 						<!-- <a class="btn btn-default" data-toggle="modal" href="#responsive">View Demo</a> -->
 					</div>
 					<div class="col-md-12">
-						<!-- ko if: picArray().length > 0 -->
-							<div data-bind=" foreach: picArray">
-								<img style="max-width:200px;" data-bind="attr: {src: $data.toDataURL()}"/>
-							</div>
-						<!-- /ko -->
+						<div class="row mix-grid">
+							<!-- ko if: picArray().length > 0 -->
+								<!-- <div data-bind=" foreach: picArray">
+									<img style="max-width:200px;" data-bind="attr: {src: canvas.toDataURL()}"/>
+								</div> -->
+
+								<!-- ko foreach: picArray -->
+								<div class="col-md-3 col-sm-4 mix category_1">
+									<div class="mix-inner">
+										<img class="img-responsive" data-bind="attr: {src: canvas.toDataURL()}" alt="">
+										<div class="mix-details">
+											<h4>Cascusamus et iusto odio</h4>
+											<a class="mix-link"><i class="fa fa-link"></i></a>
+											<a class="mix-preview fancybox-button" href="assets/img/works/img1.jpg" title="Project Name" data-rel="fancybox-button"><i class="fa fa-search"></i></a>
+										</div>
+									</div>
+								</div>
+								<!-- /ko -->
+							<!-- /ko -->
+						</div>
 					</div>
 
 					<!-- /.modal -->

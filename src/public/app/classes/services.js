@@ -1,8 +1,12 @@
 define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], function (http, app) {
    
+	var storage = require('storage'),
+		ko = require('knockout');
+
 	var services = function(){
 		var self = this;
 		this.token = storage.local('userConfig').token;
+		this.dataTypes = ko.observable();
 	}
 
 	services.prototype = {
@@ -19,6 +23,9 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 			    processData: false,
 			    contentType: false
 			  });
+		},
+		getTypes : function(){
+			return $.get('getTypes');
 		}
 	}
 

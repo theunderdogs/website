@@ -12,6 +12,11 @@ module.exports = function(router, passport){
 		userLogic.getUsers().then(function(users){
 			console.log(users);
 			res.json(users);
+		})
+		.catch(function(err){
+			res.statusCode = 500;
+			res.json({ success  : false, message: 'getUsers failed' });
+			res.end();	
 		});	
 	});
 

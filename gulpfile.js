@@ -147,7 +147,7 @@ gulp.task('server', function(){
 
     if(argv.t == 'start'){
         //server.listen({ path:  './build/private/server.js', execArgv : ['--debug'] });
-        server.listen({ path:  config.serverjs });
+        server.listen({ path:  config.serverjs, execArgv : ['--debug'] });
     }else if(argv.t == 'restart'){
         server.restart( function( error ) {
                 if( ! error ) {

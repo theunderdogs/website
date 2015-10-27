@@ -3,8 +3,20 @@ define(function(require) {
     
     vm = function() {
 		page.call(this, {
-			headerTitle : 'Add a pet',
-			smallHeaderTitle : 'Add a pet'
+			headerTitle : 'Add new pet',
+			smallHeaderTitle : 'Add new pet',
+			breadCrumbs : [
+				{
+					class1: 'fa fa-home',
+					title: 'Home',
+					class2: 'fa fa-angle-right'
+				}, {
+					title: 'Forms',
+					class2: 'fa fa-angle-right'
+				}, {
+					title: 'Add a pet'
+				}
+			]
 		});
 
 		//this.headerTitle('Add a pet');

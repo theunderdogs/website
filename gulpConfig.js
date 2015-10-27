@@ -195,6 +195,6 @@ module.exports = {
         notify: true,
         reloadDelay: 1000,
         reloadDebounce: 1000,
-        browser: ["firefox"]
+        browser: ["chrome"]
     }
 };

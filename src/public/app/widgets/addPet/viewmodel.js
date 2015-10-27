@@ -1,6 +1,12 @@
 define(function (require) {
 	require('cropper');
-    var services = require('services');
+	require('bootstrap');
+	require('datepicker');
+	require('mixitup');
+	require('toBlob');
+
+    var services = require('services'),
+    	_ = require("lodash");
 
 	var vm = function(){
 		this.name = ko.observable().extend({
@@ -10,12 +16,31 @@ define(function (require) {
                      // 	message: 'Name is needed'
                      // }
                  });
-		this.kind = ko.observable();
 		this.photoUrl = ko.observable('../app/assets/images/gallery/image4.jpg');
 		this.fileUpload;
 		this.modal;
 		this.picArray = ko.observableArray([]);
 		this.cropperContainer;
+		this.view;
+		
+		var availableKinds = _.findByValues(services.dataTypes(), "type", ["animalKind"]);
+		var sortedAvailabelKinds = _.sortBy(availableKinds, 'order');
+		this.availableKinds = ko.observableArray(sortedAvailabelKinds);
+		this.selectedKind = ko.observable();
+		this.specifyKind = ko.observable(); //textbox
+
+		var availableGenders = _.findByValues(services.dataTypes(), "type", ["gender"]);
+		var sortedAvailabelGenders = _.sortBy(availableGenders, 'order');
+		this.availableGenders = ko.observableArray(sortedAvailabelGenders);
+		this.selectedGender = ko.observable();
+
+		this.age = ko.observable();
+		this.color = ko.observable();
+
+		this.weight = ko.observable();
+		this.dateFound = ko.observable();
+
+		this.breed = ko.observable();
 	};
 
 	vm.prototype = {
@@ -26,6 +51,7 @@ define(function (require) {
 			this.fileUpload = $(view).find('#fileUpload').eq(0);
 			this.modal = $(view).find('#responsive').eq(0);
 			this.cropperContainer = $(view).find('.myImage').eq(0);
+			this.view = view;
 			console.log('attached');
 
 			this.cropperContainer.cropper({
@@ -38,6 +64,8 @@ define(function (require) {
 				  minContainerWidth : 500,
 				  minContainerHeight: 500
 			});
+
+			$(view).find('.date-picker').eq(0).datepicker({});
     	},
     	addFiles : function(data, e){
     		this.fileUpload.trigger('click');
@@ -65,8 +93,12 @@ define(function (require) {
     		var result = this.cropperContainer.cropper('getCroppedCanvas');
     		data.photoUrl(result.toDataURL());
     		this.cropperContainer.cropper('replace', data.photoUrl());
-    		data.picArray.push(result);  //data.photoUrl()
+    		data.picArray.push({
+    			canvas : result,
+    			isNew : true
+    		});  //data.photoUrl()
     		data.modal.modal('hide');
+    		$(this.view).find('.mix-grid').mixitup();
     	},
     	submitForm : function(data, e){
     		var validObservable = ko.validatedObservable(data);
@@ -83,17 +115,17 @@ define(function (require) {
     		var formData = new FormData();
     		//return;
     		formData.append('data', JSON.stringify({ name : ko.unwrap(data.name()),
-    								  kind : ko.unwrap(data.kind()) 
+    								  kind : JSON.stringify( ko.unwrap(data.selectedKind()) ) 
     								}));
 
     		var promiseArray = [];
 
-    		$.each(data.picArray(), function( index, value ) {
+    		$.each(data.picArray(), function( index, imageInfo ) {
 				promiseArray.push(new Promise(function(resolve, reject){  
-					  value.toBlob(function(blob){
+					  imageInfo.canvas.toBlob(function(blob){
 					  	formData.append('filesToBeUploaded', blob);
 					  	resolve();
-					  });
+					  }, 'image/jpeg', 1);
 				}));
 			});
         	
@@ -102,7 +134,7 @@ define(function (require) {
                 	console.log(result);
                 	alert('success***********');
 	            }, function(err){
-	                throw new Error('Error saving pet' + err);
+	                throw new Error('Error saving pet', err);
 	            });
     		});
     	}

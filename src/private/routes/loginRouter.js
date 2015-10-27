@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken'),
-    userLogic = require('../logic/userLogic.js');
+	userLogic = require('../logic/userLogic.js'),
+    generalLogic = require('../logic/generalLogic.js');
 
 module.exports = function(router, passport) {
 	//app.use(passport.initialize());
@@ -63,5 +64,17 @@ module.exports = function(router, passport) {
 			res.redirect("/app/views/admin/login.html");	
 		});
 		  
+	});
+
+	router.get('/getTypes', function(req, res){
+		generalLogic.getTypes().then(function(dataTypes){
+			console.log(dataTypes);
+			res.json(dataTypes);
+		})
+		.catch(function(err){
+			res.statusCode = 500;
+			res.json({ success  : false, message: 'getTypes failed' });
+			res.end();	
+		});	
 	});
 }

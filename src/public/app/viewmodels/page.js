@@ -9,7 +9,7 @@ define(function (require) {
 
 		this.headerTitle = ko.observable(options.headerTitle || 'headerTitle');
 		this.smallHeaderTitle = ko.observable(options.smallHeaderTitle || 'smallHeaderTitle');
-		this.breadCrumbs = ko.observableArray([
+		this.breadCrumbs = ko.observableArray(options.breadCrumbs || [
 			{
 				class1: 'fa fa-home',
 				title: 'Home',

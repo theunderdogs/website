@@ -18,6 +18,11 @@
         'storage': '../app/classes/storageManager',
         'promise': '../lib/pollyfills/es6-promise/es6-promise.min',
         'services' : '../app/classes/services',
+        
+        'lodash' : '../lib/lodash/lodash',
+        'datepicker' : '../lib/bootstrap-datepicker/js/bootstrap-datepicker',
+        'mixitup' : '../lib/jquery-mixitup/jquery.mixitup.min',
+        'toBlob' : '../lib/pollyfills/toBlob/canvas-to-blob.min',
         /**
           Jade compiler and custom view engine next two lines
         **/
@@ -52,11 +57,18 @@
        'uniform': {
             deps: ['jquery'],
             exports: 'jQuery'
+       },
+       'mixitup': {
+            deps: ['jquery'],
+            exports: 'jQuery'
+       },
+       'toBlob': {
+          'exports': 'toBlob'
        }
     }
 });
 
-define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'knockout.validation','jquery', 'storage', 'promise'],  function (system, app, viewLocator, ko, kovalidation, $, storage, p) {
+define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'knockout.validation','jquery', 'storage', 'promise', 'services', 'lodash'],  function (system, app, viewLocator, ko, kovalidation, $, storage, p, services, _) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
@@ -83,33 +95,6 @@ define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knoc
     window.storage = storage;
     window.promise = p;
 
-    /*http://phrogz.net/js/classes/OOPinJS2.html
-
-        You cause a class to inherit using ChildClassName.prototype = new ParentClass();.
-        You need to remember to reset the constructor property for the class using ChildClassName.prototype.constructor=ChildClassName.
-        You can call ancestor class methods which your child class has overridden using the Function.call() method.
-        Javascript does not support protected methods.
-
-    */
-
-    Function.prototype.inheritsFrom = function( parentClassOrObject ){ 
-        if ( parentClassOrObject.constructor == Function ) 
-        { 
-            //Normal Inheritance 
-            this.prototype = new parentClassOrObject;
-            this.prototype.constructor = this;
-            this.prototype.parent = parentClassOrObject.prototype;
-        } 
-        else 
-        { 
-            //Pure Virtual Inheritance 
-            this.prototype = parentClassOrObject;
-            this.prototype.constructor = this;
-            this.prototype.parent = parentClassOrObject;
-        } 
-        return this;
-    };
-
     ko.bindingHandlers.insertText = {
         init: function(element, valueAccessor) {
             var span = document.createElement("span"),
@@ -120,7 +105,21 @@ define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knoc
         }       
     };
 
-    app.start().then(function() {
+    _.mixin({
+      'findByValues': function(collection, property, values) {
+        return _.filter(collection, function(item) {
+          return _.contains(values, item[property]);
+        });
+      }
+    });
+
+    services.getTypes()
+    .then(function(result){
+        console.log(result);
+        services.dataTypes(result);
+        return app.start();
+    })
+    .then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
         //Look for partial views in a 'views' folder in the root.
         viewLocator.useConvention();
