@@ -10,11 +10,10 @@ define(function (require) {
 
 	var vm = function(){
 		this.name = ko.observable().extend({
-                     required: true
-                     // { 
-                     // 	params: true, 
-                     // 	message: 'Name is needed'
-                     // }
+                     required: { 
+			                 	params: true, 
+			                 	message: 'This field is required'
+			         }
                  });
 		this.photoUrl = ko.observable('../app/assets/images/gallery/image4.jpg');
 		this.fileUpload;
@@ -26,8 +25,10 @@ define(function (require) {
 		var availableKinds = _.findByValues(services.dataTypes(), "type", ["animalKind"]);
 		var sortedAvailabelKinds = _.sortBy(availableKinds, 'order');
 		this.availableKinds = ko.observableArray(sortedAvailabelKinds);
-		this.selectedKind = ko.observable();
-		this.specifyKind = ko.observable(); //textbox
+		this.selectedKind = ko.observable().extend({
+                     required: true
+                 });
+		this.specifyKind = ko.observable();
 
 		var availableGenders = _.findByValues(services.dataTypes(), "type", ["gender"]);
 		var sortedAvailabelGenders = _.sortBy(availableGenders, 'order');
@@ -47,11 +48,23 @@ define(function (require) {
 
 		this.breed = ko.observable();
 		this.notes = ko.observable();
+		this._id = ko.observable();
 	};
 
 	vm.prototype = {
 		activate : function(settings){
+			this.settings = settings;
 
+			if(this.settings._id){
+				this._id(this.settings._id);
+			}else{
+				for(var i = 0; i < this.availableStatuses().length; i++){
+					if(this.availableStatuses()[i].optionValue.toUpperCase() === 'WITH UNDERDOGS'){
+						this.selectedStatus(this.availableStatuses()[i]);
+						break;
+					}
+				}
+			}
 		},
 	 	compositionComplete : function(view, parent){
 			this.fileUpload = $(view).find('#fileUpload').eq(0);

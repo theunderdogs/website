@@ -14,6 +14,7 @@ module.exports = {
 			,urlArray = []
 			,targetPath = null
 			,tempPath = null
+			,fileName = null
 			,thumbnailPromises = [];
 
 		for(var i = 0; i < files.length; i++){
@@ -25,8 +26,12 @@ module.exports = {
 					}else{
 						//throw error
 						tempPath = files[i].path;
-						targetPath = __dirname + '/../../public/cdn/protected' + '\\' + i + '.jpeg';
+						fileName = tempPath.split('\\')[tempPath.split('\\').length - 1];
+						targetPath = __dirname + '\\..\\..\\public\\cdn\\pets' + '\\' + fileName + '.jpeg';
 
+						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn\\pets','cdn\\pets\\thumbnails'),
+     width:300, height:169}));
+						
 						fs.rename(tempPath, targetPath, function(err) {
 				            if(err) {
 				            	//throw err
@@ -35,9 +40,6 @@ module.exports = {
 				            	console.log("Upload completed!");
 				            	urlArray.push(targetPath);
 				            	console.log(targetPath);
-				            	thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn/protected','cdn/protected/thumbnails'),
-     width:300, height:169}));
-
 				            	resolve();
 				        	}
 				        });
@@ -81,6 +83,20 @@ module.exports = {
 		.catch(function(err){
 			console.log(err);
 			return reject(err);
+		});
+	},
+
+	getPets : function(){
+		return new Promise(function (resolve, reject) {
+			Animal.find(function(err, pets){
+			 		if (err) {
+			 			console.log(err);
+			 			reject(err);
+			 		}
+			 		else{
+			 			resolve(pets);
+			 		}	
+			 	});
 		});
 	}
 }

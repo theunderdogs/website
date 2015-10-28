@@ -113,11 +113,16 @@ app.get('/setup', function(req, res) {
 				  new DataType({ 
 				    type: 'animalStatus', 
 				    order : 3,
-					optionValue: 'TRIAL'
+					optionValue: 'ON TRIAL'
 				  }),
 				  new DataType({ 
 				    type: 'animalStatus', 
 				    order : 4,
+					optionValue: 'WITH UNDERDOGS'
+				  }),
+				  new DataType({ 
+				    type: 'animalStatus', 
+				    order : 5,
 					optionValue: 'OTHER'
 				  })
 	];
@@ -168,23 +173,24 @@ app.get('/setup', function(req, res) {
   	return userPromise;
   })
   .then(function(user){
-	var dog = new Animal({ 
-	    kind: datatypes[0], 
-		name: 'rambo', 
-		user: user
-	  });
+  	return Promise.resolve(true);
+	// var dog = new Animal({ 
+	//     kind: datatypes[0], 
+	// 	name: 'rambo', 
+	// 	user: user
+	//   });
 
-	return new Promise(function(resolve, reject){
-		dog.save(function(err) {
-		    if (err) {
-		    	console.log(err);
-		    	return reject(err);
-		    }
+	// return new Promise(function(resolve, reject){
+	// 	dog.save(function(err) {
+	// 	    if (err) {
+	// 	    	console.log(err);
+	// 	    	return reject(err);
+	// 	    }
 
-		    console.log('Animal saved successfully!!');
-		    resolve(true);	//res.json({ success: true });
-		  });
-	});
+	// 	    console.log('Animal saved successfully!!');
+	// 	    resolve(true);	//res.json({ success: true });
+	// 	  });
+	// });
   })
   .then(function(){
   		res.json({ success: true });

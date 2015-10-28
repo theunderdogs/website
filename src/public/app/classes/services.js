@@ -26,7 +26,10 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 		},
 		getTypes : function(){
 			return $.get('getTypes');
-		}
+		},
+		getPets : function(){
+			return $.get('getPets');
+		},
 	}
 
     return new services();

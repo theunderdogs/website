@@ -63,7 +63,7 @@
 					<!--/span-->
 					<div class="col-md-6">
 						<div class="form-group" >
-							<!-- ko if: selectedKind() != null && selectedKind().optionValue === 'OTHER'  -->
+							<!-- ko if: selectedKind() != null && selectedKind().optionValue.toUpperCase() === 'OTHER'  -->
 							<label class="control-label col-md-3">Specify kind</label>
 							<div class="col-md-9">
 								<input type="text" class="form-control" placeholder="Ex. Red fox" data-bind='value: specifyKind'>
@@ -140,7 +140,8 @@
 									data-bind="options: availableStatuses,
 											   optionsText: 'optionValue',
     										   value: selectedStatus,
-    										   optionsCaption: 'Choose...'
+    										   optionsCaption: 'Choose...',
+    										   enable : _id
 										">
 								</select>
 								<span class="help-block" data-bind="validationMessage: selectedStatus"></span>

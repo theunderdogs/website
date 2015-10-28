@@ -1,6 +1,7 @@
 var jwt = require('jsonwebtoken'),
 	userLogic = require('../logic/userLogic.js'),
-    generalLogic = require('../logic/generalLogic.js');
+    generalLogic = require('../logic/generalLogic.js'),
+    petLogic = require('../logic/petLogic.js');
 
 module.exports = function(router, passport) {
 	//app.use(passport.initialize());
@@ -69,7 +70,23 @@ module.exports = function(router, passport) {
 	router.get('/getTypes', function(req, res){
 		generalLogic.getTypes().then(function(dataTypes){
 			console.log(dataTypes);
-			res.json(dataTypes);
+			res.statusCode = 200;
+			res.json({ success  : true, message: '', object: dataTypes });
+			res.end();
+		})
+		.catch(function(err){
+			res.statusCode = 500;
+			res.json({ success  : false, message: 'getTypes failed' });
+			res.end();	
+		});	
+	});
+
+	router.get('/getPets', function(req, res){
+		petLogic.getPets().then(function(pets){
+			console.log(pets);
+			res.statusCode = 200;
+			res.json({ success  : true, message: '', object: pets });
+			res.end();	
 		})
 		.catch(function(err){
 			res.statusCode = 500;

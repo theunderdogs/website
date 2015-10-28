@@ -15,7 +15,7 @@ define(function(require) {
         activate : function(){
             var self = this;
             return  services.getUsers().then(function(result){
-                self.users = result;
+                self.users = result.object;
             }, function(err){
                 throw new Error('Error while retrieving users' + err);
             });

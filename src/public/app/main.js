@@ -116,7 +116,7 @@ define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knoc
     services.getTypes()
     .then(function(result){
         console.log(result);
-        services.dataTypes(result);
+        services.dataTypes(result.object);
         return app.start();
     })
     .then(function() {

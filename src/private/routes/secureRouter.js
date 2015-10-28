@@ -11,7 +11,9 @@ module.exports = function(router, passport){
 	router.get('/getUsers', passport.authenticate('bearer', { session: false }), function(req, res){
 		userLogic.getUsers().then(function(users){
 			console.log(users);
-			res.json(users);
+			res.statusCode = 200;
+			res.json({ success  : true, message: '', object: users });
+			res.end();
 		})
 		.catch(function(err){
 			res.statusCode = 500;
