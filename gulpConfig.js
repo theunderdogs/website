@@ -84,7 +84,7 @@ module.exports = {
 		}
 	},
 
-	deleteuiFiles : ['./build/public/**', '!./build/public'],
+	deleteuiFiles : ['./build/public/**', '!./build/public', '!./build/public/cdn', '!./build/public/cdn/**/*'],
 
 	deleteserverFiles : ['./build/private/**', '!./build/private', '!./build/private/node_modules', '!./build/private/node_modules/**/*'],
 

@@ -1,5 +1,6 @@
 var userLogic = require('../logic/userLogic.js')
    ,petLogic = require('../logic/petLogic.js')
+   ,adoptorLogic = require('../logic/adoptorLogic.js')
    ,rules = require('../logic/rules.js')
    ,middleware = require('../logic/middleware.js')
    ,multiparty = require('multiparty')
@@ -47,5 +48,19 @@ module.exports = function(router, passport){
 				res.end();	
 			});
 		});
+	});
+
+	router.get('/getAdoptionApplications', passport.authenticate('bearer', { session: false }), function(req, res){
+		adoptorLogic.getAdoptionApplications().then(function(users){
+			console.log(users);
+			res.statusCode = 200;
+			res.json({ success  : true, message: '', object: users });
+			res.end();
+		})
+		.catch(function(err){
+			res.statusCode = 500;
+			res.json({ success  : false, message: 'getAdoptionApplications failed' });
+			res.end();	
+		});	
 	});
 }

@@ -10,7 +10,8 @@ module.exports = {
 			   { route: '', title:'Welcome', moduleId: 'viewmodels/admin/dashboard', nav: true },
 			   { route: 'addNewPet', title:'Add New Pet', moduleId: 'viewmodels/admin/addNewPet', nav: true },
 			   { route: 'addNewUser', title:'Add New User', moduleId: 'viewmodels/admin/addNewUser', nav: true },
-			   { route: 'pets', title:'Pets', moduleId: 'viewmodels/admin/pets', nav: true }]
+			   { route: 'pets', title:'Pets', moduleId: 'viewmodels/admin/pets', nav: true },
+			   { route: 'applications', title:'Applications', moduleId: 'viewmodels/admin/applications', nav: true }]
             },
 	ANON : {
 			   uiconfig : {

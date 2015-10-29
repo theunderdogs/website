@@ -4,11 +4,33 @@ define(function (require) {
 	require('mixitup');
 	
     var services = require('services'),
-    	_ = require("lodash");
+    	_ = require("lodash"),
+    	//adoptionFormHtml = require('text!widgets/adoptionForm/view.html'),
+    	adoptionFormViewModel = require('widgets/adoptionForm/viewmodel');
 
     var vm = function(){
+    	var self = this;
     	this.view;
     	this.petsToDisplay = ko.observableArray();
+    	this.adoptionFormWidget =  ko.observable();
+    	this.formModal;
+
+    	this.openAdoptMe = function(data, event){
+    		event = event || window.event;
+
+    		event.preventDefault();
+
+    		var $target = $(event.currentTarget);
+    		var $parent = $target.parent();
+
+    		var adoptionFromInstace = new adoptionFormViewModel({ data : data });
+
+    		self.adoptionFormWidget({ 
+    			model: adoptionFromInstace, 
+    			view: 'widgets/adoptionForm/view.html' 
+    		});
+
+    	};
     };
 
     vm.prototype = {
@@ -23,9 +45,7 @@ define(function (require) {
     	},
     	compositionComplete : function(view, parent){
     		this.view = view;
-
-    		//find('.mix-grid')
-    		$(this.view).mixitup();
+			$(this.view).find('.mix-grid').mixitup();
     	}
     };
 

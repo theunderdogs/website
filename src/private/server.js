@@ -124,7 +124,23 @@ app.get('/setup', function(req, res) {
 				    type: 'animalStatus', 
 				    order : 5,
 					optionValue: 'OTHER'
-				  })
+				  }),
+
+				  new DataType({ 
+				    type: 'applicationStatus', 
+				    order : 1,
+					optionValue: 'ACCEPTED'
+				  }),
+				  new DataType({ 
+				    type: 'applicationStatus', 
+				    order : 2,
+					optionValue: 'REJECTED'
+				  }),
+				  new DataType({ 
+				    type: 'applicationStatus', 
+				    order : 3,
+					optionValue: 'NEW'
+				  })				
 	];
 
   var dataTypePromises = [];

@@ -30,6 +30,17 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 		getPets : function(){
 			return $.get('getPets');
 		},
+		submitAdoptionApplication : function(data){
+			return $.ajax('submitAdoptionApplication', {
+			    method: "POST",
+			    data: data,
+			    processData: false,
+			    contentType: false
+			  });
+		},
+		getAdoptionApplications : function(){
+			return $.get('secure/getAdoptionApplications?access_token=fool&token=' + this.token);
+		}
 	}
 
     return new services();
