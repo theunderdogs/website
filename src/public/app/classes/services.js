@@ -40,6 +40,14 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 		},
 		getAdoptionApplications : function(){
 			return $.get('secure/getAdoptionApplications?access_token=fool&token=' + this.token);
+		},
+		setStatusForApplication : function(formData){
+			return $.ajax('secure/setStatusForApplication?access_token=fool&token=' + this.token, {
+			    method: "POST",
+			    data: formData,
+			    processData: false,
+			    contentType: false
+			  });
 		}
 	}
 

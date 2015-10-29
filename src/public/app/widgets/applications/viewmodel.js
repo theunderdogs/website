@@ -1,12 +1,14 @@
 define(function (require) {
 	var services = require('services'),
-    	_ = require("lodash");
+    	_ = require("lodash"),
+    	adopteeProfileViewModel = require('widgets/adopteeProfile/viewmodel');
 
 	var vm = function(settings){
 		this.pageIndex = ko.observable(3);
 		this.mailHeader = ko.observable('New Applications');
 		this.applications;// = ko.observableArray();
 		this.displayApplications = ko.observableArray();
+		this.adopteeProfileWidget = ko.observable();
 	};
 
 	vm.prototype = {
@@ -57,6 +59,16 @@ define(function (require) {
 	    formatDate : function(_date){
 	    	var date =  new Date(_date);
 	    	return date.getMonth() + '/' +  date.getDate() + '/' + date.getYear();
+	    },
+	    displayProfileModal : function(adopteeInfo){
+	    	//alert(adopteeInfo.firstName);
+
+	    	var adopteeProfileInstance = new adopteeProfileViewModel({ data : adopteeInfo });
+
+    		this.adopteeProfileWidget({ 
+    			model: adopteeProfileInstance, 
+    			view: 'widgets/adopteeProfile/view.html' 
+    		});
 	    }
     };
 

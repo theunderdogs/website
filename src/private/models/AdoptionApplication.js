@@ -24,6 +24,10 @@ module.exports = mongoose.model('AdoptionApplication', new Schema({
         type: String,
         trim: true
     },
+    notes: {
+        type: String,
+        trim: true
+    },
     animal : {
 		type: Schema.ObjectId,
         ref: 'Animal'

@@ -70,7 +70,7 @@
 							</tr>
 						</thead>
 						<tbody data-bind="foreach : displayApplications" >
-							<tr data-bind="css : { unread : status.optionValue === 'NEW' }">
+							<tr data-bind="css : { unread : status.optionValue === 'NEW' }, click : function(){ $parent.displayProfileModal($data) }">
 								<!-- <td class="inbox-small-cells">
 									<input type="checkbox" class="mail-checkbox">
 								</td> -->
@@ -96,4 +96,8 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- ko if: adopteeProfileWidget -->
+		<!-- ko compose: adopteeProfileWidget --><!-- /ko --> 
+	<!-- /ko --> 
 </div>

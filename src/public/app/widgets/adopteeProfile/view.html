@@ -1,0 +1,37 @@
+<div class="modal fade" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title" data-bind = "text: 'Adoption application for ' + settings.data.animal.name"></h4>
+			</div>
+			<div class="modal-body">
+				<div class="well">
+					<strong>First name</strong><br>
+					<div data-bind="text: settings.data.firstName"></div><br>
+					<strong>Last name</strong><br>
+					<div data-bind="text: settings.data.lastName"></div><br>
+					<strong>Address</strong><br>
+					<address>
+						<div data-bind="text: settings.data.address">Loop, Inc.</div><br>
+						<strong>Phone</strong><br>
+						<abbr title="Phone" data-bind="text: settings.data.phone">P:</abbr>
+					</address>
+					<address>
+						<strong>Email</strong><br>
+						<a href="mailto:#" data-bind="text: settings.data.email">first.last@email.com</a><br><br>
+						<strong>Notes</strong><br><br>
+						<textarea class="form-control" rows="5" data-bind='value: notes'></textarea>
+					</address>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" data-dismiss="modal" data-bind="
+				click: function(data, event) { setStatusForApplication('ACCEPTED') }">Accept</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-bind="click: function(data, event) { setStatusForApplication('REJECTED') }">Reject</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END FORM-->
