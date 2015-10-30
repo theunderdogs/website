@@ -68,11 +68,10 @@
     }
 });
 
-define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'knockout.validation','jquery', 'storage', 'promise', 'services', 'lodash'],  function (system, app, viewLocator, ko, kovalidation, $, storage, p, services, _) {
+define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'knockout.validation','jquery', 'storage', 'promise', 'services', 'lodash', 'plugins/router'],  function (system, app, viewLocator, ko, kovalidation, $, storage, p, services, _, router) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
-
     app.title = 'The Underdogs Rescue';
 
     app.configurePlugins({

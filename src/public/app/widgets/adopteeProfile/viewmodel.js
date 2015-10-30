@@ -1,7 +1,8 @@
 define(function (require) {
 	var services = require('services'),
     	_ = require("lodash"),
-    	router = require('plugins/router');
+    	router = require('plugins/router'),
+    	uiconfig = require('classes/uiconfig');
 
 	var vm = function(settings){
 		var self = this;
@@ -26,7 +27,8 @@ define(function (require) {
 			return;
 		},
 		setStatusForApplication : function(statusCode){
-			var formData = new FormData();
+			var formData = new FormData(),
+				self = this;
     		//return;
     		formData.append('data', JSON.stringify({ 
     								  answer : statusCode,
@@ -35,9 +37,15 @@ define(function (require) {
 
 
 			services.setStatusForApplication(formData).then(function(result){
-            	console.log(result);
-            	router.activeItem().activate();
+            	//console.log(result);
+            	//router.activeItem().activate();
+            	//window.location.reload(true);
             	//alert('success***********');
+            	uiconfig.rebuildRouter(storage.local("userConfig")._durandalRoutes).then(function(){
+            		router.navigate('applications'); 	
+            	});
+            	
+            	
             }, function(err){
                 throw new Error(err.message);
             });
