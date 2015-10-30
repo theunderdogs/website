@@ -11,7 +11,7 @@ module.exports = {
 			   { route: 'addNewPet', title:'Add New Pet', moduleId: 'viewmodels/admin/addNewPet', nav: true },
 			   { route: 'addNewUser', title:'Add New User', moduleId: 'viewmodels/admin/addNewUser', nav: true },
 			   { route: 'pets', title:'Pets', moduleId: 'viewmodels/admin/pets', nav: true },
-			   { route: 'applications', title:'Applications', moduleId: 'viewmodels/admin/applications', nav: true }]
+			   { route: 'applications', title:'Adoption applications', moduleId: 'viewmodels/admin/applications', nav: true }]
             },
 	ANON : {
 			   uiconfig : {

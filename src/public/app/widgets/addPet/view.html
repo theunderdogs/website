@@ -63,7 +63,7 @@
 					<!--/span-->
 					<div class="col-md-6">
 						<div class="form-group" >
-							<!-- ko if: selectedKind() != null && selectedKind().optionValue.toUpperCase() === 'OTHER'  -->
+							<!-- ko if: selectedKind() != null && selectedKind().code.toUpperCase() === 'OTHER'  -->
 							<label class="control-label col-md-3">Specify kind</label>
 							<div class="col-md-9">
 								<input type="text" class="form-control" placeholder="Ex. Red fox" data-bind='value: specifyKind'>
@@ -134,7 +134,7 @@
 					<!--/span-->
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label col-md-3">Status</label>
+							<!-- <label class="control-label col-md-3">Status</label>
 							<div class="col-md-9">
 								<select class="form-control" 
 									data-bind="options: availableStatuses,
@@ -145,7 +145,7 @@
 										">
 								</select>
 								<span class="help-block" data-bind="validationMessage: selectedStatus"></span>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<!--/span-->
@@ -157,6 +157,18 @@
 							<label class="control-label col-md-1"></label>
 							<div class="col-md-11">
 								<textarea class="form-control" rows="5" data-bind='value: notes'></textarea>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<h3 class="form-section">Biography</h3>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-1"></label>
+							<div class="col-md-11">
+								<textarea class="form-control" rows="5" data-bind='value: bio'></textarea>
 							</div>
 						</div>
 					</div>

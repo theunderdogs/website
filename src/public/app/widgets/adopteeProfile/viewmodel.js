@@ -1,12 +1,12 @@
 define(function (require) {
 	var services = require('services'),
-    	_ = require("lodash");
+    	_ = require("lodash"),
+    	router = require('plugins/router');
 
 	var vm = function(settings){
 		var self = this;
 		this.view;
 		this.settings = settings;
-		this.notes = ko.observable();
 	};
 
 	vm.prototype = {
@@ -25,20 +25,19 @@ define(function (require) {
 			$(this.view).modal('hide');
 			return;
 		},
-		setStatusForApplication : function(answer){
-			this.settings.data.notes = ko.unwrap(this.notes());
-
+		setStatusForApplication : function(statusCode){
 			var formData = new FormData();
     		//return;
     		formData.append('data', JSON.stringify({ 
-    								  answer : answer,
+    								  answer : statusCode,
     								  application : JSON.stringify( this.settings.data ), //aplication
 									}));
 
 
 			services.setStatusForApplication(formData).then(function(result){
             	console.log(result);
-            	alert('success***********');
+            	router.activeItem().activate();
+            	//alert('success***********');
             }, function(err){
                 throw new Error(err.message);
             });

@@ -60,86 +60,78 @@ app.get('/setup', function(req, res) {
   var datatypes = [ new DataType({ 
 				    type: 'animalKind', 
 				    order : 2,
-					optionValue: 'DOG'
+					optionValue: 'Dog',
+					code : 'DOG'
 				  }),
 				  new DataType({ 
 				    type: 'animalKind', 
 				    order : 1,
-					optionValue: 'CAT'
+					optionValue: 'Cat',
+					code: 'CAT'
 				  }),
 				  new DataType({ 
 				    type: 'animalKind', 
 				    order : 3,
-					optionValue: 'OTHER'
+					optionValue: 'Other',
+					code : 'OTHER'
 				  }),
 
 				  new DataType({ 
 				    type: 'userRole', 
 				    order : 1,
-					optionValue: 'ANON'
+				    optionValue: 'Anonymous',
+					code: 'ANON'
 				  }),
 				  new DataType({ 
 				    type: 'userRole', 
 				    order : 2,
-					optionValue: 'ADMIN'
+					optionValue: 'Administrator',
+					code: 'ADMIN'
 				  }),
 
 				  new DataType({ 
 				    type: 'gender', 
 				    order : 1,
-					optionValue: 'MALE'
+					optionValue: 'Male',
+					code: 'MALE'
 				  }),
 				  new DataType({ 
 				    type: 'gender', 
 				    order : 2,
-					optionValue: 'FEMALE'
+					optionValue: 'Female',
+					code: 'FEMALE'
 				  }),
 				  new DataType({ 
 				    type: 'gender', 
 				    order : 3,
-					optionValue: 'UNKNOWN'
+					optionValue: 'Unknown',
+					code: 'UNKNOWN'
 				  }),
 
-				  new DataType({ 
-				    type: 'animalStatus', 
-				    order : 1,
-					optionValue: 'AVAILABLE'
-				  }),
-				  new DataType({ 
-				    type: 'animalStatus', 
-				    order : 2,
-					optionValue: 'ADOPTED'
-				  }),
-				  new DataType({ 
-				    type: 'animalStatus', 
-				    order : 3,
-					optionValue: 'ON TRIAL'
-				  }),
-				  new DataType({ 
-				    type: 'animalStatus', 
-				    order : 4,
-					optionValue: 'WITH UNDERDOGS'
-				  }),
-				  new DataType({ 
-				    type: 'animalStatus', 
-				    order : 5,
-					optionValue: 'OTHER'
-				  }),
 
 				  new DataType({ 
 				    type: 'applicationStatus', 
 				    order : 1,
-					optionValue: 'ACCEPTED'
+					optionValue: 'New applications',
+					code: 'NEWAPPLICATION'
+				  }),
+				  new DataType({ 
+				    type: 'applicationStatus', 
+				    order : 1,
+					optionValue: 'Accepted for trial',
+					code: 'TRIAL'
 				  }),
 				  new DataType({ 
 				    type: 'applicationStatus', 
 				    order : 2,
-					optionValue: 'REJECTED'
+					optionValue: 'Adopted',
+					code: 'ADOPTED'
 				  }),
 				  new DataType({ 
 				    type: 'applicationStatus', 
 				    order : 3,
-					optionValue: 'NEW'
+					optionValue: 'Rejected',
+					code: 'REJECTED'
 				  })				
 	];
 
@@ -184,33 +176,33 @@ app.get('/setup', function(req, res) {
 	  });
   });
 
-  Promise.all(dataTypePromises)
-  .then(function(){
-  	return userPromise;
-  })
-  .then(function(user){
-  	return Promise.resolve(true);
-	// var dog = new Animal({ 
-	//     kind: datatypes[0], 
-	// 	name: 'rambo', 
-	// 	user: user
-	//   });
+ //  Promise.all(dataTypePromises)
+ //  .then(function(){
+ //  	return userPromise;
+ //  })
+ //  .then(function(user){
+ //  	return Promise.resolve(true);
+	// // var dog = new Animal({ 
+	// //     kind: datatypes[0], 
+	// // 	name: 'rambo', 
+	// // 	user: user
+	// //   });
 
-	// return new Promise(function(resolve, reject){
-	// 	dog.save(function(err) {
-	// 	    if (err) {
-	// 	    	console.log(err);
-	// 	    	return reject(err);
-	// 	    }
+	// // return new Promise(function(resolve, reject){
+	// // 	dog.save(function(err) {
+	// // 	    if (err) {
+	// // 	    	console.log(err);
+	// // 	    	return reject(err);
+	// // 	    }
 
-	// 	    console.log('Animal saved successfully!!');
-	// 	    resolve(true);	//res.json({ success: true });
-	// 	  });
-	// });
-  })
-  .then(function(){
-  		res.json({ success: true });
-  });
+	// // 	    console.log('Animal saved successfully!!');
+	// // 	    resolve(true);	//res.json({ success: true });
+	// // 	  });
+	// // });
+ //  })
+ //  .then(function(){
+ //  		res.json({ success: true });
+ //  });
 });
 
 app.listen(3000);

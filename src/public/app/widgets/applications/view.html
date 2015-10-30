@@ -13,24 +13,11 @@
 	<div class="portlet-body">
 		<div class="row inbox">
 			<div class="col-md-2">
-				<ul class="inbox-nav margin-bottom-10">
-					<li class="compose-btn">
-						<!-- <a href="javascript:;" data-title="Compose" class="btn btn-success">
-						<i class="fa fa-edit"></i></a> -->
-					</li>
-					<li class="inbox" data-bind="css : { active : pageIndex() === 3 }">
-						<a href="javascript:;" class="btn" data-bind="click : function(){ onLabelClick(3) }, text: tabLabel(3)"></a>
+				<ul class="inbox-nav margin-bottom-10" data-bind="foreach : availableLabels">
+					<li class="inbox" data-bind="css : { active : $parent.selectedLabel() == optionValue }">
+						<a href="javascript:;" class="btn" data-bind="click : function(){ $parent.onLabelClick($data) }, text: optionValue"></a>
 						<b></b>
 					</li>
-					<li class="sent" data-bind="css : { active : pageIndex() === 1 }">
-						<a class="btn" href="javascript:;" data-bind="click : function(){ onLabelClick(1) }, text: tabLabel(1)"></a><b></b>
-					</li>
-					<li class="draft" data-bind="css : { active : pageIndex() === 2 }">
-						<a class="btn" href="javascript:;" data-bind="click : function(){ onLabelClick(2) }, text: tabLabel(2)"></a><b></b>
-					</li>
-					<!-- <li class="trash">
-						<a class="btn" href="javascript:;" data-title="Trash">Trash</a><b></b>
-					</li> -->
 				</ul>
 			</div>
 			<div class="col-md-10">
@@ -38,10 +25,7 @@
 					<h1 class="pull-left" data-bind="text: mailHeader"></h1>
 					<form class="form-inline pull-right" action="index.html">
 						<div class="input-group input-medium">
-							<!-- <input type="text" class="form-control" placeholder="Password">
-							<span class="input-group-btn">
-							<button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
-							</span> -->
+					
 						</div>
 					</form>
 				</div>
@@ -70,12 +54,12 @@
 							</tr>
 						</thead>
 						<tbody data-bind="foreach : displayApplications" >
-							<tr data-bind="css : { unread : status.optionValue === 'NEW' }, click : function(){ $parent.displayProfileModal($data) }">
+							<tr data-bind="css : { unread : status.code === 'NEWAPPLICATION' }, click : function(){ $parent.displayProfileModal($data) }">
 								<!-- <td class="inbox-small-cells">
 									<input type="checkbox" class="mail-checkbox">
 								</td> -->
 								<td class="inbox-small-cells">
-									<i class="fa fa-star" data-bind="css : { 'inbox-started': status.optionValue === 'NEW' }"></i>
+									<i class="fa fa-star" data-bind="css : { 'inbox-started': status.code === 'NEWAPPLICATION' }"></i>
 								</td>
 								<td class="view-message hidden-xs" data-bind="text: firstName + ' ' + lastName">
 									 Petronas IT

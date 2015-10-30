@@ -17,7 +17,7 @@ define(function (require) {
 		var availableStatus = _.findByValues(services.dataTypes(), "type", ["applicationStatus"]);
 			
 		for(var i = 0; i < availableStatus.length; i++){
-			if(availableStatus[i].optionValue.toUpperCase() === 'NEW'){
+			if(availableStatus[i].code === 'NEWAPPLICATION'){
 				this.status(availableStatus[i]);
 				break;
 			}
@@ -50,6 +50,7 @@ define(function (require) {
     								  email : ko.unwrap(this.email()),
     								  address : ko.unwrap(this.address()),
 									  animal : JSON.stringify( this.pet ),
+									  notes : '',
 									  status : JSON.stringify( ko.unwrap(this.status()) )
     								}));
 

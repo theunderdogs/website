@@ -64,8 +64,9 @@ module.exports = {
 					color : fields.color,
 					weight : fields.weight,
 					dateFound : fields.dateFound,
-					age : fields.age,				  
-				    status : JSON.parse(fields.status), 
+					age : fields.age,	
+					bio : fields.bio,			  
+				    //status : JSON.parse(fields.status), 
 				    notes : fields.notes, 
 					photoUrls: urlArray, 
 					user: user

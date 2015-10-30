@@ -15,5 +15,9 @@ module.exports = mongoose.model('DataType', new Schema({
 	optionValue: {
         type: String,
         trim: true
+    },
+    code: {
+        type: String,
+        trim: true
     }
 }));

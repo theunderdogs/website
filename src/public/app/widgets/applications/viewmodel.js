@@ -4,11 +4,27 @@ define(function (require) {
     	adopteeProfileViewModel = require('widgets/adopteeProfile/viewmodel');
 
 	var vm = function(settings){
-		this.pageIndex = ko.observable(3);
-		this.mailHeader = ko.observable('New Applications');
-		this.applications;// = ko.observableArray();
+		var self = this;
+		this.mailHeader = ko.observable();
+		this.applications = [];// = ko.observableArray();
 		this.displayApplications = ko.observableArray();
 		this.adopteeProfileWidget = ko.observable();
+
+		var availableLabels = _.findByValues(services.dataTypes(), "type", ["applicationStatus"]);
+		var sortedAvailabelLabels = _.sortBy(availableLabels, 'order');
+		this.availableLabels = ko.observableArray(sortedAvailabelLabels);
+
+		this.selectedLabel = ko.observable();
+
+		this.selectedLabel.subscribe(function(newLabel){
+			self.mailHeader(newLabel);
+	     	self.displayApplications([]);
+	     	for(var i = 0; i < self.applications.length; i++){
+	    		if(self.applications[i].status.optionValue === newLabel){
+	    			self.displayApplications.push(self.applications[i]);
+	    		}
+	    	}
+		});
 	};
 
 	vm.prototype = {
@@ -18,44 +34,13 @@ define(function (require) {
     		promises.push(services.getAdoptionApplications());
 
     		return Promise.all(promises).then(function(result){
-    			//self.applications(result[0].object);
     			self.applications = result[0].object;
-    			self.onLabelClick(self.pageIndex());
+    			self.selectedLabel(self.availableLabels()[0].optionValue);
     		});
 		},
-		onLabelClick : function(index){
-	    	this.pageIndex(index);
-
-	    	if(index === 3){
-	    		this.mailHeader('New Applications');
-	    	} else if(index === 1){
-	    		this.mailHeader('Accepted');
-	    	} else if(index === 2){
-	    		this.mailHeader('Rejected');
-	    	}
-
-	    	this.displayApplications([]);
-	    	for(var i = 0; i < this.applications.length; i++){
-	    		if(this.applications[i].status.optionValue === 'NEW' && index === 3){
-	    			this.displayApplications.push(this.applications[i]);
-	    		}
-	    		if(this.applications[i].status.optionValue === 'REJECTED' && index === 2){
-	    			this.displayApplications.push(this.applications[i]);
-	    		}
-	    		if(this.applications[i].status.optionValue === 'ACCEPTED' && index === 1){
-	    			this.displayApplications.push(this.applications[i]);
-	    		}
-	    	}
-	    },
-	    tabLabel : function(index){
-	    	if(index === 3){
-	    		return 'New Applications';
-	    	} else if(index === 1){
-	    		return 'Accepted';
-	    	} else if(index === 2){
-	    		return 'Rejected';
-	    	}
-	    },
+		onLabelClick : function(data){
+			return this.selectedLabel(data.optionValue);
+		},
 	    formatDate : function(_date){
 	    	var date =  new Date(_date);
 	    	return date.getMonth() + '/' +  date.getDate() + '/' + date.getYear();

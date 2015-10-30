@@ -35,10 +35,10 @@ define(function (require) {
 		this.availableGenders = ko.observableArray(sortedAvailabelGenders);
 		this.selectedGender = ko.observable();
 
-		var availableStatuses = _.findByValues(services.dataTypes(), "type", ["animalStatus"]);
-		var sortedAvailableStatuses = _.sortBy(availableStatuses, 'order');
-		this.availableStatuses = ko.observableArray(sortedAvailableStatuses);
-		this.selectedStatus = ko.observable();
+		// var availableStatuses = _.findByValues(services.dataTypes(), "type", ["animalStatus"]);
+		// var sortedAvailableStatuses = _.sortBy(availableStatuses, 'order');
+		// this.availableStatuses = ko.observableArray(sortedAvailableStatuses);
+		// this.selectedStatus = ko.observable();
 
 		this.age = ko.observable();
 		this.color = ko.observable();
@@ -48,6 +48,7 @@ define(function (require) {
 
 		this.breed = ko.observable();
 		this.notes = ko.observable();
+		this.bio = ko.observable();
 		this._id = ko.observable();
 	};
 
@@ -57,13 +58,6 @@ define(function (require) {
 
 			if(this.settings._id){
 				this._id(this.settings._id);
-			}else{
-				for(var i = 0; i < this.availableStatuses().length; i++){
-					if(this.availableStatuses()[i].optionValue.toUpperCase() === 'WITH UNDERDOGS'){
-						this.selectedStatus(this.availableStatuses()[i]);
-						break;
-					}
-				}
 			}
 		},
 	 	compositionComplete : function(view, parent){
@@ -141,7 +135,8 @@ define(function (require) {
 									  weight : ko.unwrap(data.weight()),
 									  dateFound : ko.unwrap(data.dateFound()),
 									  age : ko.unwrap(data.age()),
-									  status : JSON.stringify( ko.unwrap(data.selectedStatus()) ),
+									  bio : ko.unwrap(data.bio()),
+									  //status : JSON.stringify( ko.unwrap(data.selectedStatus()) ),
     								  notes : ko.unwrap(data.notes())
     								}));
 

@@ -25,6 +25,9 @@ define(function (require) {
 	};
 
 	page.prototype = {
+		activate: function(){
+
+		},
 		getView : function(){
 			return 'views/page.html';
 		}

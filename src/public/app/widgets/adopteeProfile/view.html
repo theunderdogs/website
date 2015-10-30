@@ -21,15 +21,40 @@
 						<strong>Email</strong><br>
 						<a href="mailto:#" data-bind="text: settings.data.email">first.last@email.com</a><br><br>
 						<strong>Notes</strong><br><br>
-						<textarea class="form-control" rows="5" data-bind='value: notes'></textarea>
+						<textarea class="form-control" rows="5" data-bind='value: settings.data.notes'></textarea>
 					</address>
 				</div>
 
 			</div>
 			<div class="modal-footer">
+				
+				<!-- ko if: settings.data.status.code === 'NEWAPPLICATION' -->
+
 				<button type="button" class="btn btn-success" data-dismiss="modal" data-bind="
-				click: function(data, event) { setStatusForApplication('ACCEPTED') }">Accept</button>
+				click: function(data, event) { setStatusForApplication('TRIAL') }">Accept for trial</button>
+
 				<button type="button" class="btn btn-danger" data-dismiss="modal" data-bind="click: function(data, event) { setStatusForApplication('REJECTED') }">Reject</button>
+
+				<!-- /ko --> 
+
+				<!-- ko if: settings.data.status.code === 'TRIAL' -->
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-bind="click: function(data, event) { setStatusForApplication('ADOPTED') }">Mark Adopted</button>
+
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-bind="click: function(data, event) { setStatusForApplication('REJECTED') }">Reject</button>					
+				<!-- /ko -->
+
+				<!-- ko if: settings.data.status.code === 'ADOPTED' -->
+				
+				<button type="button" class="btn btn-danger" data-dismiss="modal" data-bind="click: function(data, event) { setStatusForApplication('REJECTED') }">Reject</button>					
+				<!-- /ko -->
+
+				<!-- ko if: settings.data.status.code === 'REJECTED' -->
+				
+				<button type="button" class="btn btn-success" data-dismiss="modal" data-bind="
+				click: function(data, event) { setStatusForApplication('TRIAL') }">Accept for trial</button>
+								
+				<!-- /ko -->
+				
 			</div>
 		</div>
 	</div>

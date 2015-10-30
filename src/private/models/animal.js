@@ -39,11 +39,11 @@ module.exports = mongoose.model('Animal', new Schema({
         type: String,
         trim: true
     },
-    status: {
-        type: Schema.ObjectId,
-        ref: 'DataType'
-    },
     notes: {
+        type: String,
+        trim: true
+    },
+    bio: {
         type: String,
         trim: true
     },
