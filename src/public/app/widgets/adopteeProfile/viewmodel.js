@@ -2,12 +2,24 @@ define(function (require) {
 	var services = require('services'),
     	_ = require("lodash"),
     	router = require('plugins/router'),
-    	uiconfig = require('classes/uiconfig');
+    	uiconfig = require('classes/uiconfig'),
+    	petInfoViewModel = require('widgets/petInfo/viewmodel');;
 
 	var vm = function(settings){
 		var self = this;
 		this.view;
 		this.settings = settings;
+		this.petInfoWidget =  ko.observable();
+
+		this.openPetInfo = function(data, event){
+            var petInfoInstance = new petInfoViewModel({ data : settings.data.animal, showAdoptMe : false });
+
+            self.petInfoWidget({ 
+                model: petInfoInstance, 
+                view: 'widgets/petInfo/view.html' 
+            });
+
+        };
 	};
 
 	vm.prototype = {

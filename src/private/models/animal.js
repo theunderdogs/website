@@ -17,8 +17,8 @@ module.exports = mongoose.model('Animal', new Schema({
         ref: 'DataType'
     },
     specifyKind: {
-        type: Schema.ObjectId,
-        ref: 'DataType'
+        type: String,
+        trim: true
     },
     breed: {
         type: String,

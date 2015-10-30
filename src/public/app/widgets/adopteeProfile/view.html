@@ -27,7 +27,8 @@
 
 			</div>
 			<div class="modal-footer">
-				
+				<button type="button" class="btn btn-link" data-bind="text: 'View ' + settings.data.animal.name + '\'s Profile', click : openPetInfo"></button>
+
 				<!-- ko if: settings.data.status.code === 'NEWAPPLICATION' -->
 
 				<button type="button" class="btn btn-success" data-dismiss="modal" data-bind="
@@ -38,7 +39,7 @@
 				<!-- /ko --> 
 
 				<!-- ko if: settings.data.status.code === 'TRIAL' -->
-				<button type="button" class="btn btn-danger" data-dismiss="modal" data-bind="click: function(data, event) { setStatusForApplication('ADOPTED') }">Mark Adopted</button>
+				<button type="button" class="btn btn-success" data-dismiss="modal" data-bind="click: function(data, event) { setStatusForApplication('ADOPTED') }">Mark Adopted</button>
 
 				<button type="button" class="btn btn-danger" data-dismiss="modal" data-bind="click: function(data, event) { setStatusForApplication('REJECTED') }">Reject</button>					
 				<!-- /ko -->
@@ -55,8 +56,12 @@
 								
 				<!-- /ko -->
 				
+				
 			</div>
 		</div>
 	</div>
+	<!-- ko if: petInfoWidget -->
+					<!-- ko compose: petInfoWidget --><!-- /ko --> 
+				<!-- /ko --> 
 </div>
 <!-- END FORM-->

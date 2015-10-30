@@ -1,33 +1,68 @@
 <div class="modal fade" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-wide">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-				<h4 class="modal-title" data-bind = "text: settings.data.name + '\'s info'"></h4>
+				<h4 class="modal-title" data-bind = "text: settings.data.name + '\'s Profile'"></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-md-12 col-sm-12">
-						<ul class="list-inline blog-images" data-bind="foreach: settings.data.photoUrls">
-							<li>
-								<a class="fancybox-button" data-rel="fancybox-button" title="390 x 220">
-								<img alt="" data-bind="attr: { src : $data.replace('public\\', ' ').split(' ')[1] }">
-								</a>
-							</li>
-						</ul>
+					<div class="col-md-6 col-sm-6">
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<ul class="list-inline blog-images" data-bind="foreach: settings.data.photoUrls">
+									<li>
+										<a class="fancybox-button" data-rel="fancybox-button" data-bind="click : $parent.onThumbnailClick">
+										<img data-bind="attr: { src : $data.replace('public\\', ' ').replace('pets\\', 'pets\\thumbnails\\').split(' ')[1]  }">
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<img class="img-responsive" data-bind="attr: { src : bigImage }">
+							</div>
+						</div>	
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12 col-sm-12">
-						<img class="img-responsive" src="http://i.huffpost.com/gen/1447129/images/o-JENNIFER-ANISTON-facebook.jpg">
+					<div class="col-md-6 col-sm-6">
+						<div class="row">
+							<div class="col-md-12 profile-info">
+								<h1 data-bind = "text: settings.data.name"></h1>
+								<p data-bind = "text: settings.data.bio">
+									 
+								</p>
+								<p>
+									Breed : <span data-bind="text: settings.data.breed"></span>
+								</p>
+								<p>
+									Gender : <span data-bind="text: settings.data.gender.optionValue"></span>
+								</p>
+								<p>
+									Age : <span data-bind="text: settings.data.age"></span>
+								</p>
+								<p>
+									Weight : <span data-bind="text: settings.data.weight"></span>
+								</p>
+							</div>
+							<!--end col-md-8-->
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-default" data-dismiss="modal">Close</button>
-				<button class="btn btn-success" data-dismiss="modal">Save changes</button>
+
+				<!-- ko if: settings.showAdoptMe -->				
+				<button type="button" class="btn btn-success" data-bind="click: openAdoptMe">Adopt Me</button>
+				<!-- /ko --> 
 			</div>
 		</div>
 	</div>
+
+	<!-- ko if: adoptionFormWidget -->
+		<!-- ko compose: adoptionFormWidget --><!-- /ko --> 
+	<!-- /ko --> 
+
 </div>
 <!-- END FORM-->

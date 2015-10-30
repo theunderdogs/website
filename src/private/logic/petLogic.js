@@ -90,7 +90,7 @@ module.exports = {
 
 	getPets : function(){
 		return new Promise(function (resolve, reject) {
-			Animal.find(function(err, pets){
+			Animal.find().populate('gender kind').exec(function(err, pets){
 			 		if (err) {
 			 			console.log(err);
 			 			reject(err);
