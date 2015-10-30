@@ -33,10 +33,6 @@ define(function(require) {
     // John.prototype.walk = function() {
     //     return _super_.walk.call(this) + ' quickly';
     // };
-    vm.prototype.activate = function(){
-    	return Promise.resolve(true);
-    };
     
-
     return vm;  //vm extends page
 });

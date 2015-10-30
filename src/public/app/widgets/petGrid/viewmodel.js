@@ -6,22 +6,24 @@ define(function (require) {
     var services = require('services'),
     	_ = require("lodash"),
     	//adoptionFormHtml = require('text!widgets/adoptionForm/view.html'),
-    	adoptionFormViewModel = require('widgets/adoptionForm/viewmodel');
+    	adoptionFormViewModel = require('widgets/adoptionForm/viewmodel'),
+        petInfoViewModel = require('widgets/petInfo/viewmodel');
 
     var vm = function(){
     	var self = this;
     	this.view;
     	this.petsToDisplay = ko.observableArray();
     	this.adoptionFormWidget =  ko.observable();
+        this.petInfoWidget =  ko.observable();
     	this.formModal;
 
     	this.openAdoptMe = function(data, event){
-    		event = event || window.event;
+    		// event = event || window.event;
 
-    		event.preventDefault();
+    		// event.preventDefault();
 
-    		var $target = $(event.currentTarget);
-    		var $parent = $target.parent();
+    		// var $target = $(event.currentTarget);
+    		// var $parent = $target.parent();
 
     		var adoptionFromInstace = new adoptionFormViewModel({ data : data });
 
@@ -31,6 +33,16 @@ define(function (require) {
     		});
 
     	};
+
+        this.openPetInfo = function(data, event){
+            var petInfoInstance = new petInfoViewModel({ data : data });
+
+            self.petInfoWidget({ 
+                model: petInfoInstance, 
+                view: 'widgets/petInfo/view.html' 
+            });
+
+        };
     };
 
     vm.prototype = {

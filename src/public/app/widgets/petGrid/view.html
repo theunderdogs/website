@@ -8,12 +8,15 @@
 					<!-- <a class="mix-link"><i class="fa fa-link"></i></a>
 					<a class="mix-preview fancybox-button" href="assets/img/works/img1.jpg" title="Project Name" data-rel="fancybox-button"><i class="fa fa-search"></i></a> -->
 					<button type="button" class="btn btn-success" data-bind="click: $parent.openAdoptMe">Adopt Me</button>
-					<button type="button" class="btn btn-warning">Info</button>
+					<button type="button" class="btn btn-warning" data-bind="click: $parent.openPetInfo">Info</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- ko if: adoptionFormWidget -->
 		<!-- ko compose: adoptionFormWidget --><!-- /ko --> 
+	<!-- /ko --> 
+	<!-- ko if: petInfoWidget -->
+		<!-- ko compose: petInfoWidget --><!-- /ko --> 
 	<!-- /ko --> 
 </div>

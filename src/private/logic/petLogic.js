@@ -32,13 +32,14 @@ module.exports = {
 						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn\\pets','cdn\\pets\\thumbnails'),
      width:300, height:169}));
 						
+						urlArray.push(targetPath);
+						
 						fs.rename(tempPath, targetPath, function(err) {
 				            if(err) {
 				            	//throw err
 				            	reject(new Error(err.message));
 				            }else{
 				            	console.log("Upload completed!");
-				            	urlArray.push(targetPath);
 				            	console.log(targetPath);
 				            	resolve();
 				        	}
