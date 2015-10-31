@@ -24,7 +24,8 @@ module.exports = {
 			   },
 			   routes : [
 	               { route: '', title:'Welcome', moduleId: 'viewmodels/welcome', nav: true },
-	               { route: 'volunteer', title:'Volunteer', moduleId: 'viewmodels/volunteer', nav: true },
+	               { route: 'adoptablePets', title:'Adoptable Pets', moduleId: 'viewmodels/adoptablePets', nav: true },
+	               { route: 'volunteer', title:'How you can help?', moduleId: 'viewmodels/volunteer', nav: true },
 	               { route: 'aboutus', moduleId: 'viewmodels/aboutus', title: 'About Us', nav: true },
 	               { route: 'admin', moduleId: 'viewmodels/admin/login', title: 'Admin', loginUrl : '/app/views/admin/login.html' }]
         	}

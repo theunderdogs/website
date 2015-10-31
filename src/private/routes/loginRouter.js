@@ -160,4 +160,18 @@ module.exports = function(router, passport) {
 			});
 		});
 	});
+
+	router.get('/getAdoptablePets', function(req, res){
+		petLogic.getAdoptablePets().then(function(pets){
+			console.log(pets);
+			res.statusCode = 200;
+			res.json({ success  : true, message: '', object: pets });
+			res.end();	
+		})
+		.catch(function(err){
+			res.statusCode = 500;
+			res.json({ success  : false, message: 'getAdoptablePets failed' });
+			res.end();	
+		});	
+	});
 }

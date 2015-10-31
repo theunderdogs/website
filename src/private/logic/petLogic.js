@@ -4,7 +4,8 @@ Promise = require('promise/lib/es6-extensions'),
 User = mongoose.model('User'),
 fs = require('fs')
 Animal = mongoose.model('Animal'),
-easyimg = require('easyimage');
+easyimg = require('easyimage'),
+adoptorLogic = require('../logic/adoptorLogic.js');
 
 module.exports = {
 
@@ -87,7 +88,6 @@ module.exports = {
 			return reject(err);
 		});
 	},
-
 	getPets : function(){
 		return new Promise(function (resolve, reject) {
 			Animal.find().populate('gender kind').exec(function(err, pets){
@@ -100,5 +100,46 @@ module.exports = {
 			 		}	
 			 	});
 		});
+	},
+	getAdoptablePets : function(){
+		return new Promise(function (resolve, reject) {
+			Animal.find().populate('gender kind').exec(function(err, pets){
+			 		if (err) {
+			 			console.log(err);
+			 			return reject(err);
+			 		}
+			 		
+			 		return resolve(pets);
+			 	});
+		})
+		.then(function(pets){
+			return adoptorLogic.getAdoptionApplications()
+			.then(function(applications){
+				var animalsToNeglect = [];
+
+				if(applications){
+					for(var i = 0; i < applications.length; i++){
+						if(applications[i].status.code == 'ADOPTED' || applications[i].status.code == 'TRIAL'){
+							animalsToNeglect.push(applications[i].animal._id.id);
+						}
+					}
+				}
+
+				return Promise.resolve({ allpets : pets, animalsToNeglect: animalsToNeglect });
+			});
+		})
+		.then(function(result){
+			var index, includePets = [];
+			for(var  i = 0; i < result.allpets.length ; i++){
+				index = result.animalsToNeglect.indexOf(result.allpets[i]._id.id);
+
+				if(index == -1){
+					includePets.push(result.allpets[i]);
+				}
+			}
+
+			return Promise.resolve(includePets);
+		});
+
 	}
 }

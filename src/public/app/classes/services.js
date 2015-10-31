@@ -68,6 +68,9 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 		},
 		getVolunteers : function(){
 			return $.get('secure/getVolunteers?access_token=fool&token=' + this.token);
+		},
+		getAdoptablePets : function(){
+			return $.get('getAdoptablePets');
 		}
 	}
 
