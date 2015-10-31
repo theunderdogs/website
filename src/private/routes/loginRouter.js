@@ -135,4 +135,29 @@ module.exports = function(router, passport) {
 			res.end();	
 		});	
 	});
+
+	router.post('/saveNewVolunteer', function(req, res){
+		var form = new multiparty.Form();
+		
+		form.parse(req, function(err, fields, files){
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
+
+			generalLogic.saveNewVolunteer(JSON.parse(fields.data))			
+			.then(function(result){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'Application submitted successfully', object: result });
+				res.end();	
+			})
+			.catch(function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while submitting application' });
+				res.end();	
+			});
+		});
+	});
 }

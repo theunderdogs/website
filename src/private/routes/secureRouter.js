@@ -116,4 +116,18 @@ module.exports = function(router, passport){
 			});
 		});
 	});
+
+	router.get('/getVolunteers', passport.authenticate('bearer', { session: false }), function(req, res){
+		generalLogic.getVolunteers().then(function(volunteers){
+			console.log(volunteers);
+			res.statusCode = 200;
+			res.json({ success  : true, message: '', object: volunteers });
+			res.end();
+		})
+		.catch(function(err){
+			res.statusCode = 500;
+			res.json({ success  : false, message: 'getVolunteers failed' });
+			res.end();	
+		});	
+	});
 }

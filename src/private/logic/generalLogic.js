@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
 Schema = mongoose.Schema,
 Promise = require('promise/lib/es6-extensions'),
 DataType = mongoose.model('DataType'),
-AboutUs = mongoose.model('AboutUs');
+AboutUs = mongoose.model('AboutUs'),
+Volunteer = mongoose.model('Volunteer');
 
 module.exports = {
 	getTypes : function(){
@@ -50,5 +51,37 @@ module.exports = {
 				    }
 				 });
 			});
+	},
+
+	saveNewVolunteer : function(fields){
+		
+		return new Promise(function(resolve, reject){
+				var newApplication = new Volunteer({ 
+					firstName: fields.firstName,
+					lastName : fields.lastName, 
+				    phone: fields.phone, 
+				    email: fields.email
+				}).save(function(err) {
+				    if (err) {
+				    	return reject(err);
+				    }else{
+				    	return resolve();	
+				    }
+				 });
+			});
+	},
+
+	getVolunteers : function(){
+		return new Promise(function (resolve, reject) {
+			Volunteer.find(function(err, volunteers){
+			 		if (err) {
+			 			console.log(err);
+			 			return reject(err);
+			 		}
+			 		
+			 		return resolve(volunteers);
+			 			
+			 	});
+		});
 	}
 }

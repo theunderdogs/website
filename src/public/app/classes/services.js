@@ -57,6 +57,17 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 			    processData: false,
 			    contentType: false
 			  });
+		},
+		saveNewVolunteer : function(data){
+			return $.ajax('saveNewVolunteer', {
+			    method: "POST",
+			    data: data,
+			    processData: false,
+			    contentType: false
+			  });
+		},
+		getVolunteers : function(){
+			return $.get('secure/getVolunteers?access_token=fool&token=' + this.token);
 		}
 	}
 
