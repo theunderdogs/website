@@ -24,6 +24,22 @@
         'mixitup' : '../lib/jquery-mixitup/jquery.mixitup.min',
         'toBlob' : '../lib/pollyfills/toBlob/canvas-to-blob.min',
         'ckeditor' : '../lib/ckeditor/ckeditor', //http://cdn.ckeditor.com/4.5.2/standard-all/ckeditor
+        'googlecalendar': '../lib/fullCalendar/gcal',
+        'moment': '../lib/moment/moment.min',
+        'fullcalendar': '/lib/fullCalendar/fullcalendar.min',
+        //'mapapi' : 'http://maps.google.com/maps/api/js?sensor=true',
+        'gmapsjs' : '../lib/gmaps/gmaps',
+
+        async : '../lib/requirejs-plugins/src/async',   
+        font: '../lib/requirejs-plugins/src/font',  
+        goog: '../lib/requirejs-plugins/src/goog',  
+        image: '../lib/requirejs-plugins/src/image',  
+        json: '../lib/requirejs-plugins/src/json',  
+        noext: '../lib/requirejs-plugins/src/noext',  
+        mdown: '../lib/requirejs-plugins/src/mdown',  
+        propertyParser : '../lib/requirejs-plugins/src/propertyParser',  
+        markdownConverter : '../lib/requirejs-plugins/src/mdown',  
+
         /**
           Jade compiler and custom view engine next two lines
         **/
@@ -65,9 +81,39 @@
        },
        'toBlob': {
           'exports': 'toBlob'
+       },
+       'fullcalendar': {
+            deps: ['jquery', 'moment'],
+            exports: 'jQuery'
+       },
+       'googlecalendar': {
+            deps: ['fullcalendar', 'jquery'],
+            exports: 'jQuery'
        }
     }
 });
+
+//use plugins as if they were at baseUrl
+// define([
+//         'image!awsum.jpg',
+//         'json!data/foo.json',
+//         'noext!js/bar.php',
+//         'mdown!data/lorem_ipsum.md',
+//         'async!http://maps.google.com/maps/api/js?sensor=false',
+//         'goog!visualization,1,packages:[corechart,geochart]',
+//         'goog!search,1',
+//         'font!google,families:[Tangerine,Cantarell]'
+//     ], function(awsum, foo, bar, loremIpsum){
+//         //all dependencies are loaded (including gmaps and other google apis)
+//     }
+// );
+
+define('gmaps', ['async!http://maps.google.com/maps/api/js?v=3&sensor=false'],
+function(){
+    // return the gmaps namespace for brevity
+    return window.google.maps;
+});
+
 
 define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'knockout.validation','jquery', 'storage', 'promise', 'services', 'lodash', 'plugins/router'],  function (system, app, viewLocator, ko, kovalidation, $, storage, p, services, _, router) {
     //>>excludeStart("build", true);

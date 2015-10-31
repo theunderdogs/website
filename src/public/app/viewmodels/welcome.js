@@ -1,39 +1,32 @@
 ﻿define(function(require) {
-    var navbar = require('customWidgets/nav/navviewmodel');
-    var uiconfig = require('classes/uiconfig'),
-        storage = require("storage");
- 
-    var ctor = function () {
+    var page = require('viewmodels/page');
+    
+    vm = function() {
+        page.call(this, {
+            headerTitle : 'Home',
+            smallHeaderTitle : 'of the Underdogs :)',
+            breadCrumbs : [
+                {
+                    class1: 'fa fa-home',
+                    title: 'Home',
+                    class2: 'fa fa-angle-right'
+                }
+            ]
+        });
 
-        this.toggleSidebar = function(){
-           uiconfig.showSidebar(!uiconfig.showSidebar());
-           this.cacheViews = true;
-        };
-
-        this.displayName = 'Welcome to the Durandal Starter Kit!';
-        this.description = 'Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.';
-        this.features = [
-            'Clean MV* Architecture',
-            'JS & HTML Modularity',
-            'Simple App Lifecycle',
-            'Eventing, Modals, Message Boxes, etc.',
-            'Navigation & Screen State Management',
-            'Consistent Async Programming w/ Promises',
-            'App Bundling and Optimization',
-            'Use any Backend Technology',
-            'Built on top of jQuery, Knockout & RequireJS',
-            'Integrates with other libraries such as SammyJS & Bootstrap',
-            'Make jQuery & Bootstrap widgets templatable and bindable (or build your own widgets).'
-        ];
-
-
+        //this.headerTitle('Add a pet');
+        //this.smallHeaderTitle('Add a pet');
         
+        this.widgetCollection.push({ kind : 'homepage', data: {} });
     };
 
-    //Note: This module exports a function. That means that you, the developer, can create multiple instances.
-    //This pattern is also recognized by Durandal so that it can create instances on demand.
-    //If you wish to create a singleton, you should export an object instead of a function.
-    //See the "flickr" module for an example of object export.
+    vm.prototype = Object.create(page.prototype);
 
-    return ctor;
+    // var _super_ = page.prototype;
+
+    // John.prototype.walk = function() {
+    //     return _super_.walk.call(this) + ' quickly';
+    // };
+
+    return vm;  //vm extends page
 });
