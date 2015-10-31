@@ -8,10 +8,10 @@ define(function(require) {
 			breadCrumbs : [
 				{
 					class1: 'fa fa-home',
-					title: 'Pages',
+					title: 'Home',
 					class2: 'fa fa-angle-right'
 				}, {
-					title: 'Forms',
+					title: 'Pages',
 					class2: 'fa fa-angle-right'
 				}, {
 					title: 'Volunteer'

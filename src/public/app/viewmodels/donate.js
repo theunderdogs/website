@@ -4,8 +4,8 @@ define(function(require) {
     
     vm = function() {
 		page.call(this, {
-			headerTitle : 'Adoptable Pets',
-			smallHeaderTitle : 'Adoptable Pets',
+			headerTitle : 'Donate',
+			smallHeaderTitle : 'Donate',
 			breadCrumbs : [
 				{
 					class1: 'fa fa-home',
@@ -15,7 +15,7 @@ define(function(require) {
 					title: 'Pages',
 					class2: 'fa fa-angle-right'
 				}, {
-					title: 'Adoptable Pets'
+					title: 'Donate'
 				}
 			]
 		});
@@ -23,7 +23,7 @@ define(function(require) {
 		//this.headerTitle('Add a pet');
 		//this.smallHeaderTitle('Add a pet');
 		
-		//this.widgetCollection.push({ kind : 'aboutUs', data: {} });
+		this.widgetCollection.push({ kind : 'donate', data: {} });
     };
 
     vm.prototype = Object.create(page.prototype);
@@ -33,17 +33,6 @@ define(function(require) {
     // John.prototype.walk = function() {
     //     return _super_.walk.call(this) + ' quickly';
     // };
-
-    vm.prototype.activate = function(){
-    	var self= this,
-    		promises = [];
-
-    		promises.push(services.getAdoptablePets());
-
-    	return Promise.all(promises).then(function(result){
-    			self.widgetCollection.push({ kind : 'petGrid', data: { petsToDisplay : result[0].object, showAdoptMe : true } });
-    		});
-    };
 
     return vm;  //vm extends page
 });

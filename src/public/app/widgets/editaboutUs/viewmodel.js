@@ -1,14 +1,8 @@
 define(function (require) {
-	require('cropper');
-	require('bootstrap');
-	require('datepicker');
-	require('mixitup');
-	require('toBlob');
 	require("ckeditor");
 
     var services = require('services'),
-    	_ = require("lodash"),
-    	router = require('plugins/router');
+    	_ = require("lodash");
 
     var widget = function(){
     	this.view;
