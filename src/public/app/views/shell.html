@@ -371,7 +371,7 @@
                  &nbsp;
             </li>
             <!-- BEGIN USER LOGIN DROPDOWN -->
-            <li class="dropdown user" data-bind="visible: uiconfig.showLogout">
+            <li class="dropdown user" data-bind="if: uiconfig.showLogout">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                 <img alt="" data-bind="attr : { src : photo().replace('public\\', ' ').split(' ')[1] }" />
                 <span class="username username-hide-on-mobile" data-bind="text : username"> </span>
@@ -436,7 +436,7 @@
 <!-- BEGIN FOOTER -->
 <div class="footer">
     <div class="footer-inner">
-         2013 &copy; Conquer by keenthemes.
+         2015 &copy; The Underdogs Rescue.
     </div>
     <div class="footer-tools">
         <span class="go-top">

@@ -13,18 +13,18 @@ define(function(require) {
 			return 'views/admin/dashboard.html';
 		},
         activate : function(){
-            var self = this;
-            return  services.getUsers().then(function(result){
-                self.users = result.object;
-            }, function(err){
-                throw new Error('Error while retrieving users' + err);
-            });
+            // var self = this;
+            // return  services.getUsers().then(function(result){
+            //     self.users = result.object;
+            // }, function(err){
+            //     throw new Error('Error while retrieving users' + err);
+            // });
         },
-        logout : function(){
-            window.location = services.getLogoutLink();
-        },
+        // logout : function(){
+        //     window.location = services.getLogoutLink();
+        // },
 		attached: function(view){
-			$(view).find('.respose').html(this.users[0].firstname);
+			//$(view).find('.respose').html(this.users[0].firstname);
         }
 	}
 
