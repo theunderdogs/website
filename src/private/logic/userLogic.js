@@ -115,6 +115,10 @@ module.exports = {
 				        // return the information including token as JSON
 				        resolve({
 				          	USER_ROLE : user.role,
+				          	user : {
+				          		username : user.username,
+				          		photo : user.photo
+				          	},
 				          	token : token,
 				          	_durandalRoutes : durandalRoutes[user.role].routes,
 				          	_uiconfig : durandalRoutes[user.role].uiconfig

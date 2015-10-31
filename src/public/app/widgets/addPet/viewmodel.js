@@ -159,6 +159,9 @@ define(function (require) {
 	                throw new Error('Error saving pet', err);
 	            });
     		});
+    	},
+    	deleteImage : function(data, event){
+    		
     	}
 	};
 

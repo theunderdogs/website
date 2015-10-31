@@ -1,6 +1,7 @@
 var userLogic = require('../logic/userLogic.js')
    ,petLogic = require('../logic/petLogic.js')
    ,adoptorLogic = require('../logic/adoptorLogic.js')
+   ,generalLogic = require('../logic/generalLogic.js')
    ,rules = require('../logic/rules.js')
    ,middleware = require('../logic/middleware.js')
    ,multiparty = require('multiparty')
@@ -77,6 +78,32 @@ module.exports = function(router, passport){
 			}
 
 			adoptorLogic.setStatusForApplication(JSON.parse(fields.data))			
+			.then(function(result){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'Status updated successfully', object: result });
+				res.end();	
+			})
+			.catch(function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while updating status' });
+				res.end();	
+			});
+		});
+	});
+
+	router.post('/saveAboutUsHtml', passport.authenticate('bearer', { session: false }), function(req, res){
+		
+		var form = new multiparty.Form();
+
+		form.parse(req, function(err, fields, files){
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
+
+			generalLogic.saveAboutUsHtml(JSON.parse(fields.data))			
 			.then(function(result){
 				res.statusCode = 200;
 				res.json({ success  : true, message: 'Status updated successfully', object: result });

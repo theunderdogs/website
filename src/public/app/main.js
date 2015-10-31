@@ -23,6 +23,7 @@
         'datepicker' : '../lib/bootstrap-datepicker/js/bootstrap-datepicker',
         'mixitup' : '../lib/jquery-mixitup/jquery.mixitup.min',
         'toBlob' : '../lib/pollyfills/toBlob/canvas-to-blob.min',
+        'ckeditor' : '../lib/ckeditor/ckeditor', //http://cdn.ckeditor.com/4.5.2/standard-all/ckeditor
         /**
           Jade compiler and custom view engine next two lines
         **/

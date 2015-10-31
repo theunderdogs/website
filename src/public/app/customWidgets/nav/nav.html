@@ -1,5 +1,5 @@
 <!-- BEGIN SIDEBAR -->
-<div class="page-sidebar-wrapper" data-bind="visible:uiconfig.showSidebar">
+<div class="page-sidebar-wrapper" data-bind="visible: uiconfig.showSidebar">
     <div class="page-sidebar navbar-collapse collapse">
         <!-- BEGIN SIDEBAR MENU -->
         <!-- DOC: for circle icon style menu apply page-sidebar-menu-circle-icons class right after sidebar-toggler-wrapper -->
@@ -32,13 +32,16 @@
                     </li>
                 </ul>
             </li>
-            <li data-bind="css: { active: router.activeItem().__moduleId__ == router.navigationModel()[1].moduleId }">
-                <a data-bind="attr: { href : router.navigationModel()[1].hash}">
-                    <i class="icon-pin"></i>
-                    <span class="title" data-bind="html: router.navigationModel()[1].title"></span>
+
+            <!-- ko foreach: router.navigationModel  -->
+            <!-- ko if: $data.nav && $index() > 0 -->
+            <li data-bind="css: { active: $parent.router.activeItem().__moduleId__ == $data.moduleId }">
+                <a data-bind="attr: { href : $data.hash}">
+                    <i data-bind="attr : { class : $data.css }"></i>
+                    <span class="title" data-bind="html: $data.title"></span>
                 </a>
             </li>
-            <li class="last" data-bind="css: { active: router.activeItem().__moduleId__ == router.navigationModel()[3].moduleId }">
+            <!-- <li class="last" data-bind="css: { active: router.activeItem().__moduleId__ == router.navigationModel()[3].moduleId }">
                 <a data-bind="attr: { href : router.navigationModel()[3].hash}">
                     <i class="icon-user"></i>
                     <span class="title" data-bind="html: router.navigationModel()[3].title"></span>
@@ -50,6 +53,15 @@
                     <span class="title" data-bind="html: router.navigationModel()[4].title"></span>
                 </a>
             </li>
+            <li class="last" data-bind="css: { active: router.activeItem().__moduleId__ == router.navigationModel()[5].moduleId }">
+                <a data-bind="attr: { href : router.navigationModel()[5].hash}">
+                    <i class="icon-docs"></i>
+                    <span class="title" data-bind="html: router.navigationModel()[5].title"></span>
+                </a>
+            </li> -->
+            <!-- /ko --> 
+            <!-- /ko --> 
+
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>

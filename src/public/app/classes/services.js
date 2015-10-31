@@ -48,6 +48,15 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 			    processData: false,
 			    contentType: false
 			  });
+		},getAboutUsHtml : function(){
+			return $.get('getAboutUsHtml');
+		},saveAboutUsHtml : function(formData){
+			return $.ajax('secure/saveAboutUsHtml?access_token=fool&token=' + this.token, {
+			    method: "POST",
+			    data: formData,
+			    processData: false,
+			    contentType: false
+			  });
 		}
 	}
 

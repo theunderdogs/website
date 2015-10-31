@@ -121,4 +121,18 @@ module.exports = function(router, passport) {
 			});
 		});
 	});
+
+	router.get('/getAboutUsHtml', function(req, res){
+		generalLogic.getAboutUsHtml().then(function(result){
+			//console.log(pets);
+			res.statusCode = 200;
+			res.json({ success  : true, message: '', object: result });
+			res.end();	
+		})
+		.catch(function(err){
+			res.statusCode = 500;
+			res.json({ success  : false, message: 'about us html failed' });
+			res.end();	
+		});	
+	});
 }

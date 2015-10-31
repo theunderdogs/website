@@ -35,7 +35,7 @@ define(function (require) {
     	};
 
         this.openPetInfo = function(data, event){
-            var petInfoInstance = new petInfoViewModel({ data : data, showAdoptMe : true });
+            var petInfoInstance = new petInfoViewModel({ data : data, showAdoptMe : self.settings.data.showAdoptMe });
 
             self.petInfoWidget({ 
                 model: petInfoInstance, 
@@ -48,12 +48,8 @@ define(function (require) {
     vm.prototype = {
     	activate : function(settings){
     		var self = this;
-    		var promises = [];
-    		promises.push(services.getPets());
-
-    		return Promise.all(promises).then(function(result){
-    			self.petsToDisplay(result[0].object);
-    		});
+            this.settings = settings;
+    		this.petsToDisplay(settings.data.petsToDisplay);
     	},
     	compositionComplete : function(view, parent){
     		this.view = view;

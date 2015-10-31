@@ -158,7 +158,7 @@ app.get('/setup', function(req, res) {
     password: 'password',
     phone: '4053388406',
     email: 'kirandeore@gmail.com',
-    photo: '/cdn/image.jpg', 
+    photo: 'C:\\_node\\underdogs\\code\\build\\private\\logic\\..\\..\\public\\cdn\\protected\\RcBZIYBjS2L2PLfMdq5fNZsn.jpeg', 
     role: 'ADMIN',
     secret: 'heyya'
   });

@@ -186,18 +186,14 @@
 						<br>
 						<div class="row mix-grid">
 							<!-- ko if: picArray().length > 0 -->
-								<!-- <div data-bind=" foreach: picArray">
-									<img style="max-width:200px;" data-bind="attr: {src: canvas.toDataURL()}"/>
-								</div> -->
-
 								<!-- ko foreach: picArray -->
 								<div class="col-md-3 col-sm-4 mix category_1">
 									<div class="mix-inner">
 										<img class="img-responsive" data-bind="attr: {src: canvas.toDataURL()}" alt="">
 										<div class="mix-details">
-											<h4>Cascusamus et iusto odio</h4>
-											<a class="mix-link"><i class="fa fa-link"></i></a>
-											<a class="mix-preview fancybox-button" href="assets/img/works/img1.jpg" title="Project Name" data-rel="fancybox-button"><i class="fa fa-search"></i></a>
+											<h4></h4>
+											
+											<a class="mix-preview fancybox-button" href="assets/img/works/img1.jpg" title="Delete" data-rel="fancybox-button" data-bind="click: $parent.deleteImage"><i class="fa fa-trash-o"></i></a>
 										</div>
 									</div>
 								</div>

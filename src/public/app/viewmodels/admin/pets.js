@@ -1,5 +1,6 @@
 define(function(require) {
-    var page = require('viewmodels/page');
+    var page = require('viewmodels/page'),
+        services = require('services');
     
     vm = function() {
 		page.call(this, {
@@ -15,9 +16,7 @@ define(function(require) {
 					title: 'Pets'
 				}
 			]
-		});
-
-		this.widgetCollection.push({ kind : 'petGrid', data: {} });
+		});		
     };
 
     vm.prototype = Object.create(page.prototype);
@@ -27,6 +26,17 @@ define(function(require) {
     // John.prototype.walk = function() {
     //     return _super_.walk.call(this) + ' quickly';
     // };
+
+    vm.prototype.activate = function(){
+    	var self= this,
+    		promises = [];
+
+    		promises.push(services.getPets());
+
+    	return Promise.all(promises).then(function(result){
+    			self.widgetCollection.push({ kind : 'petGrid', data: { petsToDisplay : result[0].object, showAdoptMe : false } });
+    		});
+    };
 
     return vm;  //vm extends page
 });

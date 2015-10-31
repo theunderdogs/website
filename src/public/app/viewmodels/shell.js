@@ -12,37 +12,43 @@
         require('uniform');
         var p = require('appScript'),
         uiconfig = require('classes/uiconfig'),
-        navbarViewModel = require('customWidgets/nav/navviewmodel');
+        navbarViewModel = require('customWidgets/nav/navviewmodel'),
+        services = require('services');
         //storage = require("storage");
 
     var shell = function(){
-        this.init();
-        this.uiconfig = uiconfig;
-        var navbarInstance = new navbarViewModel({ router: router });
-        this.navbar = navbarInstance.navbar;
-        console.log(this.navbar);
-    };
-
-    shell.prototype = {
-        //navbar: (new navbar({ router: router })).navbar,
-        init: function(){
+        this.init = function(){
             this.configureRoutes();
-        },
-        configureRoutes: function(){
-            var routes = [
-                { route: '', title:'Welcome', moduleId: 'viewmodels/welcome', nav: true },
-                { route: 'page2', moduleId: 'viewmodels/page2', title: 'Page 2', nav: true },
-                { route: 'admin', moduleId: 'viewmodels/admin/login', title: 'Admin', nav: true, loginUrl : '/app/views/admin/login.html' }
-            ];
+        };
+
+        this.configureRoutes = function(){
+            var routes = [{ route: '', title:'Welcome', moduleId: 'viewmodels/welcome', nav: true },
+                   { route: 'aboutus', moduleId: 'viewmodels/aboutus', title: 'About Us', nav: true },
+                   { route: 'admin', moduleId: 'viewmodels/admin/login', title: 'Admin', loginUrl : '/app/views/admin/login.html' }];
 
             if(storage.local("userConfig") && storage.local("userConfig").USER_ROLE){
                 if(storage.local("userConfig").USER_ROLE == 'ADMIN'){
                     routes = storage.local("userConfig")._durandalRoutes;
+                    this.username(storage.local("userConfig").user.username);
+                    this.photo(storage.local("userConfig").user.photo);
                 }
             }
 
             router.map(routes).buildNavigationModel();
-        },
+        };
+
+        this.uiconfig = uiconfig;
+        this.router = router;
+        var navbarInstance = new navbarViewModel({ router: router });
+        this.navbar = navbarInstance.navbar;
+        this.username = ko.observable();
+        this.photo = ko.observable();
+        console.log(this.navbar);
+        this.init();
+    };
+
+    shell.prototype = {
+        //navbar: (new navbar({ router: router })).navbar,
         activate: function () {
             return router.activate({pushState : false});
         },
@@ -90,6 +96,9 @@
             // }
 
             console.log(storage.local("userConfig"));
+        },
+        logout : function(data, event){
+            window.location = services.getLogoutLink();
         }
     }
 
