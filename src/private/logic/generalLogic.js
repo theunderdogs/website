@@ -3,7 +3,8 @@ Schema = mongoose.Schema,
 Promise = require('promise/lib/es6-extensions'),
 DataType = mongoose.model('DataType'),
 AboutUs = mongoose.model('AboutUs'),
-Volunteer = mongoose.model('Volunteer');
+Volunteer = mongoose.model('Volunteer'),
+EventLocation = mongoose.model('EventLocation');
 
 module.exports = {
 	getTypes : function(){
@@ -19,7 +20,6 @@ module.exports = {
 			 	});
 		});
 	},
-
 	getAboutUsHtml : function(){
 		return new Promise(function (resolve, reject) {
 			AboutUs.find({}, null, {sort: {created: -1}}, function(err, docs){
@@ -37,7 +37,6 @@ module.exports = {
 			 	});
 		});
 	},
-
 	saveAboutUsHtml : function(fields){
 		
 		return new Promise(function(resolve, reject){
@@ -52,7 +51,6 @@ module.exports = {
 				 });
 			});
 	},
-
 	saveNewVolunteer : function(fields){
 		
 		return new Promise(function(resolve, reject){
@@ -70,7 +68,6 @@ module.exports = {
 				 });
 			});
 	},
-
 	getVolunteers : function(){
 		return new Promise(function (resolve, reject) {
 			Volunteer.find(function(err, volunteers){
@@ -83,5 +80,36 @@ module.exports = {
 			 			
 			 	});
 		});
+	},
+	getEventLocation : function(){
+		return new Promise(function (resolve, reject) {
+			EventLocation.find({}, null, {sort: {created: -1}}, function(err, docs){
+			 		if (err) {
+			 			console.log(err);
+			 			return reject(err);
+			 		}
+			 		
+			 		if(!docs){
+			 			return reject();
+			 		}
+
+			 		return resolve(docs[0]);
+			 			
+			 	});
+		});
+	},
+	saveEventLocation : function(fields){
+		
+		return new Promise(function(resolve, reject){
+				var newLocation = new EventLocation({ 
+					location: fields.location
+				}).save(function(err) {
+				    if (err) {
+				    	return reject(err);
+				    }else{
+				    	return resolve();	
+				    }
+				 });
+			});
 	}
 }

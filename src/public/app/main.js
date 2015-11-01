@@ -89,6 +89,10 @@
        'googlecalendar': {
             deps: ['fullcalendar', 'jquery'],
             exports: 'jQuery'
+       },
+       'gmapsjs' : {
+            deps: ['jquery']
+            //'exports' : 'gmapsjs'
        }
     }
 });
@@ -108,14 +112,7 @@
 //     }
 // );
 
-define('gmaps', ['async!http://maps.google.com/maps/api/js?v=3&sensor=false'],
-function(){
-    // return the gmaps namespace for brevity
-    return window.google.maps;
-});
-
-
-define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'knockout.validation','jquery', 'storage', 'promise', 'services', 'lodash', 'plugins/router'],  function (system, app, viewLocator, ko, kovalidation, $, storage, p, services, _, router) {
+define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockout', 'knockout.validation','jquery', 'storage', 'promise', 'services', 'lodash', 'plugins/router', 'async!http://maps.google.com/maps/api/js?v=3&sensor=false'],  function (system, app, viewLocator, ko, kovalidation, $, storage, p, services, _, router) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
@@ -158,6 +155,13 @@ define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knoc
         });
       }
     });
+
+    // define('gmaps', ['async!http://maps.google.com/maps/api/js?v=3&sensor=false'],
+    //     function(){
+            
+    //         // return the gmaps namespace for brevity
+    //         return window.google.maps;
+    // });
 
     services.getTypes()
     .then(function(result){

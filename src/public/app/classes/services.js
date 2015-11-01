@@ -71,6 +71,17 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 		},
 		getAdoptablePets : function(){
 			return $.get('getAdoptablePets');
+		},
+		getEventLocation : function(){
+			return $.get('getEventLocation');
+		},
+		saveEventLocation : function(data){
+			return $.ajax('secure/saveEventLocation?access_token=fool&token=' + this.token, {
+			    method: "POST",
+			    data: data,
+			    processData: false,
+			    contentType: false
+			  });
 		}
 	}
 

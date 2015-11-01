@@ -130,4 +130,30 @@ module.exports = function(router, passport){
 			res.end();	
 		});	
 	});
+
+	router.post('/saveEventLocation', passport.authenticate('bearer', { session: false }), function(req, res){
+		
+		var form = new multiparty.Form();
+
+		form.parse(req, function(err, fields, files){
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
+
+			generalLogic.saveEventLocation(JSON.parse(fields.data))			
+			.then(function(result){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'Location updated successfully', object: result });
+				res.end();	
+			})
+			.catch(function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while updating location' });
+				res.end();	
+			});
+		});
+	});
 }

@@ -7,6 +7,7 @@ define(function (require) {
     var widget = function(){
     	this.view;
     	this.aboutUsHtml = ko.observable();
+        this.eventAddress = ko.observable();
     };
 
     widget.prototype = {
@@ -43,6 +44,20 @@ define(function (require) {
                 throw new Error('Error saving html', err);
             });
     	},
+        saveAddress : function(data, event){
+            var formData = new FormData();
+            
+            formData.append('data', JSON.stringify({ 
+                                        location : ko.unwrap(this.eventAddress())
+                                    } ));
+
+            services.saveEventLocation(formData).then(function(result){
+                console.log(result);
+                alert('success***********');
+            }, function(err){
+                throw new Error('Error saving address', err);
+            });
+        },
     	cancel : function(data, event){
     		router.navigate('');
     	} 
