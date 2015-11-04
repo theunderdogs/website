@@ -14,11 +14,10 @@ module.exports = {
 			User.find(function(err, users){
 			 		if (err) {
 			 			console.log(err);
-			 			reject(err);
+			 			return reject(err);
 			 		}
-			 		else{
-			 			resolve(users);
-			 		}	
+			 		
+			 		return resolve(users);	
 			 	});
 		});
 	},

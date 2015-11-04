@@ -126,7 +126,7 @@ module.exports = function(router, passport) {
 		generalLogic.getAboutUsHtml().then(function(result){
 			//console.log(pets);
 			res.statusCode = 200;
-			res.json({ success  : true, message: '', object: result });
+			res.json({ success  : true, message: '', object: result ? result : null });
 			res.end();	
 		})
 		.catch(function(err){
@@ -185,6 +185,20 @@ module.exports = function(router, passport) {
 		.catch(function(err){
 			res.statusCode = 500;
 			res.json({ success  : false, message: 'event location failed' });
+			res.end();	
+		});	
+	});
+
+	router.get('/getNews', function(req, res){
+		generalLogic.getNews().then(function(result){
+			//console.log(pets);
+			res.statusCode = 200;
+			res.json({ success  : true, message: '', object: result ? result : null });
+			res.end();	
+		})
+		.catch(function(err){
+			res.statusCode = 500;
+			res.json({ success  : false, message: 'news failed' });
 			res.end();	
 		});	
 	});

@@ -156,4 +156,30 @@ module.exports = function(router, passport){
 			});
 		});
 	});
+
+	router.post('/saveNews', passport.authenticate('bearer', { session: false }), function(req, res){
+		
+		var form = new multiparty.Form();
+
+		form.parse(req, function(err, fields, files){
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
+
+			generalLogic.saveNews(JSON.parse(fields.data))			
+			.then(function(result){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'News updated successfully', object: result });
+				res.end();	
+			})
+			.catch(function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while updating news' });
+				res.end();	
+			});
+		});
+	});
 }

@@ -4,7 +4,8 @@ Promise = require('promise/lib/es6-extensions'),
 DataType = mongoose.model('DataType'),
 AboutUs = mongoose.model('AboutUs'),
 Volunteer = mongoose.model('Volunteer'),
-EventLocation = mongoose.model('EventLocation');
+EventLocation = mongoose.model('EventLocation'),
+News = mongoose.model('News');
 
 module.exports = {
 	getTypes : function(){
@@ -28,8 +29,8 @@ module.exports = {
 			 			return reject(err);
 			 		}
 			 		
-			 		if(!docs){
-			 			return reject();
+			 		if(!docs || docs.length == 0){
+			 			return resolve();
 			 		}
 
 			 		return resolve(docs[0]);
@@ -103,6 +104,37 @@ module.exports = {
 		return new Promise(function(resolve, reject){
 				var newLocation = new EventLocation({ 
 					location: fields.location
+				}).save(function(err) {
+				    if (err) {
+				    	return reject(err);
+				    }else{
+				    	return resolve();	
+				    }
+				 });
+			});
+	},
+	getNews : function(){
+		return new Promise(function (resolve, reject) {
+			News.find({}, null, {sort: {created: -1}}, function(err, docs){
+			 		if (err) {
+			 			console.log(err);
+			 			return reject(err);
+			 		}
+			 		
+			 		if(!docs || docs.length == 0){
+			 			return resolve();
+			 		}
+
+			 		return resolve(docs[0]);
+			 			
+			 	});
+		});
+	},
+	saveNews : function(fields){
+		
+		return new Promise(function(resolve, reject){
+				var newApplication = new News({ 
+					html: fields.html
 				}).save(function(err) {
 				    if (err) {
 				    	return reject(err);

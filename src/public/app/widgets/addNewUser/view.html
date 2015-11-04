@@ -1,0 +1,309 @@
+<div class="portlet">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-reorder"></i>Enter user details
+		</div>
+		<!-- <div class="tools">
+			<a href="javascript:;" class="collapse"></a>
+			<a href="#portlet-config" data-toggle="modal" class="config"></a>
+			<a href="javascript:;" class="reload"></a>
+			<a href="javascript:;" class="remove"></a>
+		</div> -->
+	</div>
+	<div class="portlet-body form">
+		<!-- BEGIN FORM-->
+		<form action="#" class="form-horizontal">
+			<div class="form-body">
+				<h3 class="form-section">Basic Info</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">First Name</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. Ranger" data-bind='value: firstname'>
+								<span class="help-block" data-bind="validationMessage: firstname"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Last Name</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. Ranger" data-bind='value: lastname'>
+								<span class="help-block" data-bind="validationMessage: lastname"></span>
+							</div>
+						</div>
+						<!-- <div class="form-group">
+							<label class="control-label col-md-3">Gender</label>
+							<div class="col-md-9">
+								<select class="form-control" 
+									data-bind="options: availableGenders,
+											   optionsText: 'optionValue',
+    										   value: selectedGender,
+    										   optionsCaption: 'Choose...'
+										">
+								</select>
+								<span class="help-block" data-bind="validationMessage: selectedGender"></span>
+							</div>
+						</div> -->
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Username</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. Ranger" data-bind='value: username'>
+								<span class="help-block" data-bind="validationMessage: username"></span>
+							</div>
+							<!-- <label class="control-label col-md-3">Kind</label>
+							<div class="col-md-9">
+								
+							</div> -->
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group" >
+							<label class="control-label col-md-3">Password</label>
+							<div class="col-md-9">
+								<input type="password" class="form-control" data-bind='value: password'>
+								<span class="help-block" data-bind="validationMessage: password"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Phone</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. Pitbull mix" data-bind='value: phone'>
+								<span class="help-block" data-bind="validationMessage: phone"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Email</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. black" data-bind='value: email'>
+								<span class="help-block" data-bind="validationMessage: email"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Role</label>
+							<div class="col-md-9">
+								<select class="form-control" 
+									data-bind="options: availableRoles,
+											   optionsText: 'optionValue',
+    										   value: selectedRole,
+    										   optionsCaption: 'Choose...'
+										">
+								</select>
+								<span class="help-block" data-bind="validationMessage: selectedRole"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<!-- <div class="form-group">
+							<label class="control-label col-md-3">Date found</label>
+							<div class="col-md-9">
+								<input class="form-control date-picker" size="16" type="text" data-bind='value: dateFound'/>
+								<span class="help-block" data-bind="validationMessage: dateFound"></span> 
+							</div>
+						</div> -->
+					</div>
+				</div>	
+				<!--/row-->
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Age</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" placeholder="Ex. 2 years 4 months" data-bind='value: age'>
+								<span class="help-block" data-bind="validationMessage: age"></span>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<!-- <label class="control-label col-md-3">Status</label>
+							<div class="col-md-9">
+								<select class="form-control" 
+									data-bind="options: availableStatuses,
+											   optionsText: 'optionValue',
+    										   value: selectedStatus,
+    										   optionsCaption: 'Choose...',
+    										   enable : _id
+										">
+								</select>
+								<span class="help-block" data-bind="validationMessage: selectedStatus"></span>
+							</div> -->
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<h3 class="form-section">Notes</h3>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-1"></label>
+							<div class="col-md-11">
+								<textarea class="form-control" rows="5" data-bind='value: notes'></textarea>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<h3 class="form-section">Biography</h3>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-1"></label>
+							<div class="col-md-11">
+								<textarea class="form-control" rows="5" data-bind='value: bio'></textarea>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<h3 class="form-section">Photos</h3>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-12">
+						<button class="btn btn-success fileinput-button" data-bind='click: addFiles'><i class="fa fa-plus"></i> Add files...</button>
+						<input type="file" id="fileUpload" data-bind="visible: false, event : { change: onFileUpload }" accept="image/*" />
+						<!-- <a class="btn btn-default" data-toggle="modal" href="#responsive">View Demo</a> -->
+					</div>
+					<div class="col-md-12">
+						<br>
+						<div class="row mix-grid">
+							<!-- ko if: picArray().length > 0 -->
+								<!-- ko foreach: picArray -->
+								<div class="col-md-3 col-sm-4 mix category_1">
+									<div class="mix-inner">
+										<img class="img-responsive" data-bind="attr: {src: canvas.toDataURL()}" alt="">
+										<div class="mix-details">
+											<h4></h4>
+											
+											<a class="mix-preview fancybox-button" href="assets/img/works/img1.jpg" title="Delete" data-rel="fancybox-button" data-bind="click: $parent.deleteImage"><i class="fa fa-trash-o"></i></a>
+										</div>
+									</div>
+								</div>
+								<!-- /ko -->
+							<!-- /ko -->
+						</div>
+					</div>
+
+					<!-- /.modal -->
+				
+
+				<div class="modal fade" id="responsive" tabindex="-1" role="basic" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+								<h4 class="modal-title">Modal Title</h4>
+							</div>
+							<div class="modal-body">
+								 <div class="row">
+									<div class="col-md-12">
+										<p>
+											<div style="width:100%;">
+												<img class="myImage" style="max-width:100%;" data-bind="attr: {src: photoUrl()}" alt="Picture"/>
+											</div>	
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-info" data-bind='click : cropImage'>Save changes</button>
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				<!-- /.modal -->
+				</div><!--
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">City</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control">
+							</div>
+						</div>
+					</div>
+					<!--/span--><!--
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">State</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control">
+							</div>
+						</div>
+					</div>
+					<!--/span--><!--
+				</div>-->
+				<!--/row--><!--
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Post Code</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control">
+							</div>
+						</div>
+					</div>
+					<!--/span--><!--
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-3">Country</label>
+							<div class="col-md-9">
+								<select class="form-control">
+									<option>Country 1</option>
+									<option>Country 2</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<!--/span--><!--
+				</div>-->
+				<!--/row-->
+			</div>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-offset-3 col-md-9">
+								<button type="button" class="btn btn-success" data-bind='click: submitForm'>Submit</button>
+								<button type="button" class="btn btn-default">Cancel</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- END FORM-->
+	</div>
+</div>

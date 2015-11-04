@@ -82,6 +82,25 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 			    processData: false,
 			    contentType: false
 			  });
+		},
+		getNews : function(){
+			return $.get('getNews');
+		},
+		saveNews : function(formData){
+			return $.ajax('secure/saveNews?access_token=fool&token=' + this.token, {
+			    method: "POST",
+			    data: formData,
+			    processData: false,
+			    contentType: false
+			  });
+		},
+		saveNewUser : function(formData){
+			return $.ajax('secure/saveNewUser?access_token=fool&token=' + this.token, {
+			    method: "POST",
+			    data: formData,
+			    processData: false,
+			    contentType: false
+			  });
 		}
 	}
 

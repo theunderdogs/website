@@ -11,6 +11,7 @@ define(function(require) {
     	this.calendarWidget = ko.observable({ kind : 'calendar' });
     	this.petGridWidget = ko.observable();
         this.gmapWidget = ko.observable();
+        this.newsHtml = ko.observable();
     };
 
     widget.prototype = {
@@ -22,6 +23,7 @@ define(function(require) {
 
             promises.push(services.getAdoptablePets());
             promises.push(services.getEventLocation());
+            promises.push(services.getNews());
 
             return Promise.all(promises).then(function(result){
                     var petsToDisplay = [];
@@ -42,6 +44,10 @@ define(function(require) {
                                     markerText : '<b>Our next event is at: </b><br>' + result[1].object.location, 
                                     address : result[1].object.location }  
                             });
+
+                    if(result[2].object){
+                        self.newsHtml(result[2].object.html);
+                    }
                 });
 
 
