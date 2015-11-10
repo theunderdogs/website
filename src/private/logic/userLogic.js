@@ -138,5 +138,85 @@ module.exports = {
 			  });
 
 		});
+	},
+
+	saveNewUser : function(fields, user, files){
+		
+		var promiseArray = []
+			,urlArray = []
+			,targetPath = null
+			,tempPath = null
+			,fileName = null
+			,thumbnailPromises = [];
+
+		for(var i = 0; i < files.length; i++){
+
+			promiseArray.push(new Promise(function(resolve, reject){
+
+					if(files[i].headers['content-type'] != 'image/jpeg'){
+						reject(new Error('Only images allowed.'));
+					}else{
+						//throw error
+						tempPath = files[i].path;
+						fileName = tempPath.split('\\')[tempPath.split('\\').length - 1];
+						targetPath = __dirname + '\\..\\..\\public\\cdn\\protected' + '\\' + fileName + '.jpeg';
+
+						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn\\pets','cdn\\pets\\thumbnails'),
+     width:300, height:169}));
+						
+						urlArray.push(targetPath);
+						
+						fs.rename(tempPath, targetPath, function(err) {
+				            if(err) {
+				            	//throw err
+				            	reject(new Error(err.message));
+				            }else{
+				            	console.log("Upload completed!");
+				            	console.log(targetPath);
+				            	resolve();
+				        	}
+				        });
+					}
+	
+				})
+			);
+		}
+
+		return Promise.all(promiseArray)
+		.then(function(){
+			return Promise.all(thumbnailPromises)
+		})
+		.then(function(){
+			return new Promise(function(resolve, reject){
+				var newUser = new User({ 
+					firstname: fields.firstname,
+					lastname : fields.lastname, 
+				    role: JSON.parse(fields.role), 
+				    username: fields.specifyKind,
+				    password : fields.breed,
+					color : fields.color,
+					weight : fields.weight,
+					dateFound : fields.dateFound,
+					age : fields.age,	
+					bio : fields.bio,			  
+				    //status : JSON.parse(fields.status), 
+				    notes : fields.notes, 
+					photoUrls: urlArray, 
+					user: user
+				}).save(function(err) {
+				    if (err) {
+				    	//throw err;
+				    	return reject(err);
+				    }else{
+				    	console.log('User saved successfully');
+				    	return resolve();	
+				    }
+				 });
+			});
+		})
+		.catch(function(err){
+			console.log(err);
+			return reject(err);
+		});
 	}
 }

@@ -20,7 +20,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">First Name</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. Ranger" data-bind='value: firstname'>
+								<input type="text" class="form-control" placeholder="Ex. John" data-bind='value: firstname'>
 								<span class="help-block" data-bind="validationMessage: firstname"></span>
 							</div>
 						</div>
@@ -30,23 +30,10 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Last Name</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. Ranger" data-bind='value: lastname'>
+								<input type="text" class="form-control" placeholder="Ex. Smith" data-bind='value: lastname'>
 								<span class="help-block" data-bind="validationMessage: lastname"></span>
 							</div>
 						</div>
-						<!-- <div class="form-group">
-							<label class="control-label col-md-3">Gender</label>
-							<div class="col-md-9">
-								<select class="form-control" 
-									data-bind="options: availableGenders,
-											   optionsText: 'optionValue',
-    										   value: selectedGender,
-    										   optionsCaption: 'Choose...'
-										">
-								</select>
-								<span class="help-block" data-bind="validationMessage: selectedGender"></span>
-							</div>
-						</div> -->
 					</div>
 					<!--/span-->
 				</div>
@@ -56,13 +43,9 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Username</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. Ranger" data-bind='value: username'>
+								<input type="text" class="form-control" placeholder="Ex. johnsmith" data-bind='value: username'>
 								<span class="help-block" data-bind="validationMessage: username"></span>
 							</div>
-							<!-- <label class="control-label col-md-3">Kind</label>
-							<div class="col-md-9">
-								
-							</div> -->
 						</div>
 					</div>
 					<!--/span-->
@@ -83,7 +66,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Phone</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. Pitbull mix" data-bind='value: phone'>
+								<input type="text" class="form-control" placeholder="Ex. XXX-XXX-XXXX" data-bind='value: phone'>
 								<span class="help-block" data-bind="validationMessage: phone"></span>
 							</div>
 						</div>
@@ -93,7 +76,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Email</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. black" data-bind='value: email'>
+								<input type="text" class="form-control" placeholder="Ex. johnsmith@gmail.com" data-bind='value: email'>
 								<span class="help-block" data-bind="validationMessage: email"></span>
 							</div>
 						</div>
@@ -130,64 +113,11 @@
 				</div>	
 				<!--/row-->
 
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label col-md-3">Age</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. 2 years 4 months" data-bind='value: age'>
-								<span class="help-block" data-bind="validationMessage: age"></span>
-							</div>
-						</div>
-					</div>
-					<!--/span-->
-					<div class="col-md-6">
-						<div class="form-group">
-							<!-- <label class="control-label col-md-3">Status</label>
-							<div class="col-md-9">
-								<select class="form-control" 
-									data-bind="options: availableStatuses,
-											   optionsText: 'optionValue',
-    										   value: selectedStatus,
-    										   optionsCaption: 'Choose...',
-    										   enable : _id
-										">
-								</select>
-								<span class="help-block" data-bind="validationMessage: selectedStatus"></span>
-							</div> -->
-						</div>
-					</div>
-					<!--/span-->
-				</div>
-				<h3 class="form-section">Notes</h3>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-							<label class="control-label col-md-1"></label>
-							<div class="col-md-11">
-								<textarea class="form-control" rows="5" data-bind='value: notes'></textarea>
-							</div>
-						</div>
-					</div>
-					<!--/span-->
-				</div>
-				<h3 class="form-section">Biography</h3>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-							<label class="control-label col-md-1"></label>
-							<div class="col-md-11">
-								<textarea class="form-control" rows="5" data-bind='value: bio'></textarea>
-							</div>
-						</div>
-					</div>
-					<!--/span-->
-				</div>
-				<h3 class="form-section">Photos</h3>
+				<h3 class="form-section">Profile Picture</h3>
 				<!--/row-->
 				<div class="row">
 					<div class="col-md-12">
-						<button class="btn btn-success fileinput-button" data-bind='click: addFiles'><i class="fa fa-plus"></i> Add files...</button>
+						<button class="btn btn-success fileinput-button" data-bind='click: addFiles'><i class="fa fa-plus"></i> <!-- ko text: picArray().length > 0 ? 'Replace pic' : 'Add pic' --> <!-- /ko --></button>
 						<input type="file" id="fileUpload" data-bind="visible: false, event : { change: onFileUpload }" accept="image/*" />
 						<!-- <a class="btn btn-default" data-toggle="modal" href="#responsive">View Demo</a> -->
 					</div>
@@ -242,51 +172,7 @@
 					<!-- /.modal-dialog -->
 				</div>
 				<!-- /.modal -->
-				</div><!--
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label col-md-3">City</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control">
-							</div>
-						</div>
-					</div>
-					<!--/span--><!--
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label col-md-3">State</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control">
-							</div>
-						</div>
-					</div>
-					<!--/span--><!--
-				</div>-->
-				<!--/row--><!--
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label col-md-3">Post Code</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control">
-							</div>
-						</div>
-					</div>
-					<!--/span--><!--
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label col-md-3">Country</label>
-							<div class="col-md-9">
-								<select class="form-control">
-									<option>Country 1</option>
-									<option>Country 2</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<!--/span--><!--
-				</div>-->
+				</div>
 				<!--/row-->
 			</div>
 			<div class="form-actions">

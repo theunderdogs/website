@@ -2,6 +2,7 @@ var userLogic = require('../logic/userLogic.js')
    ,petLogic = require('../logic/petLogic.js')
    ,adoptorLogic = require('../logic/adoptorLogic.js')
    ,generalLogic = require('../logic/generalLogic.js')
+   ,userLogic = require('../logic/userLogic.js')
    ,rules = require('../logic/rules.js')
    ,middleware = require('../logic/middleware.js')
    ,multiparty = require('multiparty')
@@ -178,6 +179,33 @@ module.exports = function(router, passport){
 			.catch(function(err){
 				res.statusCode = 500;
 				res.json({ success  : false, message: 'Something went wrong while updating news' });
+				res.end();	
+			});
+		});
+	});
+
+	router.post('/saveNewUser', passport.authenticate('bearer', { session: false }), function(req, res){
+		
+		var form = new multiparty.Form(),
+			user = req.appData.user;
+
+		form.parse(req, function(err, fields, files){
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
+
+			userLogic.saveNewPet(JSON.parse(fields.data), user, files.filesToBeUploaded)			
+			.then(function(result){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'User saved successfully', object: result });
+				res.end();	
+			})
+			.catch(function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while uploading files' });
 				res.end();	
 			});
 		});
