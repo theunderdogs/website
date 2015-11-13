@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
 Schema = mongoose.Schema,
 Promise = require('promise/lib/es6-extensions'),
 jwt = require('jsonwebtoken'),
+fs = require('fs'),
 User = mongoose.model('User'),
 durandalRoutes = require("../routes/durandalRoutes.js"),
 crypto = require('crypto');
@@ -11,7 +12,7 @@ module.exports = {
 
 	getUsers : function(){
 		return new Promise(function (resolve, reject) {
-			User.find(function(err, users){
+			User.find().populate('role').exec(function(err, users){
 			 		if (err) {
 			 			console.log(err);
 			 			return reject(err);
@@ -29,7 +30,7 @@ module.exports = {
 			      if (err) {
 			         reject(err); //return res.send(403); //res.json({ success: false, message: 'Failed to authenticate token.' });    
 			      } else {
-			    	User.findOne({ username: decoded.username }, function(err, user){
+			    	User.findOne({ username: decoded.username, isDisabled : false }, function(err, user){
 			             if (!user) {
 					     	//return Promise.resolve(403);
 					     	reject(new Error("User not found"));
@@ -78,7 +79,8 @@ module.exports = {
 
 			User.findOne({
 			    username: username
-			  }, function(err, user) {
+			  }).populate('role')
+  			.exec(function(err, user) {
 
 			    if (err) {
 			    	console.log(err);
@@ -119,8 +121,8 @@ module.exports = {
 				          		photo : user.photo
 				          	},
 				          	token : token,
-				          	_durandalRoutes : durandalRoutes[user.role].routes,
-				          	_uiconfig : durandalRoutes[user.role].uiconfig
+				          	_durandalRoutes : durandalRoutes[user.role.code].routes,
+				          	_uiconfig : durandalRoutes[user.role.code].uiconfig
 				          });
 				        // res.json({
 				        //   success: true,
@@ -140,7 +142,7 @@ module.exports = {
 		});
 	},
 
-	saveNewUser : function(fields, user, files){
+	saveNewUser : function(fields, files){
 		
 		var promiseArray = []
 			,urlArray = []
@@ -161,10 +163,10 @@ module.exports = {
 						fileName = tempPath.split('\\')[tempPath.split('\\').length - 1];
 						targetPath = __dirname + '\\..\\..\\public\\cdn\\protected' + '\\' + fileName + '.jpeg';
 
-						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn\\pets','cdn\\pets\\thumbnails'),
-     width:300, height:169}));
+						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn\\protected','cdn\\protected\\thumbnails'),
+     width:40, height:40}));
 						
-						urlArray.push(targetPath);
+						urlArray.push('cdn\\protected\\thumbnails' + '\\' + fileName + '.jpeg');
 						
 						fs.rename(tempPath, targetPath, function(err) {
 				            if(err) {
@@ -187,32 +189,21 @@ module.exports = {
 			return Promise.all(thumbnailPromises)
 		})
 		.then(function(){
-			return new Promise(function(resolve, reject){
-				var newUser = new User({ 
+			return newUser = new User({ 
 					firstname: fields.firstname,
 					lastname : fields.lastname, 
 				    role: JSON.parse(fields.role), 
-				    username: fields.specifyKind,
-				    password : fields.breed,
-					color : fields.color,
-					weight : fields.weight,
-					dateFound : fields.dateFound,
-					age : fields.age,	
-					bio : fields.bio,			  
-				    //status : JSON.parse(fields.status), 
-				    notes : fields.notes, 
-					photoUrls: urlArray, 
-					user: user
-				}).save(function(err) {
-				    if (err) {
-				    	//throw err;
-				    	return reject(err);
-				    }else{
-				    	console.log('User saved successfully');
-				    	return resolve();	
-				    }
-				 });
-			});
+				    username: fields.username,
+				    password : fields.password,
+					phone : fields.phone,
+					email : fields.email,
+					photo : urlArray[0],
+					secret : '12345',
+					isDisabled : false
+				}).save();
+		})
+		.then(function(){
+			console.log('User saved successfully');
 		})
 		.catch(function(err){
 			console.log(err);

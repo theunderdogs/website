@@ -14,6 +14,7 @@ module.exports = {
 			   { route: 'applications', title:'Adoption applications', moduleId: 'viewmodels/admin/applications', nav: true, css : 'icon-docs' },
 			   { route: 'volunteers', title:'Volunteer applications', moduleId: 'viewmodels/admin/volunteers', nav: true, css : 'icon-paper-clip' },
 			   { route: 'editaboutus', title:'Edit \'About Us\'', moduleId: 'viewmodels/admin/editaboutus', nav: true, css : 'icon-user' },
+			   { route: 'users', title:'Users', moduleId: 'viewmodels/admin/users', nav: true, css : 'icon-user' },
 			   { route: 'addNewUser', title:'Add New User', moduleId: 'viewmodels/admin/addNewUser', nav: true, css : 'icon-user' }
 			 ]
             },

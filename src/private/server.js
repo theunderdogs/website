@@ -135,74 +135,43 @@ app.get('/setup', function(req, res) {
 				  })				
 	];
 
+	// create a sample user
   var dataTypePromises = [];
 
-   for(var i = 0; i < datatypes.length; i++){
-   		dataTypePromises.push(
-	   		new Promise(function(resolve, reject){ 
-	   			datatypes[i].save(function(err) {
-			    if (err) throw err;
+  for(var i = 0; i < datatypes.length; i++){
+  	dataTypePromises.push(datatypes[i].save());
+  }
 
-			    console.log('Data type saved successfully');
-			     resolve();//res.json({ success: true });
-			  });
-	   		})
-   		);
-   }
+  Promise.all(dataTypePromises)
+  .then(function(resultArray){
+  		var role;
 
-  // create a sample user
-  var kiran = new User({ 
-    firstname: 'kiran', 
-	lastname: 'deore', 
-	username: 'kirandeore',
-    password: 'password',
-    phone: '4053388406',
-    email: 'kirandeore@gmail.com',
-    photo: 'C:\\_node\\underdogs\\code\\build\\private\\logic\\..\\..\\public\\cdn\\protected\\RcBZIYBjS2L2PLfMdq5fNZsn.jpeg', 
-    role: 'ADMIN',
-    secret: 'heyya'
+  		for(var i = 0; i < resultArray.length; i++){
+  			if(resultArray[i].code === 'ADMIN'){
+  				role = resultArray[i];
+  				break;
+  			}
+  		}
+
+  		return new User({ 
+		    firstname: 'kiran', 
+			lastname: 'deore', 
+			username: 'kirandeore',
+		    password: 'password',
+		    phone: '4053388406',
+		    email: 'kirandeore@gmail.com',
+		    photo: 'cdn\\protected\\thumbnails\\RcBZIYBjS2L2PLfMdq5fNZsn.jpeg', 
+		    role: role,
+		    secret: 'heyya'
+		  }).save();
+   })
+  .then(function(user){
+  	console.log('user added', user);
+  })
+  .catch(function(err){
+  		console.log('Error:', err);
   });
 
-  var userPromise = new Promise(function(resolve, reject){
-  	  // save the sample user
-	  kiran.save(function(err) {
-		    if (err) {
-		    	console.log(err);
-		    	return reject(err);
-		    }
-
-	    	console.log('User saved successfully');
-	    	resolve(kiran);
-	  });
-  });
-
- //  Promise.all(dataTypePromises)
- //  .then(function(){
- //  	return userPromise;
- //  })
- //  .then(function(user){
- //  	return Promise.resolve(true);
-	// // var dog = new Animal({ 
-	// //     kind: datatypes[0], 
-	// // 	name: 'rambo', 
-	// // 	user: user
-	// //   });
-
-	// // return new Promise(function(resolve, reject){
-	// // 	dog.save(function(err) {
-	// // 	    if (err) {
-	// // 	    	console.log(err);
-	// // 	    	return reject(err);
-	// // 	    }
-
-	// // 	    console.log('Animal saved successfully!!');
-	// // 	    resolve(true);	//res.json({ success: true });
-	// // 	  });
-	// // });
- //  })
- //  .then(function(){
- //  		res.json({ success: true });
- //  });
 });
 
 app.listen(3000);

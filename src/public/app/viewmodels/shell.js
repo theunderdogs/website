@@ -31,7 +31,7 @@
                 ];
 
             if(storage.local("userConfig") && storage.local("userConfig").USER_ROLE){
-                if(storage.local("userConfig").USER_ROLE == 'ADMIN'){
+                if(storage.local("userConfig").USER_ROLE.code == 'ADMIN'){
                     routes = storage.local("userConfig")._durandalRoutes;
                     this.username(storage.local("userConfig").user.username);
                     this.photo(storage.local("userConfig").user.photo);

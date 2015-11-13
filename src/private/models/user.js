@@ -11,6 +11,10 @@ module.exports = mongoose.model('User', new Schema({
     phone: String,
     email: String,
     photo: String, 
-    role: String,
+    role: {
+        type: Schema.ObjectId,
+        ref: 'DataType'
+    },
+    isDisabled: Boolean,
     secret: String /* used for token */
 }));

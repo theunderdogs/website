@@ -1,0 +1,64 @@
+<div class="modal fade" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-wide">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title" data-bind = "text: settings.data.firstname + '\'s Profile'"></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6 col-sm-6">
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<ul class="list-inline blog-images">
+									<li>
+										<a class="fancybox-button" data-rel="fancybox-button" data-bind="click : onThumbnailClick">
+										<img data-bind="attr: { src : settings.data.photo  }">
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<img class="img-responsive" data-bind="attr: { src : bigImage }">
+							</div>
+						</div>	
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<div class="row">
+							<div class="col-md-12 profile-info">
+								<h1 data-bind = "text: settings.data.firstname + ' ' + settings.data.lastname"></h1>
+								
+								<p>
+									Username : <span data-bind="text: settings.data.username"></span>
+								</p>
+								<p>
+									Email : <span data-bind="text: settings.data.email"></span>
+								</p>
+								<p>
+									Phone : <span data-bind="text: settings.data.phone"></span>
+								</p>
+								<p>
+									Role : <span data-bind="text: settings.data.role.optionValue"></span>
+								</p>
+							</div>
+							<!--end col-md-8-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-default" data-dismiss="modal">Close</button>
+
+				
+			</div>
+		</div>
+	</div>
+
+	<!-- ko if: adoptionFormWidget -->
+		<!-- ko compose: adoptionFormWidget --><!-- /ko --> 
+	<!-- /ko --> 
+
+</div>
+<!-- END FORM-->

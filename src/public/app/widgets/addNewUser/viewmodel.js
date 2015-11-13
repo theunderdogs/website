@@ -21,7 +21,9 @@ define(function(require) {
 
     	var availableRoles = _.findByValues(services.dataTypes(), "type", ["userRole"]);
 		var sortedAvailableRoles = _.sortBy(availableRoles, 'order');
-		this.availableRoles = ko.observableArray(sortedAvailableRoles);
+		this.availableRoles = ko.observableArray( _.remove(sortedAvailableRoles, function(n){
+                return n.code != 'ANON'; 
+        }) );
 		this.selectedRole = ko.observable();
 
 		this.view;
@@ -95,13 +97,14 @@ define(function(require) {
 
     		var formData = new FormData();
     		//return;
-    		formData.append('data', JSON.stringify({ firstname : ko.unwrap(data.firstname()),
-    								  lastname : JSON.stringify( ko.unwrap(data.lastname()) ),
-    								  username : JSON.stringify( ko.unwrap(data.username()) ),
+    		formData.append('data', JSON.stringify({ 
+                                      firstname : ko.unwrap(data.firstname()),
+    								  lastname : ko.unwrap(data.lastname()),
+    								  username : ko.unwrap(data.username()),
     								  password : ko.unwrap(data.password()),
     								  phone : ko.unwrap(data.phone()),
 									  email : ko.unwrap(data.email()),
-									  role : ko.unwrap(data.age()),
+									  role : JSON.stringify( ko.unwrap(data.selectedRole()) ),
 									}));
 
     		var promiseArray = [];
