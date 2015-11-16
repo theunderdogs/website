@@ -7,7 +7,8 @@ define(function (require) {
     	_ = require("lodash");
     	//adoptionFormHtml = require('text!widgets/adoptionForm/view.html'),
     	//adoptionFormViewModel = require('widgets/adoptionForm/viewmodel'),
-        userInfoViewModel = require('widgets/userInfo/viewmodel');
+        userInfoViewModel = require('widgets/userInfo/viewmodel'),
+        router = require('plugins/router');
 
     var vm = function(){
     	var self = this;
@@ -15,7 +16,7 @@ define(function (require) {
     	this.usersToDisplay = ko.observableArray();
     	this.adoptionFormWidget =  ko.observable();
         this.userInfoWidget =  ko.observable();
-    	this.formModal;
+        this.formModal;
 
     	this.openUserInfo = function(data, event){
             var userInfoInstance = new userInfoViewModel({ data : data });
@@ -24,6 +25,10 @@ define(function (require) {
                 model: userInfoInstance, 
                 view: 'widgets/userInfo/view.html' 
             });
+        };
+
+        this.editUser = function(data, event){
+            router.navigate('editUser/' + data._id);
         };
     };
 
@@ -36,7 +41,7 @@ define(function (require) {
     	compositionComplete : function(view, parent){
     		this.view = view;
 			$(this.view).find('.mix-grid').mixitup();
-    	}
+    	}  
     };
 
     return vm;

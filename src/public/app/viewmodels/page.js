@@ -5,11 +5,11 @@
 define(function (require) {
 	
 	var page = function (options) {
-		if(!options) throw new Error('No options for page.js');
+		//if(!options) throw new Error('No options for page.js');
 
-		this.headerTitle = ko.observable(options.headerTitle || 'headerTitle');
-		this.smallHeaderTitle = ko.observable(options.smallHeaderTitle || 'smallHeaderTitle');
-		this.breadCrumbs = ko.observableArray(options.breadCrumbs || [
+		this.headerTitle = ko.observable((options && options.headerTitle) || 'headerTitle');
+		this.smallHeaderTitle = ko.observable((options && options.smallHeaderTitle) || 'smallHeaderTitle');
+		this.breadCrumbs = ko.observableArray((options && options.breadCrumbs) || [
 			{
 				class1: 'fa fa-home',
 				title: 'Home',

@@ -22,6 +22,14 @@ module.exports = {
 			 	});
 		});
 	},
+	getUserById : function(fields){
+		return User.findById(fields.id).populate('role').exec()
+				.then(function(user){
+					return user;
+				}, function(err){
+					return err
+				});
+	},
 	logout : function(user_token){
 		return new Promise(function (resolve, reject) {
 			if (user_token) {
@@ -208,7 +216,8 @@ module.exports = {
 		})
 		.catch(function(err){
 			console.log(err);
-			return reject(err);
+			//return reject(err);
+			return err;
 		});
 	}
 }

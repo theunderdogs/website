@@ -196,6 +196,7 @@ module.exports = function(router, passport){
 				res.end();
 			}
 
+			//es6 promise
 			userLogic.saveNewUser(JSON.parse(fields.data), files.filesToBeUploaded)			
 			.then(function(result){
 				res.statusCode = 200;
@@ -205,6 +206,31 @@ module.exports = function(router, passport){
 			.catch(function(err){
 				res.statusCode = 500;
 				res.json({ success  : false, message: 'Something went wrong while uploading files' });
+				res.end();	
+			});
+		});
+	});
+
+	router.post('/getUserById', passport.authenticate('bearer', { session: false }), function(req, res){
+		var form = new multiparty.Form();
+
+		form.parse(req, function(err, fields, files){
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
+
+			//nodeJS promise
+			userLogic.getUserById(JSON.parse(fields.data))			
+			.then(function(user){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'User fetched successfully', object: user });
+				res.end();	
+			}, function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while fetching user' });
 				res.end();	
 			});
 		});

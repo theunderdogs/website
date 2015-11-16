@@ -9,7 +9,7 @@ define(function(require) {
 		require('toBlob');
 
     var widget = function(){
-    	this.firstname = ko.observable();
+        this.firstname = ko.observable();
     	this.lastname = ko.observable();
     	this.username = ko.observable();
     	this.password = ko.observable();
@@ -19,6 +19,7 @@ define(function(require) {
     	this.photoUrl = ko.observable();
     	this.picArray = ko.observableArray();
         this.isDisabled = ko.observable(false);
+        this.userToEdit;
 
     	var availableRoles = _.findByValues(services.dataTypes(), "type", ["userRole"]);
 		var sortedAvailableRoles = _.sortBy(availableRoles, 'order');
@@ -34,6 +35,24 @@ define(function(require) {
     };
 
     widget.prototype = {
+        /*
+        * for data to be edited
+        */
+        activate: function(options){
+            if(options && options.data && options.data.userToEdit){
+                console.log("options", options.data.userToEdit);
+                this.userToEdit = options.data.userToEdit;    
+
+                this.firstname(this.userToEdit.firstname);
+                this.lastname(this.userToEdit.lastname);
+                this.username(this.userToEdit.username);
+                this.password(this.userToEdit.password);
+                this.phone(this.userToEdit.phone);
+                this.email(this.userToEdit.email);
+                this.selectedRole(this.userToEdit.role._id);
+                this.isDisabled(this.userToEdit.isDisabled);
+            }
+        },
     	addFiles : function(data, event){
     		this.fileUpload.trigger('click');
     		return false;

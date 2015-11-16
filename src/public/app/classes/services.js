@@ -101,6 +101,14 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 			    processData: false,
 			    contentType: false
 			  });
+		},
+		getUserById : function(formData){
+			return $.ajax('secure/getUserById?access_token=fool&token=' + this.token, {
+			    method: "POST",
+			    data: formData,
+			    processData: false,
+			    contentType: false
+			  });
 		}
 	}
 
