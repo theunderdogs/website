@@ -18,6 +18,7 @@ define(function(require) {
     	this.selectedRole = ko.observable();
     	this.photoUrl = ko.observable();
     	this.picArray = ko.observableArray();
+        this.isDisabled = ko.observable(false);
 
     	var availableRoles = _.findByValues(services.dataTypes(), "type", ["userRole"]);
 		var sortedAvailableRoles = _.sortBy(availableRoles, 'order');
@@ -105,6 +106,7 @@ define(function(require) {
     								  phone : ko.unwrap(data.phone()),
 									  email : ko.unwrap(data.email()),
 									  role : JSON.stringify( ko.unwrap(data.selectedRole()) ),
+                                      isDisabled : ko.unwrap(data.isDisabled())
 									}));
 
     		var promiseArray = [];

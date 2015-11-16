@@ -78,7 +78,8 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 
 			User.findOne({
-			    username: username
+			    username: username,
+			    isDisabled : false
 			  }).populate('role')
   			.exec(function(err, user) {
 
@@ -199,7 +200,7 @@ module.exports = {
 					email : fields.email,
 					photo : urlArray[0],
 					secret : '12345',
-					isDisabled : false
+					isDisabled : fields.isDisabled
 				}).save();
 		})
 		.then(function(){
