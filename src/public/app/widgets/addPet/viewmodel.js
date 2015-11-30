@@ -129,7 +129,7 @@ define(function (require) {
     		formData.append('data', JSON.stringify({ name : ko.unwrap(data.name()),
     								  gender : JSON.stringify( ko.unwrap(data.selectedGender()) ),
     								  kind : JSON.stringify( ko.unwrap(data.selectedKind()) ),
-    								  specifyKind : ko.unwrap(data.specifyKind()),
+    								  specifyKind : data.selectedKind().code === 'OTHER'? ko.unwrap(data.specifyKind()) : null,
     								  breed : ko.unwrap(data.breed()),
 									  color : ko.unwrap(data.color()),
 									  weight : ko.unwrap(data.weight()),

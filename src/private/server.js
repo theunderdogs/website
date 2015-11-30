@@ -85,6 +85,12 @@ app.get('/setup', function(req, res) {
 				  new DataType({ 
 				    type: 'userRole', 
 				    order : 2,
+				    optionValue: 'Power User',
+					code: 'POWERUSER'
+				  }),
+				  new DataType({ 
+				    type: 'userRole', 
+				    order : 3,
 					optionValue: 'Administrator',
 					code: 'ADMIN'
 				  }),
@@ -160,8 +166,9 @@ app.get('/setup', function(req, res) {
 		    password: 'password',
 		    phone: '4053388406',
 		    email: 'kirandeore@gmail.com',
-		    photo: 'cdn\\protected\\thumbnails\\RcBZIYBjS2L2PLfMdq5fNZsn.jpeg', 
+		    photo: 'cdn\\protected\\thumbnails\\1.jpeg', 
 		    role: role,
+		    isDisabled: false,
 		    secret: 'heyya'
 		  }).save();
    })

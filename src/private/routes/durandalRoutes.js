@@ -9,7 +9,7 @@ module.exports = {
 			   routes : [
 			   { route: '', title:'Welcome', moduleId: 'viewmodels/admin/dashboard', nav: true, css : 'icon-home' },
 			   { route: 'addNewPet', title:'Add New Pet', moduleId: 'viewmodels/admin/addNewPet', nav: true, css : 'icon-plus' },
-			   { route: 'editPet/:id', title:'Edit Pet', moduleId: 'viewmodels/admin/addNewPet', nav: true, css : 'icon-plus' },
+			   { route: 'editPet/:id', title:'Edit Pet', moduleId: 'viewmodels/admin/addNewPet', nav: false, css : 'icon-plus' },
 			   { route: 'pets', title:'Pets', moduleId: 'viewmodels/admin/pets', nav: true, css : 'icon-pin' },
 			   { route: 'applications', title:'Adoption applications', moduleId: 'viewmodels/admin/applications', nav: true, css : 'icon-docs' },
 			   { route: 'volunteers', title:'Volunteer applications', moduleId: 'viewmodels/admin/volunteers', nav: true, css : 'icon-paper-clip' },

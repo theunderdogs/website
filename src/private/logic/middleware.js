@@ -13,7 +13,7 @@ module.exports = {
 	  		throw new Error('Permission doesnt exists');
 	  	}
 
-	  	var permissionsForRole = ruleUserConfig[req.appData.user.role];
+	  	var permissionsForRole = ruleUserConfig[req.appData.user.role].allowed;
 
 	  	var isAuthenticated = false;
 	  	for(var i = 0; i < permissionsForRole.length; i++){
@@ -32,5 +32,5 @@ module.exports = {
     	}
 	    else next();
 	  };
-	},
+	}
 }

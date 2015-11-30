@@ -54,6 +54,14 @@ module.exports = {
 		cdn : {
 			src : './src/public/cdn/**/*',
 			dest : './build/public/cdn'
+		},
+		staticFiles : {
+			src : './src/thumbnails/**/*',
+			dest : './build/public/cdn/protected/thumbnails'
+		},
+		staticFiles2 : {
+			src : './src/protected/**/*',
+			dest : './build/public/cdn/protected'
 		}
 	},
 

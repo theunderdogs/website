@@ -24,6 +24,37 @@ define(function(require) {
                 router.routes = [];
                 router.map(routeArray).buildNavigationModel();
                 return router.activate({pushState : false});
+        },
+        getCanvasFromImage : function(url){
+            var image = new Image();
+
+            // create an empty canvas element
+            var canvas = document.createElement("canvas"),
+            canvasContext = canvas.getContext("2d");
+
+            var imgPromise = new Promise(function(resolve, reject){
+                image.onload = function () {
+                
+                    //Set canvas size is same as the picture
+                    canvas.width = image.width;
+                    canvas.height = image.height;
+                 
+                    // draw image into canvas element
+                    canvasContext.drawImage(image, 0, 0, image.width, image.height);
+                 
+                    // get canvas contents as a data URL (returns png format by default)
+                    //var dataURL = canvas.toDataURL();
+
+                    //console.log('jang', dataURL);
+
+                    resolve(canvas);
+                };
+
+            });
+            
+            image.src = url;
+
+            return imgPromise;
         }
     };
 });

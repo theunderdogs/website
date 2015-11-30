@@ -151,7 +151,7 @@ module.exports = {
 		});
 	},
 
-	saveNewUser : function(fields, files){
+	saveUser : function(fields, files){
 		
 		var promiseArray = []
 			,urlArray = []
@@ -198,7 +198,7 @@ module.exports = {
 			return Promise.all(thumbnailPromises)
 		})
 		.then(function(){
-			return newUser = new User({ 
+			var toBeSaved = { 
 					firstname: fields.firstname,
 					lastname : fields.lastname, 
 				    role: JSON.parse(fields.role), 
@@ -209,7 +209,26 @@ module.exports = {
 					photo : urlArray[0],
 					secret : '12345',
 					isDisabled : fields.isDisabled
-				}).save();
+				};
+
+			if(fields.id)
+				return User.findOneAndUpdate({ _id: fields.id }, toBeSaved)
+	  			.exec(function(err, updatedUser) {
+	  				if(err){
+	  					console.log(err);
+	  					return err;
+	  				}
+
+	  				return updatedUser;
+	  			});
+			else return new User(toBeSaved).save(function(err, newUser){
+				if(err){
+					console.log(err);
+					return err;
+				}
+
+				return newUser;
+			});
 		})
 		.then(function(){
 			console.log('User saved successfully');

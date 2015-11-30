@@ -184,7 +184,7 @@ module.exports = function(router, passport){
 		});
 	});
 
-	router.post('/saveNewUser', passport.authenticate('bearer', { session: false }), function(req, res){
+	router.post('/saveUser', passport.authenticate('bearer', { session: false }), function(req, res){
 		
 		var form = new multiparty.Form();
 
@@ -197,7 +197,7 @@ module.exports = function(router, passport){
 			}
 
 			//es6 promise
-			userLogic.saveNewUser(JSON.parse(fields.data), files.filesToBeUploaded)			
+			userLogic.saveUser(JSON.parse(fields.data), files.filesToBeUploaded)			
 			.then(function(result){
 				res.statusCode = 200;
 				res.json({ success  : true, message: 'User saved successfully', object: result });

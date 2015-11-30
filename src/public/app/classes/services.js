@@ -94,8 +94,8 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 			    contentType: false
 			  });
 		},
-		saveNewUser : function(formData){
-			return $.ajax('secure/saveNewUser?access_token=fool&token=' + this.token, {
+		saveUser : function(formData){
+			return $.ajax('secure/saveUser?access_token=fool&token=' + this.token, {
 			    method: "POST",
 			    data: formData,
 			    processData: false,

@@ -105,17 +105,14 @@
 						<div class="form-group">
 							<label class="col-md-3 control-label">Active</label>
 							<div class="col-md-9">
-								<div class="radio-list">
-									<label class="radio-inline">
-										<input type="radio" name="optionsRadios" value="false" data-bind="checked: isDisabled">
-										Yes
-									</label>
-
-									<label class="radio-inline">
-										<input type="radio" name="optionsRadios" value="true" data-bind="checked: isDisabled">
-										No
-									</label>
-								</div>
+								<select class="form-control" 
+									data-bind="options: availableStatus,
+											   optionsText: 'optionValue',
+    										   value: isDisabled,
+    										   optionsCaption: 'Choose...'
+										">
+								</select>
+								<span class="help-block" data-bind="validationMessage: isDisabled"></span>
 							</div> 
 						</div>
 					</div>
@@ -133,7 +130,7 @@
 					<div class="col-md-12">
 						<br>
 						<div class="row mix-grid">
-							<!-- ko if: picArray().length > 0 -->
+							<!-- if: picArray().length > 0 ----->
 								<!-- ko foreach: picArray -->
 								<div class="col-md-3 col-sm-4 mix category_1">
 									<div class="mix-inner">
@@ -141,12 +138,12 @@
 										<div class="mix-details">
 											<h4></h4>
 											
-											<a class="mix-preview fancybox-button" href="assets/img/works/img1.jpg" title="Delete" data-rel="fancybox-button" data-bind="click: $parent.deleteImage"><i class="fa fa-trash-o"></i></a>
+											<a class="mix-preview fancybox-button" href="assets/img/works/img1.jpg" title="Delete" data-rel="fancybox-button" data-bind="click: $parent.deleteImageHandler"><i class="fa fa-trash-o"></i></a>
 										</div>
 									</div>
 								</div>
 								<!-- /ko -->
-							<!-- /ko -->
+							<!--  -->
 						</div>
 					</div>
 

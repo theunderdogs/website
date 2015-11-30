@@ -1,5 +1,6 @@
 define(function(require) {
     var services = require('services'),
+        uiConfig = require('classes/uiconfig');
     	_ = require("lodash");
 
     	require('cropper');
@@ -9,6 +10,7 @@ define(function(require) {
 		require('toBlob');
 
     var widget = function(){
+        this.id;
         this.firstname = ko.observable();
     	this.lastname = ko.observable();
     	this.username = ko.observable();
@@ -18,7 +20,14 @@ define(function(require) {
     	this.selectedRole = ko.observable();
     	this.photoUrl = ko.observable();
     	this.picArray = ko.observableArray();
-        this.isDisabled = ko.observable(false);
+        this.availableStatus = ko.observableArray([{
+            optionValue : 'No',
+            value : true
+        },{
+            optionValue : 'Yes',
+            value : false
+        }]);
+        this.isDisabled = ko.observable();
         this.userToEdit;
 
     	var availableRoles = _.findByValues(services.dataTypes(), "type", ["userRole"]);
@@ -32,6 +41,8 @@ define(function(require) {
 		this.cropperContainer;
 		this.fileUpload;
 		this.modal;
+
+        this.deleteImageHandler = this.deleteImage.bind(this);
     };
 
     widget.prototype = {
@@ -39,8 +50,10 @@ define(function(require) {
         * for data to be edited
         */
         activate: function(options){
+            var self = this;
             if(options && options.data && options.data.userToEdit){
                 console.log("options", options.data.userToEdit);
+                this.id = options.data.userToEdit._id;
                 this.userToEdit = options.data.userToEdit;    
 
                 this.firstname(this.userToEdit.firstname);
@@ -49,14 +62,40 @@ define(function(require) {
                 this.password(this.userToEdit.password);
                 this.phone(this.userToEdit.phone);
                 this.email(this.userToEdit.email);
-                this.selectedRole(this.userToEdit.role._id);
-                this.isDisabled(this.userToEdit.isDisabled);
+                
+                for(var i = 0; i < this.availableRoles().length; i++){
+                    if(this.availableRoles()[i].code == this.userToEdit.role.code){
+                        this.selectedRole(this.availableRoles()[i]);
+                        break;
+                    }
+                }
+                
+                for(var i = 0; i < this.availableStatus().length; i++){
+                    if(this.availableStatus()[i].value == this.userToEdit.isDisabled){
+                        this.isDisabled(this.availableStatus()[i]);
+                        break;
+                    }
+                }
+
+                return uiConfig.getCanvasFromImage(this.userToEdit.photo.replace('thumbnails',''))
+                .then(function(canvas){
+                    console.log('Promise resolved');
+                    //console.warn(canvas.toDataURL());
+                    self.picArray([{
+                        canvas : canvas,
+                        isNew : true
+                    }]);  //data.photoUrl()
+                });
             }
         },
     	addFiles : function(data, event){
     		this.fileUpload.trigger('click');
     		return false;
     	},
+        deleteImage : function(data, event){
+            //console.log(data);
+            this.picArray([]);
+        },
     	onFileUpload : function(data, event){
     		var self = this;
     		var file = event.target.files[0];
@@ -91,7 +130,7 @@ define(function(require) {
 			this.modal = $(view).find('#responsive').eq(0);
 			this.cropperContainer = $(view).find('.myImage').eq(0);
 			this.view = view;
-			console.log('attached');
+			//console.log('attached');
 
 			this.cropperContainer.cropper({
 				  aspectRatio: 16 / 9, //Set the aspect ratio of the crop box. By default, the crop box is free ratio.
@@ -103,6 +142,11 @@ define(function(require) {
 				  minContainerWidth : 500,
 				  minContainerHeight: 500
 			});
+
+            //for edit
+            if(this.picArray().length > 0){
+                $(this.view).find('.mix-grid').mixitup();
+            }
     	},
     	submitForm : function(data, event){
     		var validObservable = ko.validatedObservable(data);
@@ -115,18 +159,23 @@ define(function(require) {
 
     		//var validationGroup = ko.validation.group(data);
 
+            var jsonData = {};
+            jsonData.firstname = ko.unwrap(data.firstname());
+            jsonData.lastname = ko.unwrap(data.lastname());
+            jsonData.username = ko.unwrap(data.username());
+            jsonData.password = ko.unwrap(data.password());
+            jsonData.phone = ko.unwrap(data.phone());
+            jsonData.email = ko.unwrap(data.email());
+            jsonData.role = JSON.stringify( ko.unwrap(data.selectedRole()) );
+            jsonData.isDisabled = ko.unwrap(data.isDisabled().value);
+
+            if(data.id){
+                jsonData.id = data.id;
+            }
+
     		var formData = new FormData();
-    		//return;
-    		formData.append('data', JSON.stringify({ 
-                                      firstname : ko.unwrap(data.firstname()),
-    								  lastname : ko.unwrap(data.lastname()),
-    								  username : ko.unwrap(data.username()),
-    								  password : ko.unwrap(data.password()),
-    								  phone : ko.unwrap(data.phone()),
-									  email : ko.unwrap(data.email()),
-									  role : JSON.stringify( ko.unwrap(data.selectedRole()) ),
-                                      isDisabled : ko.unwrap(data.isDisabled())
-									}));
+
+            formData.append('data', JSON.stringify(jsonData));
 
     		var promiseArray = [];
 
@@ -140,7 +189,7 @@ define(function(require) {
 			});
         	
     		Promise.all(promiseArray).then(function(){
-    			services.saveNewUser(formData).then(function(result){
+    			services.saveUser(formData).then(function(result){
                 	console.log(result);
                 	alert('success***********');
 	            }, function(err){
