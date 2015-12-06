@@ -2,7 +2,7 @@
 	<div class="row mix-grid" data-bind="foreach: petsToDisplay">
 		<div class="col-md-3 col-sm-4 mix category_1">
 			<div class="mix-inner">
-				<img class="img-responsive" data-bind="attr: {src: photoUrls[0].replace('public\\', ' ').split(' ')[1] }" alt=""/>
+				<img class="img-responsive" data-bind="attr: {src: photoUrls[0] }" alt=""/>
 				<div class="mix-details">
 					<h4 data-bind="html: 'Name: ' + name + ', Breed: ' + breed + ', Age: ' + age + '<br>'"></h4>
 					<!-- <a class="mix-link"><i class="fa fa-link"></i></a>

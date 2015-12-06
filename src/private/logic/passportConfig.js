@@ -50,7 +50,10 @@ module.exports = function(passport, app){
 
 	        //{ username: user.username, user_token: user_token }
 	        
-	        mongoose.model('User').findOne({ username: decoded.username }, function(err, user){
+	        mongoose.model('User')
+	        .findOne({ username: decoded.username })
+	        .populate('role')
+	        .exec(function(err, user){
 			     if (!user) return done(new Error("user not found for token."));
 			     //console.log("found user: ", user);
 			     

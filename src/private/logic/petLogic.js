@@ -33,7 +33,7 @@ module.exports = {
 						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn\\pets','cdn\\pets\\thumbnails'),
      width:300, height:169}));
 						
-						urlArray.push(targetPath);
+						urlArray.push('cdn\\pets\\thumbnails' + '\\' + fileName + '.jpeg');
 						
 						fs.rename(tempPath, targetPath, function(err) {
 				            if(err) {

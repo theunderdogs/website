@@ -5,7 +5,7 @@ module.exports = {
 	hasPermission : function (permission) {
 	  return function(req, res, next) {
 
-	  	if(!ruleUserConfig.hasOwnProperty(req.appData.user.role)){
+	  	if(!ruleUserConfig.hasOwnProperty(req.appData.user.role.code)){
 	  		throw new Error('Role doesnt exists');
 	  	}
 
@@ -13,7 +13,7 @@ module.exports = {
 	  		throw new Error('Permission doesnt exists');
 	  	}
 
-	  	var permissionsForRole = ruleUserConfig[req.appData.user.role].allowed;
+	  	var permissionsForRole = ruleUserConfig[req.appData.user.role.code].allowed;
 
 	  	var isAuthenticated = false;
 	  	for(var i = 0; i < permissionsForRole.length; i++){

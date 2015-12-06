@@ -14,7 +14,7 @@ define(function (require) {
 
 			this.onThumbnailClick = function(data, event){
 				//console.log(data);
-				self.bigImage(data.replace('public\\', ' ').split(' ')[1]);
+				self.bigImage(data.replace('thumbnails\\', ''));
 				return;
 			}
     	};

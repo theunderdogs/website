@@ -13,7 +13,7 @@
 								<ul class="list-inline blog-images" data-bind="foreach: settings.data.photoUrls">
 									<li>
 										<a class="fancybox-button" data-rel="fancybox-button" data-bind="click : $parent.onThumbnailClick">
-										<img data-bind="attr: { src : $data.replace('public\\', ' ').replace('pets\\', 'pets\\thumbnails\\').split(' ')[1]  }">
+										<img data-bind="attr: { src : $data  }">
 										</a>
 									</li>
 								</ul>
