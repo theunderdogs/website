@@ -22,12 +22,20 @@ define(function(require) {
 		//this.headerTitle('Add a pet');
 		//this.smallHeaderTitle('Add a pet');
 		
-		this.widgetCollection.push({ kind : 'addPet', data: {} });
+		
     };
 
     vm.prototype = Object.create(page.prototype);
 
-    // var _super_ = page.prototype;
+    var _super_ = page.prototype;
+
+    vm.prototype.activate = function(id) {
+        if(id){
+        	this.widgetCollection.push({ kind : 'addPet', data: { petid: id } });
+        }else{
+        	this.widgetCollection.push({ kind : 'addPet', data: {} });
+        }
+    };
 
     // John.prototype.walk = function() {
     //     return _super_.walk.call(this) + ' quickly';

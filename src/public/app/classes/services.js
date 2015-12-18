@@ -16,8 +16,8 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 		getLogoutLink : function(){
 			return 'logout?access_token=fool&token=' + this.token;
 		},
-		saveNewPet : function(formData){
-			return $.ajax('secure/saveNewPet?access_token=fool&token=' + this.token, {
+		savePet : function(formData){
+			return $.ajax('secure/savePet?access_token=fool&token=' + this.token, {
 			    method: "POST",
 			    data: formData,
 			    processData: false,
@@ -104,6 +104,14 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 		},
 		getUserById : function(formData){
 			return $.ajax('secure/getUserById?access_token=fool&token=' + this.token, {
+			    method: "POST",
+			    data: formData,
+			    processData: false,
+			    contentType: false
+			  });
+		},
+		getPetById : function(formData){
+			return $.ajax('secure/getPetById?access_token=fool&token=' + this.token, {
 			    method: "POST",
 			    data: formData,
 			    processData: false,

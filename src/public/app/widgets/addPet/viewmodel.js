@@ -6,9 +6,14 @@ define(function (require) {
 	require('toBlob');
 
     var services = require('services'),
-    	_ = require("lodash");
+    	_ = require("lodash"),
+    	uiConfig = require('classes/uiconfig');
 
 	var vm = function(){
+		this.id;
+		this.petToEdit;
+		this.options;
+
 		this.name = ko.observable().extend({
                      required: { 
 			                 	params: true, 
@@ -49,15 +54,68 @@ define(function (require) {
 		this.breed = ko.observable();
 		this.notes = ko.observable();
 		this.bio = ko.observable();
-		this._id = ko.observable();
 	};
 
 	vm.prototype = {
-		activate : function(settings){
-			this.settings = settings;
+		activate : function(options){
+			var self = this;
+			this.options = options;
 
-			if(this.settings._id){
-				this._id(this.settings._id);
+			if(this.options.data.petid){
+				this._id = this.options.data.petid;
+				
+				var formData = new FormData();
+    			formData.append('data', JSON.stringify({ id : this._id }));
+
+				return services.getPetById(formData)
+				.then(function (result) {
+					self.petToEdit = result.object;
+					self.name(self.petToEdit.name);
+					self.breed(self.petToEdit.breed);
+					self.color(self.petToEdit.color);
+					self.weight(self.petToEdit.weight);
+					self.age(self.petToEdit.age);
+					
+					var dateFound = new Date(self.petToEdit.dateFound);
+
+					self.dateFound((dateFound.getMonth() + 1) + '/' + dateFound.getDate() + '/' + dateFound.getFullYear());
+					self.notes(self.petToEdit.notes);
+					self.bio(self.petToEdit.bio);
+
+					for(var i = 0; i < self.availableKinds().length; i++){
+						if(self.availableKinds()[i].code == self.petToEdit.kind.code){
+							self.selectedKind(self.availableKinds()[i]);
+							break;
+						}
+					}
+
+					for(var i = 0; i < self.availableGenders().length; i++){
+						if(self.availableGenders()[i].code == self.petToEdit.gender.code){
+							self.selectedGender(self.availableGenders()[i]);
+							break;
+						}
+					}
+
+					var promisePhotoUrls = [];
+
+					for(var i = 0; i < self.petToEdit.photoUrls.length; i++){
+						promisePhotoUrls.push(uiConfig.getCanvasFromImage(self.petToEdit.photoUrls[i].replace('thumbnails','')));
+					}					
+
+					return Promise.all(promisePhotoUrls)
+		                .then(function(canvasArray){
+		                    console.log('Promise resolved');
+		                    //console.warn(canvas.toDataURL());
+		                    for(var i = 0; i < canvasArray.length; i++){
+			                    self.picArray.push({
+			                        canvas : canvasArray[i],
+			                        isNew : true
+			                    });  //data.photoUrl()
+			                }
+
+			                //return Promise.resolve(true);
+		                });
+				});
 			}
 		},
 	 	compositionComplete : function(view, parent){
@@ -78,7 +136,14 @@ define(function (require) {
 				  minContainerHeight: 500
 			});
 
-			$(view).find('.date-picker').eq(0).datepicker({});
+			if(this.options.data.petid){
+				//for edits
+				 $(this.view).find('.mix-grid').mixitup();
+				$(view).find('.date-picker').eq(0).datepicker("setDate", this.dateFound());
+			}
+			else {
+				$(view).find('.date-picker').eq(0).datepicker();
+			}
     	},
     	addFiles : function(data, e){
     		this.fileUpload.trigger('click');
@@ -124,9 +189,7 @@ define(function (require) {
 
     		//var validationGroup = ko.validation.group(data);
 
-    		var formData = new FormData();
-    		//return;
-    		formData.append('data', JSON.stringify({ name : ko.unwrap(data.name()),
+    		var jsonData = { name : ko.unwrap(data.name()),
     								  gender : JSON.stringify( ko.unwrap(data.selectedGender()) ),
     								  kind : JSON.stringify( ko.unwrap(data.selectedKind()) ),
     								  specifyKind : data.selectedKind().code === 'OTHER'? ko.unwrap(data.specifyKind()) : null,
@@ -138,7 +201,14 @@ define(function (require) {
 									  bio : ko.unwrap(data.bio()),
 									  //status : JSON.stringify( ko.unwrap(data.selectedStatus()) ),
     								  notes : ko.unwrap(data.notes())
-    								}));
+    								};
+
+    		if(this.options.data.petid){
+                jsonData.id = this.options.data.petid;
+            }
+
+    		var formData = new FormData();
+    		formData.append('data', JSON.stringify( jsonData ));
 
     		var promiseArray = [];
 
@@ -152,7 +222,7 @@ define(function (require) {
 			});
         	
     		Promise.all(promiseArray).then(function(){
-    			services.saveNewPet(formData).then(function(result){
+    			services.savePet(formData).then(function(result){
                 	console.log(result);
                 	alert('success***********');
 	            }, function(err){

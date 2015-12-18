@@ -25,7 +25,7 @@ module.exports = function(router, passport){
 		});	
 	});
 
-	router.post('/saveNewPet', passport.authenticate('bearer', { session: false }), middleware.hasPermission(rules.saveNewPet), function(req, res){
+	router.post('/savePet', passport.authenticate('bearer', { session: false }), middleware.hasPermission(rules.saveNewPet), function(req, res){
 		
 		var form = new multiparty.Form(),
 			user = req.appData.user;
@@ -38,7 +38,7 @@ module.exports = function(router, passport){
 				res.end();
 			}
 
-			petLogic.saveNewPet(JSON.parse(fields.data), user, files.filesToBeUploaded)			
+			petLogic.savePet(JSON.parse(fields.data), user, files.filesToBeUploaded)			
 			.then(function(result){
 				res.statusCode = 200;
 				res.json({ success  : true, message: 'Pet saved successfully', object: result });
@@ -231,6 +231,31 @@ module.exports = function(router, passport){
 			}, function(err){
 				res.statusCode = 500;
 				res.json({ success  : false, message: 'Something went wrong while fetching user' });
+				res.end();	
+			});
+		});
+	});
+
+	router.post('/getPetById', passport.authenticate('bearer', { session: false }), function(req, res){
+		var form = new multiparty.Form();
+
+		form.parse(req, function(err, fields, files){
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
+
+			//nodeJS promise
+			petLogic.getPetById(JSON.parse(fields.data))			
+			.then(function(pet){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'Pet fetched successfully', object: pet });
+				res.end();	
+			}, function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while fetching pet' });
 				res.end();	
 			});
 		});

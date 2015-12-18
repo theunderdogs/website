@@ -9,7 +9,7 @@ adoptorLogic = require('../logic/adoptorLogic.js');
 
 module.exports = {
 
-	saveNewPet : function(fields, user, files){
+	savePet : function(fields, user, files){
 		
 		var promiseArray = []
 			,urlArray = []
@@ -56,8 +56,8 @@ module.exports = {
 			return Promise.all(thumbnailPromises)
 		})
 		.then(function(){
-			return new Promise(function(resolve, reject){
-				var newPet = new Animal({ 
+
+				var toBeSaved = { 
 					name: fields.name,
 					gender : JSON.parse(fields.gender), 
 				    kind: JSON.parse(fields.kind), 
@@ -72,16 +72,29 @@ module.exports = {
 				    notes : fields.notes, 
 					photoUrls: urlArray, 
 					user: user
-				}).save(function(err) {
-				    if (err) {
-				    	//throw err;
-				    	return reject(err);
-				    }else{
-				    	console.log('Animal saved successfully');
-				    	return resolve();	
-				    }
-				 });
+				};
+
+
+			if(fields.id)
+				return Animal.findOneAndUpdate({ _id: fields.id }, toBeSaved)
+	  			.exec(function(err, updatedPet) {
+	  				if(err){
+	  					console.log(err);
+	  					return err;
+	  				}
+
+	  				return updatedPet;
+	  			});
+			else return new Animal(toBeSaved).save(function(err, newPet){
+				if(err){
+					console.log(err);
+					return err;
+				}
+
+				return newPet;
 			});
+
+			
 		})
 		.catch(function(err){
 			console.log(err);
@@ -140,6 +153,13 @@ module.exports = {
 
 			return Promise.resolve(includePets);
 		});
-
+	},
+	getPetById : function(fields){
+		return Animal.findById(fields.id).populate('gender kind user').exec()
+				.then(function(pet){
+					return pet;
+				}, function(err){
+					return err
+				});
 	}
 }

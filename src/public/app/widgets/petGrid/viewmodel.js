@@ -7,7 +7,8 @@ define(function (require) {
     	_ = require("lodash"),
     	//adoptionFormHtml = require('text!widgets/adoptionForm/view.html'),
     	adoptionFormViewModel = require('widgets/adoptionForm/viewmodel'),
-        petInfoViewModel = require('widgets/petInfo/viewmodel');
+        petInfoViewModel = require('widgets/petInfo/viewmodel'),
+        router = require('plugins/router');
 
     var vm = function(){
     	var self = this;
@@ -42,6 +43,10 @@ define(function (require) {
                 view: 'widgets/petInfo/view.html' 
             });
 
+        };
+
+        this.editPetInfo = function(data, event){
+            router.navigate('editPet/' + data._id);
         };
     };
 
