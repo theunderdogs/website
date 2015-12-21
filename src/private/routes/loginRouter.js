@@ -3,7 +3,9 @@ var jwt = require('jsonwebtoken'),
     generalLogic = require('../logic/generalLogic.js'),
     petLogic = require('../logic/petLogic.js'),
     adoptorLogic = require('../logic/adoptorLogic.js'),
-    multiparty = require('multiparty');
+    multiparty = require('multiparty'),
+    VOLUNTEER_PUBLIC_KEY  = '6Lf3bhMTAAAAAPrzTxDV4IH6iN7fl1-gRBtuSafk',
+	VOLUNTEER_PRIVATE_KEY = '6Lf3bhMTAAAAAG3fAwjgBrc9ucH2Uv5Axqxb3hCQ';
 
 module.exports = function(router, passport) {
 	//app.use(passport.initialize());
@@ -136,31 +138,6 @@ module.exports = function(router, passport) {
 		});	
 	});
 
-	router.post('/saveNewVolunteer', function(req, res){
-		var form = new multiparty.Form();
-		
-		form.parse(req, function(err, fields, files){
-			
-			if(err){
-				res.statusCode = 500;
-				res.json({ success  : false, message: 'Something went wrong' });
-				res.end();
-			}
-
-			generalLogic.saveNewVolunteer(JSON.parse(fields.data))			
-			.then(function(result){
-				res.statusCode = 200;
-				res.json({ success  : true, message: 'Application submitted successfully', object: result });
-				res.end();	
-			})
-			.catch(function(err){
-				res.statusCode = 500;
-				res.json({ success  : false, message: 'Something went wrong while submitting application' });
-				res.end();	
-			});
-		});
-	});
-
 	router.get('/getAdoptablePets', function(req, res){
 		petLogic.getAdoptablePets().then(function(pets){
 			console.log(pets);
@@ -203,5 +180,28 @@ module.exports = function(router, passport) {
 		});	
 	});
 
-	
+	router.post('/saveNewVolunteer', function(req, res){
+		var form = new multiparty.Form();
+		
+		form.parse(req, function(err, fields, files){
+			
+			if(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong' });
+				res.end();
+			}
+
+			generalLogic.saveNewVolunteer(JSON.parse(fields.data))			
+			.then(function(result){
+				res.statusCode = 200;
+				res.json({ success  : true, message: 'Application submitted successfully', object: result });
+				res.end();	
+			})
+			.catch(function(err){
+				res.statusCode = 500;
+				res.json({ success  : false, message: 'Something went wrong while submitting application' });
+				res.end();	
+			});
+		});
+	});
 }

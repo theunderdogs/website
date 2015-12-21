@@ -27,7 +27,8 @@
         'googlecalendar': '../lib/fullCalendar/gcal',
         'moment': '../lib/moment/moment.min',
         'fullcalendar': '/lib/fullCalendar/fullcalendar.min',
-        //'mapapi' : 'http://maps.google.com/maps/api/js?sensor=true',
+        //recaptcha: 'https://www.google.com/recaptcha/api.js?render=explicit',
+        //'recaptcha': 'http://www.google.com/recaptcha/api/js/recaptcha_ajax',
         'gmapsjs' : '../lib/gmaps/gmaps',
 
         async : '../lib/requirejs-plugins/src/async',   
@@ -94,6 +95,10 @@
             deps: ['jquery']
             //'exports' : 'gmapsjs'
        }
+       // ,
+       // 'recaptcha': {
+       //      exports: 'recaptcha'
+       // }
     }
 });
 

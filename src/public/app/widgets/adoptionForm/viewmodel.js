@@ -1,4 +1,6 @@
 define(function (require) {
+	//require('recaptcha');
+
 	var services = require('services'),
     	_ = require("lodash");
 
@@ -22,11 +24,26 @@ define(function (require) {
 				break;
 			}
 		}
+
+		this.verifyCaptcha = function(response){
+            console.log(response);
+            self.captchaResponse = response;
+        };
 	};
 
 	vm.prototype = {
 		activate : function(){
 
+		},
+		attached : function(view, parent){
+			var self = this;
+
+            grecaptcha.render( $(view).find('#captchaDiv')[0], {
+                      sitekey : '6Lf3bhMTAAAAAPrzTxDV4IH6iN7fl1-gRBtuSafk',
+                      theme : 'light',
+                      callback : self.verifyCaptcha,
+                      parentModule : self
+                    });
 		},
 		compositionComplete : function(view, parent){
 			this.view = view;
@@ -41,6 +58,11 @@ define(function (require) {
 			return;
 		},
 		submitAdoptionApplication : function(data, event){
+			if(!this.captchaResponse || this.captchaResponse.length == 0){
+                alert("You can't leave Captcha Code empty");
+                return;
+            }
+
 			var formData = new FormData();
     		//return;
     		formData.append('data', JSON.stringify({ 

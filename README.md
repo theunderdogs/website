@@ -41,3 +41,8 @@ startServer.bat
 startDebug.bat
 
 http://localhost:44085/setup
+
+
+-----------------------
+update npm
+- npm -g install npm
