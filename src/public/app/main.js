@@ -19,16 +19,15 @@
         'promise': '../lib/pollyfills/es6-promise/es6-promise.min',
         'services' : '../app/classes/services',
         
+        'toastr' : '../lib/bootstrap-toastr/toastr',
         'lodash' : '../lib/lodash/lodash',
         'datepicker' : '../lib/bootstrap-datepicker/js/bootstrap-datepicker',
         'mixitup' : '../lib/jquery-mixitup/jquery.mixitup.min',
         'toBlob' : '../lib/pollyfills/toBlob/canvas-to-blob.min',
-        'ckeditor' : '../lib/ckeditor/ckeditor', //http://cdn.ckeditor.com/4.5.2/standard-all/ckeditor
+        'ckeditor' : '../lib/ckeditor/ckeditor', 
         'googlecalendar': '../lib/fullCalendar/gcal',
         'moment': '../lib/moment/moment.min',
         'fullcalendar': '/lib/fullCalendar/fullcalendar.min',
-        //recaptcha: 'https://www.google.com/recaptcha/api.js?render=explicit',
-        //'recaptcha': 'http://www.google.com/recaptcha/api/js/recaptcha_ajax',
         'gmapsjs' : '../lib/gmaps/gmaps',
 
         async : '../lib/requirejs-plugins/src/async',   
@@ -93,12 +92,7 @@
        },
        'gmapsjs' : {
             deps: ['jquery']
-            //'exports' : 'gmapsjs'
        }
-       // ,
-       // 'recaptcha': {
-       //      exports: 'recaptcha'
-       // }
     }
 });
 
@@ -130,6 +124,25 @@ define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knoc
     });
 
     p.polyfill();
+    
+    //var regex = /^[a-zA-Z ]*$/;
+    kovalidation.rules['alphabetsOnly'] = {
+        validator: function (val, params) {
+            var patt = /^[a-zA-Z]*$/;
+            return patt.test(val);
+        },
+        message: 'Must be alphabets only'
+    };
+
+    kovalidation.rules['phone'] = {
+        validator: function (val, params) {
+            var patt = /^\d{10}$/;
+            return patt.test(val);
+        },
+        message: 'Must be 10 digits only'
+    };
+
+    ko.validation.registerExtenders();
 
     ko.validation = kovalidation;
     ko.validation.init({
