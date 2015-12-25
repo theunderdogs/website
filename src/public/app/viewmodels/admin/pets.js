@@ -34,7 +34,7 @@ define(function(require) {
     		promises.push(services.getPets());
 
     	return Promise.all(promises).then(function(result){
-    			self.widgetCollection.push({ kind : 'petGrid', data: { petsToDisplay : result[0].object, showAdoptMe : false } });
+    			self.widgetCollection.push({ kind : 'petGrid', data: { petsToDisplay : result[0].object, showAdoptMe : false, showNotes : true, showEdit : true } });
     		});
     };
 

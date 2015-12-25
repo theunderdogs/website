@@ -2,17 +2,59 @@ define(function (require) {
 	//require('recaptcha');
 
 	var services = require('services'),
+		toastr = require('toastr'),
     	_ = require("lodash");
 
 	var vm = function(settings){
 		var self = this;
 		this.settings = settings;
 		this.pet = settings.data;
-		this.firstName = ko.observable();
-		this.lastName = ko.observable();
-		this.phone = ko.observable();
-		this.email = ko.observable();
-		this.address = ko.observable();
+		this.firstName = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'First name is required'
+                     },
+                     alphabetsOnly: {
+                        //params: 'yay',
+                        message: 'First name must have alphabets only'
+                     }
+                 });
+		this.lastName = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Last name is required'
+                     },
+                     alphabetsOnly: {
+                        //params: 'yay',
+                        message: 'Last name must have alphabets only'
+                     }
+                 });
+		this.phone = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Phone is required'
+                     },
+                     phone: {
+                        //params: 'yay',
+                        message: 'Phone must have 10 digits only'
+                     }
+                 });
+		this.email = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Email is required'
+                     },
+                     email : { 
+                                params: true, 
+                                message: 'Email is not valid'
+                     }
+                 });
+		this.address = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Email is required'
+                     }
+                 });
 		this.status = ko.observable();
 		this.view;
 
@@ -25,10 +67,19 @@ define(function (require) {
 			}
 		}
 
-		this.verifyCaptcha = function(response){
+		this.captchaResponse = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Captcha is required'
+                     }
+                 });
+
+        this.verifyCaptcha = function(response){
             console.log(response);
-            self.captchaResponse = response;
+            self.captchaResponse(response);
         };
+
+        this.submitAdoptionApplicationHandler = this.submitAdoptionApplication.bind(this);
 	};
 
 	vm.prototype = {
@@ -58,9 +109,23 @@ define(function (require) {
 			return;
 		},
 		submitAdoptionApplication : function(data, event){
-			if(!this.captchaResponse || this.captchaResponse.length == 0){
-                alert("You can't leave Captcha Code empty");
-                return;
+			var validObservable = ko.validatedObservable(this);
+
+            if(!validObservable.isValid()){
+                this.captchaResponse(null);
+                grecaptcha.reset();
+                return validObservable.errors.showAllMessages();
+                //var v = ko.validation.group(data);
+                //return v.showAllMessages(); 
+            }
+
+            //var validationGroup = ko.validation.group(data);
+
+            //check if the application is already submitted
+            console.log('petid', this.pet._id);
+            var key =  this.pet._id + this.firstName() + this.lastName() + this.phone() + this.email();
+            if(storage.local(key)){
+                return toastr.info('Looks like you have already submitted your application', 'Application already submitted', {timeOut: 5000});
             }
 
 			var formData = new FormData();
@@ -77,10 +142,13 @@ define(function (require) {
     								}));
 
     		services.submitAdoptionApplication(formData).then(function(result){
+            	storage.local(key, key);
             	console.log(result);
-            	alert('success***********');
+            	toastr.success('We will contact you shortly', 'Application received', {timeOut: 5000});
+            	data.closeModal();
             }, function(err){
-                throw new Error(err.message);
+            	grecaptcha.reset();
+                toastr.error('Something went wrong while submitting your application', 'Error', {timeOut: 5000});
             });
 		}
 	};

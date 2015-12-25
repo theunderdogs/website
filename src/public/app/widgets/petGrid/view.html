@@ -14,7 +14,9 @@
 
 					<button type="button" class="btn btn-info" data-bind="click: $parent.openPetInfo">Info</button>
 
+					<!-- ko if: $parent.settings.data.showEdit -->
 					<button type="button" class="btn btn-warning" data-bind="click: $parent.editPetInfo">Edit</button>
+					<!-- /ko --> 
 				</div>
 			</div>
 		</div>

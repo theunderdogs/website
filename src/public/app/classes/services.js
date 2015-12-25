@@ -5,7 +5,7 @@ define(['plugins/http', 'durandal/app', 'knockout', 'jquery', 'bootstrap'], func
 
 	var services = function(){
 		var self = this;
-		this.token = storage.local('userConfig').token;
+		this.token = storage.local('userConfig') && storage.local('userConfig').token ? storage.local('userConfig').token : null;
 		this.dataTypes = ko.observable();
 	}
 

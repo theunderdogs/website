@@ -29,9 +29,11 @@
 						<div class="row">
 							<div class="col-md-12 profile-info">
 								<h1 data-bind = "text: settings.data.name"></h1>
-								<p data-bind = "text: settings.data.bio">
-									 
-								</p>
+								<blockquote class="hero">
+									<p data-bind="text: settings.data.bio">
+									</p>
+									<small data-bind="text: settings.data.name"></small>
+								</blockquote>
 								<p>
 									Breed : <span data-bind="text: settings.data.breed"></span>
 								</p>
@@ -44,6 +46,14 @@
 								<p>
 									Weight : <span data-bind="text: settings.data.weight"></span>
 								</p>
+								<p>
+									Kind : <span data-bind="text: settings.data.kind.optionValue + (settings.data.kind.code == 'OTHER' ? ' (' + settings.data.specifyKind + ')' : '')"></span>
+								</p>
+								<!-- ko if: settings.showNotes -->	
+								<p>
+									Notes : <span data-bind="text: settings.data.notes"></span>
+								</p>
+								<!-- /ko --> 
 							</div>
 							<!--end col-md-8-->
 						</div>

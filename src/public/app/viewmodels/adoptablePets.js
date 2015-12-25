@@ -41,7 +41,7 @@ define(function(require) {
     		promises.push(services.getAdoptablePets());
 
     	return Promise.all(promises).then(function(result){
-    			self.widgetCollection.push({ kind : 'petGrid', data: { petsToDisplay : result[0].object, showAdoptMe : true } });
+    			self.widgetCollection.push({ kind : 'petGrid', data: { petsToDisplay : result[0].object, showAdoptMe : true, showNotes : false, showEdit : false } });
     		});
     };
 

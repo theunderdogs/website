@@ -36,7 +36,9 @@ define(function (require) {
     	};
 
         this.openPetInfo = function(data, event){
-            var petInfoInstance = new petInfoViewModel({ data : data, showAdoptMe : self.settings.data.showAdoptMe });
+            var petInfoInstance = new petInfoViewModel({ data : data, showAdoptMe : self.settings.data.showAdoptMe,
+                showNotes : self.settings.data.showNotes
+             });
 
             self.petInfoWidget({ 
                 model: petInfoInstance, 
