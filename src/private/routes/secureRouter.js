@@ -205,7 +205,7 @@ module.exports = function(router, passport){
 			})
 			.catch(function(err){
 				res.statusCode = 500;
-				res.json({ success  : false, message: 'Something went wrong while uploading files' });
+				res.json({ success  : false, message: err.message });
 				res.end();	
 			});
 		});

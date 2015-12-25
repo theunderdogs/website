@@ -113,8 +113,19 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Date found</label>
 							<div class="col-md-9">
-								<input class="form-control date-picker" size="16" type="text" data-bind='value: dateFound'/>
-								<span class="help-block" data-bind="validationMessage: dateFound"></span> 
+								<!-- <input class="form-control date-picker" size="16" type="text" data-bind='value: dateFound'/> -->
+								
+								
+								<div class="input-group input-medium date date-picker">
+									<input type="text" class="form-control" readonly data-bind='value: dateFound'>
+									<span class="input-group-btn">
+									<button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+									</span>
+								</div>
+								<!-- /input-group -->
+								<span class="help-block" data-bind="validationMessage: dateFound"></span>
+								
+
 							</div>
 						</div>
 					</div>
@@ -157,6 +168,7 @@
 							<label class="control-label col-md-1"></label>
 							<div class="col-md-11">
 								<textarea class="form-control" rows="5" data-bind='value: notes'></textarea>
+								<span class="help-block" data-bind="validationMessage: notes"></span>
 							</div>
 						</div>
 					</div>
@@ -169,6 +181,7 @@
 							<label class="control-label col-md-1"></label>
 							<div class="col-md-11">
 								<textarea class="form-control" rows="5" data-bind='value: bio'></textarea>
+								<span class="help-block" data-bind="validationMessage: bio"></span>
 							</div>
 						</div>
 					</div>
@@ -180,7 +193,7 @@
 					<div class="col-md-12">
 						<button class="btn btn-success fileinput-button" data-bind='click: addFiles'><i class="fa fa-plus"></i> Add files...</button>
 						<input type="file" id="fileUpload" data-bind="visible: false, event : { change: onFileUpload }" accept="image/*" />
-						<!-- <a class="btn btn-default" data-toggle="modal" href="#responsive">View Demo</a> -->
+						<span class="help-block" data-bind="validationMessage: picArray"></span>
 					</div>
 					<div class="col-md-12">
 						<br>
@@ -210,7 +223,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title">Modal Title</h4>
+								<h4 class="modal-title">Crop Image</h4>
 							</div>
 							<div class="modal-body">
 								 <div class="row">

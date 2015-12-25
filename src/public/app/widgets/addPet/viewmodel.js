@@ -7,9 +7,12 @@ define(function (require) {
 
     var services = require('services'),
     	_ = require("lodash"),
-    	uiConfig = require('classes/uiconfig');
+    	uiConfig = require('classes/uiconfig'),
+    	toastr = require('toastr'),
+        router = require('plugins/router');
 
 	var vm = function(){
+		var self = this;
 		this.id;
 		this.petToEdit;
 		this.options;
@@ -23,7 +26,16 @@ define(function (require) {
 		this.photoUrl = ko.observable('../app/assets/images/gallery/image4.jpg');
 		this.fileUpload;
 		this.modal;
-		this.picArray = ko.observableArray([]);
+		this.picArray = ko.observableArray().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Please select atleast one picture'
+                     },
+                     arrayLessThanOrEqual: {
+                        params: { length : 8 },
+                        message: 'You can upload only 8 pictures'
+                     }
+                 });
 		this.cropperContainer;
 		this.view;
 		
@@ -31,29 +43,85 @@ define(function (require) {
 		var sortedAvailabelKinds = _.sortBy(availableKinds, 'order');
 		this.availableKinds = ko.observableArray(sortedAvailabelKinds);
 		this.selectedKind = ko.observable().extend({
-                     required: true
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Please select kind of animal'
+			         }
                  });
-		this.specifyKind = ko.observable();
+		this.specifyKind = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Please enter what kind',
+			                 	onlyIf: function() {
+						            return self.selectedKind() && self.selectedKind().code === 'OTHER';
+						        }
+			         }
+                 });
 
 		var availableGenders = _.findByValues(services.dataTypes(), "type", ["gender"]);
 		var sortedAvailabelGenders = _.sortBy(availableGenders, 'order');
 		this.availableGenders = ko.observableArray(sortedAvailabelGenders);
-		this.selectedGender = ko.observable();
+		this.selectedGender = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Gender is required'
+			         }
+                 });
 
 		// var availableStatuses = _.findByValues(services.dataTypes(), "type", ["animalStatus"]);
 		// var sortedAvailableStatuses = _.sortBy(availableStatuses, 'order');
 		// this.availableStatuses = ko.observableArray(sortedAvailableStatuses);
 		// this.selectedStatus = ko.observable();
 
-		this.age = ko.observable();
-		this.color = ko.observable();
+		this.age = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Age is required'
+			         }
+                 });
+		this.color = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Color is required'
+			         }
+                 });
 
-		this.weight = ko.observable();
-		this.dateFound = ko.observable();
+		this.weight = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Weight is required'
+			         }
+                 });
+		this.dateFound = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Date is required'
+			         }
+                 });
 
-		this.breed = ko.observable();
-		this.notes = ko.observable();
-		this.bio = ko.observable();
+		this.breed = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Breed is required'
+			         }
+                 });
+		this.notes = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Notes are required'
+			         }
+                 });
+		this.bio = ko.observable().extend({
+                     required: { 
+			                 	params: true, 
+			                 	message: 'Bio is required'
+			         }
+                 });
+
+
+    	this.deleteImage = function(data, event){
+    		self.picArray.splice(self.picArray.indexOf(data), 1);
+    	}
 	};
 
 	vm.prototype = {
@@ -88,6 +156,8 @@ define(function (require) {
 							break;
 						}
 					}
+
+					self.specifyKind(self.selectedKind().code === 'OTHER'? self.petToEdit.specifyKind : null);
 
 					for(var i = 0; i < self.availableGenders().length; i++){
 						if(self.availableGenders()[i].code == self.petToEdit.gender.code){
@@ -224,14 +294,14 @@ define(function (require) {
     		Promise.all(promiseArray).then(function(){
     			services.savePet(formData).then(function(result){
                 	console.log(result);
-                	alert('success***********');
+                	toastr.success('New pet has been added', 'Pet added', {timeOut: 5000});
+                    router.navigate('pets');
 	            }, function(err){
-	                throw new Error('Error saving pet', err);
+	                console.log(err);
+	                //throw new Error('Error saving user', err);
+                    toastr.error('Something went wrong while saving pet', 'Oops!', {timeOut: 5000});
 	            });
     		});
-    	},
-    	deleteImage : function(data, event){
-    		
     	}
 	};
 

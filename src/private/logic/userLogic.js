@@ -5,7 +5,9 @@ Promise = require('promise/lib/es6-extensions'),
 jwt = require('jsonwebtoken'),
 fs = require('fs'),
 User = mongoose.model('User'),
-durandalRoutes = require("../routes/durandalRoutes.js"),
+durandalRoutes = require('../routes/durandalRoutes.js'),
+customError = require('../logic/customError.js'),
+errorMetaData = require('../logic/ErrorMetaData.js');
 crypto = require('crypto');
 
 module.exports = {
@@ -153,6 +155,24 @@ module.exports = {
 
 	saveUser : function(fields, files){
 		
+		var userExistsPromise = new Promise(function(resolve, reject){
+			if(!fields.id){
+				//check if user exists
+				User.findOne({ username: fields.username })
+		  			.then(function(user) {
+		  				if(user){
+		  					reject();
+		  				}else{
+		  					resolve();
+		  				}
+		  			}, function(err){
+		  				reject(err);
+		  			});
+	  		}else{
+	  			resolve();
+	  		}
+		});
+
 		var promiseArray = []
 			,urlArray = []
 			,targetPath = null
@@ -180,7 +200,8 @@ module.exports = {
 						fs.rename(tempPath, targetPath, function(err) {
 				            if(err) {
 				            	//throw err
-				            	reject(new Error(err.message));
+				            	reject(err);
+				            	//return err;
 				            }else{
 				            	console.log("Upload completed!");
 				            	console.log(targetPath);
@@ -193,16 +214,25 @@ module.exports = {
 			);
 		}
 
-		return Promise.all(promiseArray)
+		return userExistsPromise.then(function(){
+			return Promise.all(promiseArray, function(){
+				return 'Image upload Failed';
+			})
+		}, function(err){
+			//user exixts
+			throw new customError(errorMetaData.USER_EXISTS);
+		})
 		.then(function(){
-			return Promise.all(thumbnailPromises)
+			return Promise.all(thumbnailPromises, function(err){
+				//thmbnails conversion failed
+				throw new customError(errorMetaData.THUMBNAIL_CREATION_FAILED);
+			});
 		})
 		.then(function(){
 			var toBeSaved = { 
 					firstname: fields.firstname,
 					lastname : fields.lastname, 
 				    role: JSON.parse(fields.role), 
-				    username: fields.username,
 				    password : fields.password,
 					phone : fields.phone,
 					email : fields.email,
@@ -211,32 +241,29 @@ module.exports = {
 					isDisabled : fields.isDisabled
 				};
 
-			if(fields.id)
+			if(fields.id){
 				return User.findOneAndUpdate({ _id: fields.id }, toBeSaved)
-	  			.exec(function(err, updatedUser) {
-	  				if(err){
-	  					console.log(err);
-	  					return err;
-	  				}
-
+	  			.exec()
+	  			.then(function(updatedUser){
 	  				return updatedUser;
+	  			}, function(err){
+	  				//return new Error(err.message);
+	  				throw new customError(errorMetaData.FAILED_TO_UPDATE_USER);
 	  			});
-			else return new User(toBeSaved).save(function(err, newUser){
-				if(err){
-					console.log(err);
-					return err;
-				}
+	  		}
+			else {
+				toBeSaved.username = fields.username;
 
-				return newUser;
-			});
+				return new User(toBeSaved).save()
+				.then(function(newUser){
+					return newUser;
+				}, function(err){
+					throw new customError(errorMetaData.FAILED_TO_SAVE_USER);
+				});
+			}
 		})
-		.then(function(){
-			console.log('User saved successfully');
-		})
-		.catch(function(err){
-			console.log(err);
-			//return reject(err);
-			return err;
-		});
+		// .catch(function(err){
+		// 	return err;
+		// });
 	}
 }

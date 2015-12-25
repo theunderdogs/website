@@ -43,7 +43,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Username</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. johnsmith" data-bind='value: username'>
+								<input type="text" class="form-control" placeholder="Ex. johnsmith" data-bind='value: username, enable: !userToEdit'>
 								<span class="help-block" data-bind="validationMessage: username"></span>
 							</div>
 						</div>
@@ -66,7 +66,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">Phone</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" placeholder="Ex. XXX-XXX-XXXX" data-bind='value: phone'>
+								<input type="text" class="form-control" placeholder="Ex. XXXXXXXXXX" data-bind='value: phone'>
 								<span class="help-block" data-bind="validationMessage: phone"></span>
 							</div>
 						</div>
@@ -125,7 +125,7 @@
 					<div class="col-md-12">
 						<button class="btn btn-success fileinput-button" data-bind='click: addFiles'><i class="fa fa-plus"></i> <!-- ko text: picArray().length > 0 ? 'Replace pic' : 'Add pic' --> <!-- /ko --></button>
 						<input type="file" id="fileUpload" data-bind="visible: false, event : { change: onFileUpload }" accept="image/*" />
-						<!-- <a class="btn btn-default" data-toggle="modal" href="#responsive">View Demo</a> -->
+						<span class="help-block" data-bind="validationMessage: picArray"></span>
 					</div>
 					<div class="col-md-12">
 						<br>
@@ -155,7 +155,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title">Modal Title</h4>
+								<h4 class="modal-title">Crop Image</h4>
 							</div>
 							<div class="modal-body">
 								 <div class="row">
@@ -186,7 +186,7 @@
 					<div class="col-md-6">
 						<div class="row">
 							<div class="col-md-offset-3 col-md-9">
-								<button type="button" class="btn btn-success" data-bind='click: submitForm'>Submit</button>
+								<button type="button" class="btn btn-success" data-bind='click: submitFormHandler'>Submit</button>
 								<button type="button" class="btn btn-default">Cancel</button>
 							</div>
 						</div>

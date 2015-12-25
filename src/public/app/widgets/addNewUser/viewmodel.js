@@ -1,7 +1,9 @@
 define(function(require) {
     var services = require('services'),
         uiConfig = require('classes/uiconfig');
-    	_ = require("lodash");
+    	_ = require("lodash"),
+        toastr = require('toastr'),
+        router = require('plugins/router');
 
     	require('cropper');
 		require('bootstrap');
@@ -11,15 +13,78 @@ define(function(require) {
 
     var widget = function(){
         this.id;
-        this.firstname = ko.observable();
-    	this.lastname = ko.observable();
-    	this.username = ko.observable();
-    	this.password = ko.observable();
-    	this.phone = ko.observable();
-    	this.email = ko.observable();
-    	this.selectedRole = ko.observable();
+        this.firstname = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'First name is required'
+                     },
+                     alphabetsOnly: {
+                        //params: 'yay',
+                        message: 'First name must have alphabets only'
+                     }
+                 });
+    	this.lastname = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Last name is required'
+                     },
+                     alphabetsOnly: {
+                        //params: 'yay',
+                        message: 'Last name must have alphabets only'
+                     }
+                 });
+    	this.username = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Username is required'
+                     }
+                 });
+    	this.password = ko.observable().extend({
+            required: {
+                params: true,
+                message: 'Password is required'
+            },
+            password: {
+                message: 'Password must have atleast 8 characters, 1 number, 1 upper and 1 lowercase'
+            }
+        });
+    	this.phone = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Phone is required'
+                     },
+                     phone: {
+                        //params: 'yay',
+                        message: 'Phone must have 10 digits only'
+                     }
+                 });
+    	this.email = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Email is required'
+                     },
+                     email : { 
+                                params: true, 
+                                message: 'Email is not valid'
+                     }
+                 });
+    	this.selectedRole = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Role is required'
+                     }
+                 });
     	this.photoUrl = ko.observable();
-    	this.picArray = ko.observableArray();
+    	this.picArray = ko.observableArray().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Please select atleast one picture'
+                     },
+                     arrayMustContainAtLeast: {
+                        length: 1,
+                        message: 'Must have one picture only'
+                     }
+                 });
         this.availableStatus = ko.observableArray([{
             optionValue : 'No',
             value : true
@@ -27,22 +92,28 @@ define(function(require) {
             optionValue : 'Yes',
             value : false
         }]);
-        this.isDisabled = ko.observable();
-        this.userToEdit;
+        this.isDisabled = ko.observable().extend({
+                     required: { 
+                                params: true, 
+                                message: 'Status is required'
+                     }
+                 });
+
+        this.userToEdit = null;
 
     	var availableRoles = _.findByValues(services.dataTypes(), "type", ["userRole"]);
 		var sortedAvailableRoles = _.sortBy(availableRoles, 'order');
 		this.availableRoles = ko.observableArray( _.remove(sortedAvailableRoles, function(n){
                 return n.code != 'ANON'; 
         }) );
-		this.selectedRole = ko.observable();
-
+		
 		this.view;
 		this.cropperContainer;
 		this.fileUpload;
 		this.modal;
 
         this.deleteImageHandler = this.deleteImage.bind(this);
+        this.submitFormHandler = this.submitForm.bind(this);
     };
 
     widget.prototype = {
@@ -149,7 +220,7 @@ define(function(require) {
             }
     	},
     	submitForm : function(data, event){
-    		var validObservable = ko.validatedObservable(data);
+            var validObservable = ko.validatedObservable(this);
 
     		if(!validObservable.isValid()){
     			return validObservable.errors.showAllMessages();
@@ -191,9 +262,13 @@ define(function(require) {
     		Promise.all(promiseArray).then(function(){
     			services.saveUser(formData).then(function(result){
                 	console.log(result);
-                	alert('success***********');
+
+                	toastr.success('New user has been added', 'User added', {timeOut: 5000});
+                    router.navigate('users');
 	            }, function(err){
-	                throw new Error('Error saving user', err);
+                    console.log(err);
+	                //throw new Error('Error saving user', err);
+                    toastr.error(err.responseJSON.message, 'Oops!', {timeOut: 5000});
 	            });
     		});
     	}

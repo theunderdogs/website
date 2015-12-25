@@ -142,6 +142,45 @@ define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knoc
         message: 'Must be 10 digits only'
     };
 
+    /*
+        (/^
+        (?=.*\d)                //should contain at least one digit
+        (?=.*[a-z])             //should contain at least one lower case
+        (?=.*[A-Z])             //should contain at least one upper case
+        [a-zA-Z0-9]{8,}         //should contain at least 8 from the mentioned characters
+        $/)
+    */
+
+    kovalidation.rules['password'] = {
+        validator: function (val, params) {
+            var patt = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+            return patt.test(val);
+        },
+        message: 'Must be 10 digits only'
+    };
+
+    ko.validation.rules['arrayMustContainAtLeast'] = {
+        validator: function (val, length) {
+            if (val.length == length) {
+                return true;
+            }
+            
+            return false;
+        },
+        message: 'Require at least {0} items in list'
+    };
+
+    ko.validation.rules['arrayLessThanOrEqual'] = {
+        validator: function (val, params) {
+            if (val.length <= params.length) {
+                return true;
+            }
+            
+            return false;
+        },
+        message: 'Require at least {0} items in list'
+    };
+
     ko.validation.registerExtenders();
 
     ko.validation = kovalidation;
