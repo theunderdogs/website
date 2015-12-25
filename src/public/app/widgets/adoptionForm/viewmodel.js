@@ -1,9 +1,10 @@
 define(function (require) {
-	//require('recaptcha');
+	require('uniform');
 
 	var services = require('services'),
 		toastr = require('toastr'),
-    	_ = require("lodash");
+    	_ = require("lodash"),
+        agreementViewModel = require('widgets/termsAndConditions/viewmodel');
 
 	var vm = function(settings){
 		var self = this;
@@ -67,6 +68,8 @@ define(function (require) {
 			}
 		}
 
+		this.iagree = ko.observable();
+
 		this.captchaResponse = ko.observable().extend({
                      required: { 
                                 params: true, 
@@ -79,6 +82,9 @@ define(function (require) {
             self.captchaResponse(response);
         };
 
+        this.agreementWidget = ko.observable();
+
+        this.openTermsAndConditionHandler = this.openTermsAndCondition.bind(this);
         this.submitAdoptionApplicationHandler = this.submitAdoptionApplication.bind(this);
 	};
 
@@ -99,6 +105,7 @@ define(function (require) {
 		compositionComplete : function(view, parent){
 			this.view = view;
 			this.openModal();
+			$('input[type=checkbox]').uniform();
 		},
 		openModal : function(data, event){
 			$(this.view).modal('show');
@@ -149,6 +156,14 @@ define(function (require) {
             }, function(err){
             	grecaptcha.reset();
                 toastr.error('Something went wrong while submitting your application', 'Error', {timeOut: 5000});
+            });
+		},
+		openTermsAndCondition : function(data, event){
+			var instance = new agreementViewModel();
+
+            this.agreementWidget({ 
+                model: instance, 
+                view: 'widgets/termsAndConditions/view.html' 
             });
 		}
 	};
