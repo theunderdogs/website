@@ -13,11 +13,31 @@ define(function(require) {
             }
         });
 
+    var loadingCounter = 0;
+    var showLoading = ko.observable(false);
+
+    showLoading.subscribe(function(newValue){
+            if(newValue){
+                loadingCounter++;
+                console.log('loadingCounter true ', loadingCounter);
+                //show
+                $('#loadingScreen').css("display", "block");
+            }else{
+                loadingCounter--;
+                console.log('loadingCounter false ', loadingCounter);
+                if(loadingCounter == 0){
+                    //hide
+                    $('#loadingScreen').css("display", "none");
+                }
+            }
+        });
+
     return {
         showSidebar: showSidebar,
         showNotificationIcon: ko.observable(false),
         showTopMenu: ko.observable(false),
         showLogout: ko.observable(false),
+        showLoading: showLoading,
         rebuildRouter : function(routeArray){
                 router.deactivate();
                 router.reset();

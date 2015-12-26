@@ -8,7 +8,8 @@ define(function (require) {
     	//adoptionFormHtml = require('text!widgets/adoptionForm/view.html'),
     	//adoptionFormViewModel = require('widgets/adoptionForm/viewmodel'),
         userInfoViewModel = require('widgets/userInfo/viewmodel'),
-        router = require('plugins/router');
+        router = require('plugins/router'),
+         uiconfig = require('classes/uiconfig');
 
     var vm = function(){
     	var self = this;
@@ -34,6 +35,7 @@ define(function (require) {
 
     vm.prototype = {
     	activate : function(settings){
+            uiconfig.showLoading(true);
     		var self = this;
             this.settings = settings;
     		this.usersToDisplay(settings.data.usersToDisplay);
@@ -41,6 +43,7 @@ define(function (require) {
     	compositionComplete : function(view, parent){
     		this.view = view;
 			$(this.view).find('.mix-grid').mixitup();
+            uiconfig.showLoading(false);
     	}  
     };
 

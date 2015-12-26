@@ -2,7 +2,9 @@ define(function (require) {
 	require("ckeditor");
 
     var services = require('services'),
-    	_ = require("lodash");
+    	_ = require("lodash"),
+        uiconfig = require('classes/uiconfig'),
+        toastr = require('toastr');
 
     var widget = function(){
     	this.view;
@@ -20,6 +22,7 @@ define(function (require) {
             promises.push(services.getNews());
             promises.push(services.getEventLocation());
 
+            uiconfig.showLoading(true);
     		return Promise.all(promises).then(function(result){
     			if(result[0].object){
     				self.aboutUsHtml(result[0].object.html);
@@ -31,6 +34,8 @@ define(function (require) {
                 if(result[2].object){
                     self.eventAddress(result[2].object.location);
                 }
+
+                uiconfig.showLoading(false);
     		});
     	},
     	compositionComplete : function(view, parent){
@@ -57,11 +62,15 @@ define(function (require) {
     									html : CKEDITOR.instances.editor1.getData()
     								} ));
 
+            uiconfig.showLoading(true);
 			services.saveAboutUsHtml(formData).then(function(result){
-            	console.log(result);
-            	alert('success***********');
+            	uiconfig.showLoading(false);
+                console.log(result);
+            	toastr.success('\'About us\' has been updated', 'Updated Successfully', {timeOut: 5000});
+
             }, function(err){
-                throw new Error('Error saving html', err);
+                uiconfig.showLoading(false);
+                toastr.error('Something went wrong while updating \'About us\'', 'Oops!', {timeOut: 5000});
             });
     	},
         saveAddress : function(data, event){
@@ -71,11 +80,14 @@ define(function (require) {
                                         location : ko.unwrap(this.eventAddress())
                                     } ));
 
+            uiconfig.showLoading(true);
             services.saveEventLocation(formData).then(function(result){
+                uiconfig.showLoading(false);
                 console.log(result);
-                alert('success***********');
+                toastr.success('\'Event location\' has been updated', 'Updated Successfully', {timeOut: 5000});
             }, function(err){
-                throw new Error('Error saving address', err);
+                uiconfig.showLoading(false);
+                toastr.error('Something went wrong while updating \'Event location\'', 'Oops!', {timeOut: 5000});
             });
         },
     	cancel : function(data, event){
@@ -88,11 +100,14 @@ define(function (require) {
                                         html : CKEDITOR.instances.editor2.getData()
                                     } ));
 
+            uiconfig.showLoading(true);
             services.saveNews(formData).then(function(result){
+                uiconfig.showLoading(false);
                 console.log(result);
-                alert('success***********');
+                toastr.success('\'News\' has been updated', 'Updated Successfully', {timeOut: 5000});
             }, function(err){
-                throw new Error('Error saving html', err);
+                uiconfig.showLoading(false);
+                toastr.error('Something went wrong while updating \'News\'', 'Oops!', {timeOut: 5000});
             });
         } 
     };

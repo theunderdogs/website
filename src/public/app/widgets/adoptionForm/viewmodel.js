@@ -4,6 +4,7 @@ define(function (require) {
 	var services = require('services'),
 		toastr = require('toastr'),
     	_ = require("lodash"),
+        uiconfig = require('classes/uiconfig'),
         agreementViewModel = require('widgets/termsAndConditions/viewmodel');
 
 	var vm = function(settings){
@@ -148,12 +149,16 @@ define(function (require) {
 									  status : JSON.stringify( ko.unwrap(this.status()) )
     								}));
 
+            uiconfig.showLoading(true);
+
     		services.submitAdoptionApplication(formData).then(function(result){
-            	storage.local(key, key);
+            	uiconfig.showLoading(false);
+                storage.local(key, key);
             	console.log(result);
             	toastr.success('We will contact you shortly', 'Application received', {timeOut: 5000});
-            	data.closeModal();
+            	data.closeModal();   
             }, function(err){
+                uiconfig.showLoading(false);
             	grecaptcha.reset();
                 toastr.error('Something went wrong while submitting your application', 'Error', {timeOut: 5000});
             });

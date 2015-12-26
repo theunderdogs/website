@@ -1,5 +1,6 @@
 define(function(require) {
-    var services = require('services');
+    var services = require('services'),
+        uiconfig = require('classes/uiconfig');
 
     var wigdet = function() {
     	this.applications = ko.observableArray();
@@ -11,10 +12,12 @@ define(function(require) {
             var promises = [];
             promises.push(services.getVolunteers());
 
+            uiconfig.showLoading(true);
             return Promise.all(promises).then(function(result){
                 if(result && result[0].object){
                     self.applications(result[0].object);
                 }
+                uiconfig.showLoading(false);
             });
     	},
         formatDate : function(_date){

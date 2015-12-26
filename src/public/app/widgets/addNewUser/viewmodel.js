@@ -123,6 +123,7 @@ define(function(require) {
         activate: function(options){
             var self = this;
             if(options && options.data && options.data.userToEdit){
+                uiConfig.showLoading(true);
                 console.log("options", options.data.userToEdit);
                 this.id = options.data.userToEdit._id;
                 this.userToEdit = options.data.userToEdit;    
@@ -156,6 +157,7 @@ define(function(require) {
                         canvas : canvas,
                         isNew : true
                     }]);  //data.photoUrl()
+                    uiConfig.showLoading(false);
                 });
             }
         },
@@ -168,7 +170,8 @@ define(function(require) {
             this.picArray([]);
         },
     	onFileUpload : function(data, event){
-    		var self = this;
+    		uiConfig.showLoading(true);
+            var self = this;
     		var file = event.target.files[0];
 	        var reader = new FileReader();
 
@@ -178,6 +181,7 @@ define(function(require) {
 	           self.photoUrl(result);
 	           self.cropperContainer.cropper('replace', self.photoUrl());
 	           self.modal.modal('show');
+               uiConfig.showLoading(false);
 	        };
 
 	        if(file)
@@ -186,6 +190,7 @@ define(function(require) {
 	        }
     	},
     	cropImage : function(data, event){
+            uiConfig.showLoading(true);
     		var result = this.cropperContainer.cropper('getCroppedCanvas');
     		data.photoUrl(result.toDataURL());
     		this.cropperContainer.cropper('replace', data.photoUrl());
@@ -195,6 +200,7 @@ define(function(require) {
     		}]);  //data.photoUrl()
     		data.modal.modal('hide');
     		$(this.view).find('.mix-grid').mixitup();
+            uiConfig.showLoading(false);
     	},
     	compositionComplete : function(view, parent){
 			this.fileUpload = $(view).find('#fileUpload').eq(0);
@@ -259,13 +265,16 @@ define(function(require) {
 				}));
 			});
         	
+            uiConfig.showLoading(true);
     		Promise.all(promiseArray).then(function(){
     			services.saveUser(formData).then(function(result){
+                    uiConfig.showLoading(false);
                 	console.log(result);
 
                 	toastr.success('New user has been added', 'User added', {timeOut: 5000});
                     router.navigate('users');
 	            }, function(err){
+                    uiConfig.showLoading(false);
                     console.log(err);
 	                //throw new Error('Error saving user', err);
                     toastr.error(err.responseJSON.message, 'Oops!', {timeOut: 5000});

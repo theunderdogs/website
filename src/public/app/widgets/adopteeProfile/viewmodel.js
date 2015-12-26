@@ -12,7 +12,7 @@ define(function (require) {
 		this.petInfoWidget =  ko.observable();
 
 		this.openPetInfo = function(data, event){
-            var petInfoInstance = new petInfoViewModel({ data : settings.data.animal, showAdoptMe : false });
+            var petInfoInstance = new petInfoViewModel({ data : settings.data.animal, showAdoptMe : false, showNotes: true });
 
             self.petInfoWidget({ 
                 model: petInfoInstance, 

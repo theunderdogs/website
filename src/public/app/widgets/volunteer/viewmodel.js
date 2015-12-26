@@ -1,6 +1,7 @@
 define(function(require) {
     var services = require('services'),
         toastr = require('toastr'),
+         uiconfig = require('classes/uiconfig'),
         router = require('plugins/router');
 
     var wigdet = function() {
@@ -116,7 +117,9 @@ define(function(require) {
     								  email : ko.unwrap(this.email())
     								}));
 
+            uiconfig.showLoading(true);
            services.saveNewVolunteer(formData).then(function(result){
+              uiconfig.showLoading(false);
               storage.local(key, key);
 
             	toastr.success('We will contact you shortly', 'Application received', {timeOut: 5000});

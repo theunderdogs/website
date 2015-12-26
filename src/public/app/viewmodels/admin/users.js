@@ -1,6 +1,7 @@
 define(function(require) {
     var page = require('viewmodels/page'),
-    	services = require('services');
+    	services = require('services'),
+         uiconfig = require('classes/uiconfig');
     
     var vm = function() {
 		page.call(this, {
@@ -31,11 +32,13 @@ define(function(require) {
     	var self= this,
     		promises = [];
 
+            uiconfig.showLoading(true);
     		promises.push(services.getUsers());
 
     	return Promise.all(promises).then(function(result){
     			self.widgetCollection.push({ kind : 'userGrid', data: { usersToDisplay : result[0].object } });
-    		});
+    		      uiconfig.showLoading(false);
+            });
     };
 
     return vm;  //vm extends page

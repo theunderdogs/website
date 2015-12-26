@@ -1,6 +1,7 @@
 define(function(require) {
     var page = require('viewmodels/page'),
-        services = require('services');
+        services = require('services'),
+        uiconfig = require('classes/uiconfig');
     
     vm = function() {
 		page.call(this, {
@@ -31,10 +32,12 @@ define(function(require) {
     	var self= this,
     		promises = [];
 
+            uiconfig.showLoading(true);
     		promises.push(services.getPets());
 
     	return Promise.all(promises).then(function(result){
     			self.widgetCollection.push({ kind : 'petGrid', data: { petsToDisplay : result[0].object, showAdoptMe : false, showNotes : true, showEdit : true } });
+                uiconfig.showLoading(false);
     		});
     };
 

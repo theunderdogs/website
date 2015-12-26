@@ -1,6 +1,7 @@
 define(function (require) {
 	var services = require('services'),
     	_ = require("lodash"),
+    	uiconfig = require('classes/uiconfig'),
     	adopteeProfileViewModel = require('widgets/adopteeProfile/viewmodel');
 
 	var vm = function(settings){
@@ -33,9 +34,11 @@ define(function (require) {
     		var promises = [];
     		promises.push(services.getAdoptionApplications());
 
+    		uiconfig.showLoading(true);
     		return Promise.all(promises).then(function(result){
     			self.applications = result[0].object;
     			self.selectedLabel(self.availableLabels()[0].optionValue);
+    			uiconfig.showLoading(false);
     		});
 		},
 		onLabelClick : function(data){

@@ -7,7 +7,7 @@ define(function (require) {
 
     var services = require('services'),
     	_ = require("lodash"),
-    	uiConfig = require('classes/uiconfig'),
+    	uiconfig = require('classes/uiconfig'),
     	toastr = require('toastr'),
         router = require('plugins/router');
 
@@ -130,6 +130,7 @@ define(function (require) {
 			this.options = options;
 
 			if(this.options.data.petid){
+				uiconfig.showLoading(true);
 				this._id = this.options.data.petid;
 				
 				var formData = new FormData();
@@ -169,12 +170,12 @@ define(function (require) {
 					var promisePhotoUrls = [];
 
 					for(var i = 0; i < self.petToEdit.photoUrls.length; i++){
-						promisePhotoUrls.push(uiConfig.getCanvasFromImage(self.petToEdit.photoUrls[i].replace('thumbnails','')));
+						promisePhotoUrls.push(uiconfig.getCanvasFromImage(self.petToEdit.photoUrls[i].replace('thumbnails','')));
 					}					
 
 					return Promise.all(promisePhotoUrls)
 		                .then(function(canvasArray){
-		                    console.log('Promise resolved');
+		                    
 		                    //console.warn(canvas.toDataURL());
 		                    for(var i = 0; i < canvasArray.length; i++){
 			                    self.picArray.push({
@@ -210,6 +211,7 @@ define(function (require) {
 				//for edits
 				 $(this.view).find('.mix-grid').mixitup();
 				$(view).find('.date-picker').eq(0).datepicker("setDate", this.dateFound());
+				uiconfig.showLoading(false);
 			}
 			else {
 				$(view).find('.date-picker').eq(0).datepicker();
@@ -220,6 +222,7 @@ define(function (require) {
     		return false;
     	},
     	onFileUpload : function(data, e){
+    		uiconfig.showLoading(true);
     		var self = this;
     		var file = e.target.files[0];
 	        var reader = new FileReader();
@@ -230,6 +233,7 @@ define(function (require) {
 	           self.photoUrl(result);
 	           self.cropperContainer.cropper('replace', self.photoUrl());
 	           self.modal.modal('show');
+	           uiconfig.showLoading(false);
 	        };
 
 	        if(file)
@@ -238,6 +242,7 @@ define(function (require) {
 	        }
     	},
     	cropImage : function(data, e){
+    		uiconfig.showLoading(true);
     		var result = this.cropperContainer.cropper('getCroppedCanvas');
     		data.photoUrl(result.toDataURL());
     		this.cropperContainer.cropper('replace', data.photoUrl());
@@ -247,6 +252,7 @@ define(function (require) {
     		});  //data.photoUrl()
     		data.modal.modal('hide');
     		$(this.view).find('.mix-grid').mixitup();
+    		uiconfig.showLoading(false);
     	},
     	submitForm : function(data, e){
     		var validObservable = ko.validatedObservable(data);
@@ -282,6 +288,7 @@ define(function (require) {
 
     		var promiseArray = [];
 
+    		uiconfig.showLoading(true);
     		$.each(data.picArray(), function( index, imageInfo ) {
 				promiseArray.push(new Promise(function(resolve, reject){  
 					  imageInfo.canvas.toBlob(function(blob){
@@ -293,10 +300,12 @@ define(function (require) {
         	
     		Promise.all(promiseArray).then(function(){
     			services.savePet(formData).then(function(result){
+    				uiconfig.showLoading(false);
                 	console.log(result);
                 	toastr.success('New pet has been added', 'Pet added', {timeOut: 5000});
                     router.navigate('pets');
 	            }, function(err){
+	            	uiconfig.showLoading(false);
 	                console.log(err);
 	                //throw new Error('Error saving user', err);
                     toastr.error('Something went wrong while saving pet', 'Oops!', {timeOut: 5000});

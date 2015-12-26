@@ -33,16 +33,35 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			
   			AdoptionApplication.find()
+  			//.populate([{path:'animal', select:'gender kind user'} , { path: 'status' }])
   			.populate('animal status')
   			.exec(function(err, applications){
-			 		if (err) {
-			 			console.log(err);
-			 			reject(err);
-			 		}
-			 		else{
-			 			resolve(applications);
-			 		}	
-			 	});
+
+  				 var options = [{
+			      path: 'animal.gender',
+			      model: 'DataType'
+			     }, {
+			      path: 'animal.kind',
+			      model: 'DataType'
+			     }, {
+			      path: 'animal.user',
+			      model: 'User'
+			     }];
+
+				if (err) {
+		 			console.log(err);
+		 			return reject(err);
+		 		}
+		 		else{
+		 			AdoptionApplication.populate(applications, options, function(err, apps){
+		 				if(err){
+		 					return reject(err);			
+		 				}
+
+		 				return resolve(apps);
+		 			})
+		 		}	
+			 });
 		});
 	},
 
