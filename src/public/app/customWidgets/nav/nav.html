@@ -28,7 +28,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li data-bind="css: { active: router.activeItem().__moduleId__ == router.navigationModel()[0].moduleId }">
-                        <a data-bind="attr: { href : router.navigationModel()[0].hash}, html: router.navigationModel()[0].title"></a>
+                        <a data-bind="attr: { href : router.navigationModel()[0].hash}, html: router.navigationModel()[0].title" onclick = "$('.page-sidebar').collapse('hide');"></a>
                     </li>
                 </ul>
             </li>
@@ -36,7 +36,7 @@
             <!-- ko foreach: router.navigationModel  -->
             <!-- ko if: $data.nav && $index() > 0 -->
             <li data-bind="css: { active: $parent.router.activeItem().__moduleId__ == $data.moduleId }">
-                <a data-bind="attr: { href : $data.hash}">
+                <a data-bind="attr: { href : $data.hash}" onclick = "$('.page-sidebar').collapse('hide');">
                     <i data-bind="attr : { class : $data.css }"></i>
                     <span class="title" data-bind="html: $data.title"></span>
                 </a>

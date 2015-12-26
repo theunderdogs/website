@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        <!--this menu is top menu when user is not logged in-->
+        <!--this menu is top menu when user is not logged in (DESKTOP) -->
         <!-- ko if: uiconfig.showTopMenu  -->
             <div class="collapse navbar-collapse" data-bind="visible: uiconfig.showTopMenu">
               <ul class="nav navbar-nav" data-bind="visible: uiconfig.showTopMenu, foreach: router.navigationModel">
@@ -91,12 +91,13 @@
 
     <div data-bind="compose: {model : navbar}"></div>
 
+   <!--this menu is top menu when user is not logged in  (MOBILE)-->
     <div data-bind="visible: !uiconfig.showSidebar()" class="hidden-lg hidden-md">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
               <ul class="nav navbar-nav" data-bind="foreach: router.navigationModel">
                 <!-- ko if: $data.nav  -->
                 <li data-bind="css: { active: $parent.router.activeItem().__moduleId__ == $data.moduleId }">
-                    <a style="color: #cecfd3;" data-bind="attr: { href : $data.hash}, text: $data.title">Home</a>
+                    <a style="color: #cecfd3;" data-bind="attr: { href : $data.hash}, text: $data.title" onclick = "$('#bs-example-navbar-collapse-6').collapse('hide');">Home</a>
                 </li>
                 <!-- /ko --> 
               </ul>
