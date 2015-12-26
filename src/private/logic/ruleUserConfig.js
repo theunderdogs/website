@@ -4,12 +4,13 @@ module.exports = {
 	ADMIN : {
 			allowed : [
 				rules.saveNewPet,
+				rules.canAddUser
 			],
 			notAllowed : []
 	},
 	POWERUSER : {
 			allowed : [
-				rules.saveNewPet,
+				rules.saveNewPet
 			],
 			notAllowed : []
 	},

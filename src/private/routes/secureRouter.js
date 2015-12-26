@@ -184,7 +184,7 @@ module.exports = function(router, passport){
 		});
 	});
 
-	router.post('/saveUser', passport.authenticate('bearer', { session: false }), function(req, res){
+	router.post('/saveUser', passport.authenticate('bearer', { session: false }), middleware.hasPermission(rules.canAddUser), function(req, res){
 		
 		var form = new multiparty.Form();
 

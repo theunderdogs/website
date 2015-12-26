@@ -174,7 +174,10 @@ $(document).ready(function() {
 
   var func = function () {
   		var k = {
-		  	USER_ROLE: 'ANON',
+		  	USER_ROLE: { 
+				    optionValue: 'Anonymous',
+					code: 'ANON'
+				  },
 		  	token: null
 		  };
 
