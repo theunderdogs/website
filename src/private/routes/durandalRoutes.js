@@ -19,6 +19,25 @@ module.exports = {
 			   { route: 'editUser/:id', title:'Edit User', moduleId: 'viewmodels/admin/addNewUser', nav: false, css : 'icon-user' }
 			 ]
             },
+    POWERUSER : {
+    	uiconfig : {
+			   		showSidebar: true,
+			        showNotificationIcon: true,
+			        showTopMenu: false,
+			        showLogout: true
+			   },
+			   routes : [
+			   { route: '', title:'Welcome', moduleId: 'viewmodels/admin/dashboard', nav: true, css : 'icon-home' },
+			   { route: 'addNewPet', title:'Add New Pet', moduleId: 'viewmodels/admin/addNewPet', nav: true, css : 'icon-plus' },
+			   { route: 'editPet/:id', title:'Edit Pet', moduleId: 'viewmodels/admin/addNewPet', nav: false, css : 'icon-plus' },
+			   { route: 'pets', title:'Pets', moduleId: 'viewmodels/admin/pets', nav: true, css : 'icon-pin' },
+			   { route: 'applications', title:'Adoption applications', moduleId: 'viewmodels/admin/applications', nav: true, css : 'icon-docs' },
+			   { route: 'volunteers', title:'Volunteer applications', moduleId: 'viewmodels/admin/volunteers', nav: true, css : 'icon-paper-clip' },
+			   { route: 'editaboutus', title:'Edit \'About Us\'', moduleId: 'viewmodels/admin/editaboutus', nav: true, css : 'icon-user' },
+			   { route: 'users', title:'Users', moduleId: 'viewmodels/admin/users', nav: true, css : 'icon-user' },
+			   { route: 'addNewUser', title:'Add New User', moduleId: 'viewmodels/admin/addNewUser', nav: true, css : 'icon-user' },
+			   { route: 'editUser/:id', title:'Edit User', moduleId: 'viewmodels/admin/addNewUser', nav: false, css : 'icon-user' }]
+			},
 	ANON : {
 			   uiconfig : {
 			   		showSidebar: null,

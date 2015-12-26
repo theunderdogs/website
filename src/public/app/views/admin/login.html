@@ -203,8 +203,9 @@ $(document).ready(function() {
   $("#username").focus();
 
   $("input").keypress(function(event) {
-  		event.preventDefault();
+  		
   		if (event.which == 13) {
+	    	event.preventDefault();
 	        $("#loginBtn").trigger('click');
 	    }
 	    //return false;
