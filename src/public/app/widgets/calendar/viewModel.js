@@ -19,7 +19,7 @@ define(function(require) {
 
         $(view).fullCalendar(
              {
-                  googleCalendarApiKey: 'AIzaSyBhCHsSiB-YlfHtWp77HW2NvDUK83GRjlI',
+                 googleCalendarApiKey: 'AIzaSyBhCHsSiB-YlfHtWp77HW2NvDUK83GRjlI',
                  events: 'majuqvemcl0nn28d7k6re633ms@group.calendar.google.com',
                     eventClick: function(event) {
                     // opens events in a popup window
@@ -32,14 +32,17 @@ define(function(require) {
                  },
                 views: {
                     month: { // name of view
-                        titleFormat: "[Events in ]" + 'MMMM YYYY'
+                        //titleFormat: "[Events in ]" + 'MMMM YYYY'
+                        titleFormat: 'MMMM YYYY'
                         // other view-specific options here
                     },
                     agendaWeek : {
-                        titleFormat: "[Events in ]" + 'MMM D YYYY'
+                        //titleFormat: "[Events in ]" + 'MMM D YYYY'
+                        titleFormat: 'MMM D YYYY'
                     },
                     agendaDay : {
-                        titleFormat: "[Events in ]" + 'MMMM D YYYY'
+                        //titleFormat: "[Events in ]" + 'MMMM D YYYY'
+                        titleFormat: 'MMMM D YYYY'
                     }
                 }
              }

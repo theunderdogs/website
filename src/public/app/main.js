@@ -27,7 +27,7 @@
         'ckeditor' : '../lib/ckeditor/ckeditor', 
         'googlecalendar': '../lib/fullCalendar/gcal',
         'moment': '../lib/moment/moment.min',
-        'fullcalendar': '/lib/fullCalendar/fullcalendar.min',
+        'fullcalendar': '/lib/fullCalendar/fullcalendar',
         'gmapsjs' : '../lib/gmaps/gmaps',
 
         async : '../lib/requirejs-plugins/src/async',   

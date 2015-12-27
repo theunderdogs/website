@@ -67,7 +67,7 @@
             <li class="dropdown user">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                 <img alt="" data-bind="attr : { src : photo }" />
-                <span class="username username-hide-on-mobile">Nick </span>
+                <span class="username username-hide-on-mobile" data-bind="text: username">Nick </span>
                 <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu">
@@ -92,7 +92,7 @@
     <div data-bind="compose: {model : navbar}"></div>
 
    <!--this menu is top menu when user is not logged in  (MOBILE)-->
-    <div data-bind="visible: !uiconfig.showSidebar()" class="hidden-lg hidden-md">
+    <div data-bind="visible: !uiconfig.showSidebar()" class="hidden-lg hidden-md hidden-sm">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
               <ul class="nav navbar-nav" data-bind="foreach: router.navigationModel">
                 <!-- ko if: $data.nav  -->
