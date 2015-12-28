@@ -33,16 +33,16 @@ define(function(require) {
                 views: {
                     month: { // name of view
                         //titleFormat: "[Events in ]" + 'MMMM YYYY'
-                        titleFormat: 'MMMM YYYY'
+                        titleFormat: 'MMM YYYY'
                         // other view-specific options here
                     },
-                    agendaWeek : {
+                    //agendaWeek : {
                         //titleFormat: "[Events in ]" + 'MMM D YYYY'
-                        titleFormat: 'MMM D YYYY'
-                    },
+                   //     titleFormat: 'MMM D YYYY'
+                   // },
                     agendaDay : {
                         //titleFormat: "[Events in ]" + 'MMMM D YYYY'
-                        titleFormat: 'MMMM D YYYY'
+                        titleFormat: 'MMM D YYYY'
                     }
                 }
              }

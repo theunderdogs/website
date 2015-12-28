@@ -216,8 +216,8 @@ define(function(require) {
 				  zoomable: false,
 				  rotatable: false,
 				  scalable: false,
-				  minContainerWidth : 500,
-				  minContainerHeight: 500
+				  //minContainerWidth : 500,
+				  //minContainerHeight: 500
 			});
 
             //for edit

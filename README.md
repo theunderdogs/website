@@ -46,3 +46,4 @@ http://localhost:44085/setup
 -----------------------
 update npm
 - npm -g install npm
+- version of npm installed is 3.5.2
