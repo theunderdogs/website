@@ -27,7 +27,8 @@ define(function(require) {
                     return false;
                 },
                 header: {
-                    right:  'month,agendaWeek,agendaDay, prev,next',
+                    //right:  'month,agendaWeek,agendaDay, prev,next',
+                    right:  'prev,next',
                     
                  },
                 views: {
