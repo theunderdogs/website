@@ -2,7 +2,7 @@
 	<div class="row mix-grid" data-bind="foreach: usersToDisplay">
 		<div class="col-md-3 col-sm-4 mix category_1">
 			<div class="mix-inner">
-				<img class="img-responsive" data-bind="attr: {src: photo.replace('protected/thumbnails', 'protected/thumbnails/300') }" alt=""/>
+				<img class="img-responsive" data-bind="attr: {src: photo.replace('thumbnails', 'thumbnails/300') }" alt=""/>
 				<div class="mix-details">
 					<h4 data-bind="html: 'First: ' + firstname + ', Last: ' + lastname + '<br>'"></h4>
 					<button type="button" class="btn btn-warning" data-bind="click: $parent.openUserInfo">Info</button>
