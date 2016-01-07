@@ -35,21 +35,26 @@ module.exports = {
 						
 						targetPath = __dirname + '/../../public/cdn/pets/' + fileName + '.jpeg';
 
-						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn/pets','cdn/pets/thumbnails'),
+						thumbnailPromises.push(easyimg.thumbnail({src: tempPath, dst: targetPath.replace('cdn/pets','cdn/pets/thumbnails'),
      width:300, height:169}));
+
+						thumbnailPromises.push(easyimg.thumbnail({src: tempPath, dst: targetPath,
+     width:800, height:450}));
 						
 						urlArray.push('cdn/pets/thumbnails/' + fileName + '.jpeg');
 						
-						fs.rename(tempPath, targetPath, function(err) {
-				            if(err) {
-				            	//throw err
-				            	reject(new Error(err.message));
-				            }else{
-				            	console.log("Upload completed!");
-				            	console.log(targetPath);
-				            	resolve();
-				        	}
-				        });
+						// fs.rename(tempPath, targetPath, function(err) {
+				  //           if(err) {
+				  //           	//throw err
+				  //           	reject(new Error(err.message));
+				  //           }else{
+				  //           	console.log("Upload completed!");
+				  //           	console.log(targetPath);
+				  //           	resolve();
+				  //       	}
+				  //       });
+
+						resolve();
 					}
 	
 				})

@@ -8,6 +8,7 @@ User = mongoose.model('User'),
 durandalRoutes = require('../routes/durandalRoutes.js'),
 customError = require('../logic/customError.js'),
 errorMetaData = require('../logic/ErrorMetaData.js');
+easyimg = require('easyimage'),
 crypto = require('crypto');
 
 module.exports = {
@@ -196,22 +197,29 @@ module.exports = {
 
 				        targetPath = __dirname + '/../../public/cdn/protected/' + fileName + '.jpeg';
 
-						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn/protected','cdn/protected/thumbnails'),
+				        thumbnailPromises.push(easyimg.thumbnail({src: tempPath, dst: targetPath.replace('cdn/protected','cdn/protected/thumbnails'),
      width:40, height:40}));
+
+						thumbnailPromises.push(easyimg.thumbnail({src: tempPath, dst: targetPath.replace('cdn/protected','cdn/protected/thumbnails/300'),
+     width:300, height:169}));
+
+						thumbnailPromises.push(easyimg.thumbnail({src: tempPath, dst: targetPath, width:800, height:450}));
 						
 						urlArray.push('cdn/protected/thumbnails/' + fileName + '.jpeg');
 						
-						fs.rename(tempPath, targetPath, function(err) {
-				            if(err) {
-				            	//throw err
-				            	reject(err);
-				            	//return err;
-				            }else{
-				            	console.log("Upload completed!");
-				            	console.log(targetPath);
-				            	resolve();
-				        	}
-				        });
+						// fs.rename(tempPath, targetPath, function(err) {
+				  //           if(err) {
+				  //           	//throw err
+				  //           	reject(err);
+				  //           	//return err;
+				  //           }else{
+				  //           	console.log("Upload completed!");
+				  //           	console.log(targetPath);
+				  //           	resolve();
+				  //       	}
+				  //       });
+
+							resolve();
 					}
 	
 				})
