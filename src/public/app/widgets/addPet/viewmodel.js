@@ -167,29 +167,14 @@ define(function (require) {
 						}
 					}
 
-					var promisePhotoUrls = [];
+					
 
-					for(var i = 0; i < self.petToEdit.photoUrls.length; i++){
-						promisePhotoUrls.push(uiconfig.getCanvasFromImage(self.petToEdit.photoUrls[i].replace('thumbnails','')));
-					}					
-
-					return Promise.all(promisePhotoUrls)
-		                .then(function(canvasArray){
-		                    
-		                    //console.warn(canvas.toDataURL());
-		                    for(var i = 0; i < canvasArray.length; i++){
-			                    self.picArray.push({
-			                        canvas : canvasArray[i],
-			                        isNew : true
-			                    });  //data.photoUrl()
-			                }
-
-			                //return Promise.resolve(true);
-		                });
+					    
 				});
 			}
 		},
 	 	compositionComplete : function(view, parent){
+	 		var self = this;
 			this.fileUpload = $(view).find('#fileUpload').eq(0);
 			this.modal = $(view).find('#responsive').eq(0);
 			this.cropperContainer = $(view).find('.myImage').eq(0);
@@ -209,9 +194,30 @@ define(function (require) {
 
 			if(this.options.data.petid){
 				//for edits
-				 $(this.view).find('.mix-grid').mixitup();
+				var promisePhotoUrls = [];
+
+				for(var i = 0; i < self.petToEdit.photoUrls.length; i++){
+						promisePhotoUrls.push(uiconfig.getCanvasFromImage(self.petToEdit.photoUrls[i].replace('thumbnails','')));
+					}					
+
+				Promise.all(promisePhotoUrls)
+	            .then(function(canvasArray){
+	                    
+                    //console.warn(canvas.toDataURL());
+                    for(var i = 0; i < canvasArray.length; i++){
+	                    self.picArray.push({
+	                        canvas : canvasArray[i],
+	                        isNew : true
+	                    });  //data.photoUrl()
+	                }
+
+	                $(self.view).find('.mix-grid').mixitup();
+	                uiconfig.showLoading(false);
+	                //return Promise.resolve(true);
+                });
+
 				$(view).find('.date-picker').eq(0).datepicker("setDate", this.dateFound());
-				uiconfig.showLoading(false);
+				
 			}
 			else {
 				$(view).find('.date-picker').eq(0).datepicker();

@@ -71,10 +71,9 @@ define(function(require) {
                     resolve(canvas);
                 };
 
+                image.src = url;
             });
             
-            image.src = url;
-
             return imgPromise;
         }
     };

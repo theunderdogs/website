@@ -148,17 +148,6 @@ define(function(require) {
                         break;
                     }
                 }
-
-                return uiConfig.getCanvasFromImage(this.userToEdit.photo.replace('thumbnails',''))
-                .then(function(canvas){
-                    console.log('Promise resolved');
-                    //console.warn(canvas.toDataURL());
-                    self.picArray([{
-                        canvas : canvas,
-                        isNew : true
-                    }]);  //data.photoUrl()
-                    uiConfig.showLoading(false);
-                });
             }
         },
     	addFiles : function(data, event){
@@ -203,6 +192,7 @@ define(function(require) {
             uiConfig.showLoading(false);
     	},
     	compositionComplete : function(view, parent){
+            var self = this;
 			this.fileUpload = $(view).find('#fileUpload').eq(0);
 			this.modal = $(view).find('#responsive').eq(0);
 			this.cropperContainer = $(view).find('.myImage').eq(0);
@@ -221,8 +211,20 @@ define(function(require) {
 			});
 
             //for edit
-            if(this.picArray().length > 0){
-                $(this.view).find('.mix-grid').mixitup();
+            if(this.id){
+
+                uiConfig.getCanvasFromImage(this.userToEdit.photo.replace('thumbnails',''))
+                .then(function(canvas){
+                    console.log('Promise resolved');
+                    //console.warn(canvas.toDataURL());
+                    self.picArray([{
+                        canvas : canvas,
+                        isNew : true
+                    }]);  //data.photoUrl()
+                    
+                    $(self.view).find('.mix-grid').mixitup();
+                    uiConfig.showLoading(false);
+                });
             }
     	},
     	submitForm : function(data, event){
