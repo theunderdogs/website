@@ -102,6 +102,7 @@
             console.log(storage.local("userConfig"));
         },
         logout : function(data, event){
+            storage.local("userConfig", null);
             window.location = services.getLogoutLink();
         }
     }

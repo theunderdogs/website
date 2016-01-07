@@ -189,13 +189,17 @@ module.exports = {
 					}else{
 						//throw error
 						tempPath = files[i].path;
-						fileName = tempPath.split('\\')[tempPath.split('\\').length - 1];
-						targetPath = __dirname + '\\..\\..\\public\\cdn\\protected' + '\\' + fileName + '.jpeg';
+						fileName = jwt.sign(tempPath, 
+				        	'1', {
+				          	expiresInMinutes: 1000 // expires in 24 hours
+				        });
 
-						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn\\protected','cdn\\protected\\thumbnails'),
+				        targetPath = __dirname + '/../../public/cdn/protected/' + fileName + '.jpeg';
+
+						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn/protected','cdn/protected/thumbnails'),
      width:40, height:40}));
 						
-						urlArray.push('cdn\\protected\\thumbnails' + '\\' + fileName + '.jpeg');
+						urlArray.push('cdn/protected/thumbnails/' + fileName + '.jpeg');
 						
 						fs.rename(tempPath, targetPath, function(err) {
 				            if(err) {

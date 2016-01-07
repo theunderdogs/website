@@ -5,7 +5,8 @@ User = mongoose.model('User'),
 fs = require('fs')
 Animal = mongoose.model('Animal'),
 easyimg = require('easyimage'),
-adoptorLogic = require('../logic/adoptorLogic.js');
+adoptorLogic = require('../logic/adoptorLogic.js'),
+jwt = require('jsonwebtoken');
 
 module.exports = {
 
@@ -27,13 +28,17 @@ module.exports = {
 					}else{
 						//throw error
 						tempPath = files[i].path;
-						fileName = tempPath.split('\\')[tempPath.split('\\').length - 1];
-						targetPath = __dirname + '\\..\\..\\public\\cdn\\pets' + '\\' + fileName + '.jpeg';
+						fileName = jwt.sign(tempPath, 
+				        	'1', {
+				          	expiresInMinutes: 1000 // expires in 24 hours
+				        });//tempPath.split('/')[tempPath.split('/').length - 1];
+						
+						targetPath = __dirname + '/../../public/cdn/pets/' + fileName + '.jpeg';
 
-						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn\\pets','cdn\\pets\\thumbnails'),
+						thumbnailPromises.push(easyimg.thumbnail({src: targetPath, dst: targetPath.replace('cdn/pets','cdn/pets/thumbnails'),
      width:300, height:169}));
 						
-						urlArray.push('cdn\\pets\\thumbnails' + '\\' + fileName + '.jpeg');
+						urlArray.push('cdn/pets/thumbnails/' + fileName + '.jpeg');
 						
 						fs.rename(tempPath, targetPath, function(err) {
 				            if(err) {

@@ -73,7 +73,7 @@ define(function(require) {
             var self = this;
 
             grecaptcha.render( $(view).find('#captchaDiv')[0], {
-                      sitekey : '6Lf3bhMTAAAAAPrzTxDV4IH6iN7fl1-gRBtuSafk',
+                      sitekey : uiconfig.captchaKey,
                       theme : 'light',
                       callback : self.verifyCaptcha,
                       parentModule : self

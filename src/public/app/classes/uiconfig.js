@@ -38,6 +38,7 @@ define(function(require) {
         showTopMenu: ko.observable(false),
         showLogout: ko.observable(false),
         showLoading: showLoading,
+        captchaKey: '6Lf3bhMTAAAAAPrzTxDV4IH6iN7fl1-gRBtuSafk',
         rebuildRouter : function(routeArray){
                 router.deactivate();
                 router.reset();
