@@ -21,7 +21,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12 col-sm-12">
-								<img class="img-responsive" data-bind="attr: { src : bigImage }">
+								<img class="img-responsive" data-bind="attr: { src : bigImage().replace('thumbnails/','') }">
 							</div>
 						</div>	
 					</div>
@@ -56,9 +56,7 @@
 		</div>
 	</div>
 
-	<!-- ko if: adoptionFormWidget -->
-		<!-- ko compose: adoptionFormWidget --><!-- /ko --> 
-	<!-- /ko --> 
+
 
 </div>
 <!-- END FORM-->

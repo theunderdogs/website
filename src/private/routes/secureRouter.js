@@ -184,20 +184,41 @@ module.exports = function(router, passport){
 		});
 	});
 
-	router.post('/saveUser', passport.authenticate('bearer', { session: false }), middleware.hasPermission(rules.canAddUser), function(req, res){
-		
-		var form = new multiparty.Form();
+	router.post('/saveUser', passport.authenticate('bearer', { session: false }),
 
-		form.parse(req, function(err, fields, files){
-			
-			if(err){
-				res.statusCode = 500;
-				res.json({ success  : false, message: 'Something went wrong' });
-				res.end();
-			}
+		function(req, res, next){
+
+			var userid = req.appData.user.id,
+			form = new multiparty.Form();
+
+			form.parse(req, function(err, fields, files){
+				if(err){
+					res.statusCode = 500;
+					res.json({ success  : false, message: 'Something went wrong' });
+					res.end();
+				}
+
+				req._fields = fields;
+				req._files = files;
+
+				if(!JSON.parse(fields.data).id){
+					middleware.hasPermission(rules.canAddUser)(req, res, next);
+				}
+				else if(JSON.parse(fields.data).id != userid)
+				{
+					middleware.hasPermission(rules.canAddUser)(req, res, next);	
+				}else{
+					next();
+				}
+			});
+
+		}
+		, function(req, res){
+
+		//form.parse(req, function(err, fields, files){
 
 			//es6 promise
-			userLogic.saveUser(JSON.parse(fields.data), files.filesToBeUploaded)			
+			userLogic.saveUser(JSON.parse(req._fields.data), req._files.filesToBeUploaded)			
 			.then(function(result){
 				res.statusCode = 200;
 				res.json({ success  : true, message: 'User saved successfully', object: result });
@@ -208,7 +229,7 @@ module.exports = function(router, passport){
 				res.json({ success  : false, message: err.message });
 				res.end();	
 			});
-		});
+		//});
 	});
 
 	router.post('/getUserById', passport.authenticate('bearer', { session: false }), function(req, res){

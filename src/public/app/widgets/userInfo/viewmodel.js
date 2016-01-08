@@ -8,7 +8,7 @@ define(function (require) {
     	var widget = function(settings){
     		var self = this;
 			this.settings = settings;
-			this.bigImage = ko.observable(settings.data.photo.replace('thumbnails\\', '\\'));
+			this.bigImage = ko.observable(settings.data.photo);
 			this.view;
 			//this.adoptionFormWidget =  ko.observable();
 
