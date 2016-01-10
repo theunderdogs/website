@@ -39,12 +39,12 @@ module.exports = {
 			src : './src/public/app/classes/**/*',
 			dest: './build/public/app/classes'
 		},
-		scss : {
-			src : './src/public/app/scss/*',
-			dest : './build/public/app/css'
-		},
 		css : {
 			src : './src/public/app/css/**/*',
+			dest : './build/public/app/css'
+		},
+		scss : {
+			src : './src/public/app/scss/*',
 			dest : './build/public/app/css'
 		},
 		assets : {

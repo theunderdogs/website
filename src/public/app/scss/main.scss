@@ -2,16 +2,43 @@
 
 // WORKAROUND: vendor-managed (good): @import in output (bad but acceptable)
 @import 'http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all';
-@import '../../lib/font-awesome/css/font-awesome.min.css';
-@import '../../lib/simple-line-icons/simple-line-icons.min.css';
-@import '../../lib/bootstrap/css/bootstrap.css';
-@import '../../lib/uniform/css/uniform.default.css';
-@import '../../lib/jcropper/css/cropper.css';
-@import '../../lib/durandal/css/durandal.css';
-@import '../../lib/bootstrap-datepicker/css/datepicker.css';
-@import '../../lib/fullCalendar/fullcalendar.css';
-@import '../../lib/bootstrap-toastr/toastr.css';
 
+//@import '../../lib/font-awesome/css/font-awesome.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css';
+
+@import '../../lib/simple-line-icons/simple-line-icons.min.css';
+
+@import '../../lib/bootstrap/css/bootstrap.css';
+//@import 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css';
+
+@import '../../lib/uniform/css/uniform.default.css';
+
+//@import '../../lib/jcropper/css/cropper.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/cropper/1.0.0-rc.1/cropper.min.css';
+
+@import '../../lib/durandal/css/durandal.css';
+
+//@import '../../lib/bootstrap-datepicker/css/datepicker.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css';
+
+//@import '../../lib/fullCalendar/fullcalendar.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.5.0/fullcalendar.min.css';
+
+//@import '../../lib/bootstrap-toastr/toastr.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.min.css';
+/*
+@import '../css/style-conquer.css';
+@import '../css/style.css';
+@import '../css/style-responsive.css';
+@import '../css/plugins.css';  
+@import '../css/themes/default.css';
+@import '../css/custom.css'; 
+@import '../css/starterkit.css'; 
+@import '../css/portfolio.css';  
+@import '../css/inbox.css';  
+@import '../css/about-us.css';  
+@import '../css/blog.css';  
+*/
 @import 'style-conquer.css';
 @import 'style.css';
 @import 'style-responsive.css';

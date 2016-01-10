@@ -8,7 +8,8 @@ var gulp = require('gulp'),
 	gulpFilter = require('gulp-filter'),
 	ifElse = require('gulp-if'),
 	uglify = require('gulp-uglify'),
-	minifyCss = require('gulp-minify-css'),
+	//minifyCss = require('gulp-minify-css'),
+	minifyCss = require('gulp-cssnano'),
 	minifyHTML = require('gulp-minify-html'),
 	nsSass = require('gulp-ruby-sass-ns'),
 	browserSync = require('browser-sync').create(),
@@ -26,11 +27,11 @@ var gulp = require('gulp'),
 
 		return gulp.src(obj.src)
 				   .pipe(ifElse(isMinify(), jsFilter))
-	        	   .pipe(ifElse(isMinify(), uglify()))
+	        	   .pipe(ifElse(isMinify(), uglify({mangle:false})))
 	        	   .pipe(ifElse(isMinify(), jsFilter.restore))
 
 	        	   .pipe(ifElse(isMinify(), cssFilter))
-	        	   .pipe(ifElse(isMinify(), minifyCss({compatibility: 'ie8'})))
+	        	   .pipe(ifElse(isMinify(), minifyCss()))
 	        	   .pipe(ifElse(isMinify(), cssFilter.restore))
 
 	        	   .pipe(ifElse(isMinify(), htmlFilter))
@@ -39,7 +40,7 @@ var gulp = require('gulp'),
 
 	        	   .pipe(scssFilter)
 	        	   .pipe(nsSass({ style: 'compact' }))
-	        	   .pipe(ifElse(isMinify(), minifyCss({compatibility: 'ie8'})))
+	        	   //.pipe(ifElse(isMinify(), minifyCss()))
 	        	   .pipe(gulp.dest(obj.dest))   
 	        	   .pipe(scssFilter.restore)
 
