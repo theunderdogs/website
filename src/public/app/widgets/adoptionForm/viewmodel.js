@@ -122,6 +122,7 @@ define(function (require) {
             if(!validObservable.isValid()){
                 this.captchaResponse(null);
                 grecaptcha.reset();
+                toastr.error('Please fix the errors before submitting', '', {timeOut: 3000});
                 return validObservable.errors.showAllMessages();
                 //var v = ko.validation.group(data);
                 //return v.showAllMessages(); 
@@ -133,7 +134,7 @@ define(function (require) {
             console.log('petid', this.pet._id);
             var key =  this.pet._id + this.firstName() + this.lastName() + this.phone() + this.email();
             if(storage.local(key)){
-                return toastr.info('Looks like you have already submitted your application', 'Application already submitted', {timeOut: 5000});
+                return toastr.info('Looks like you have already submitted your application', '', {timeOut: 5000});
             }
 
 			var formData = new FormData();
@@ -155,12 +156,12 @@ define(function (require) {
             	uiconfig.showLoading(false);
                 storage.local(key, key);
             	console.log(result);
-            	toastr.success('We will contact you shortly', 'Application received', {timeOut: 5000});
+            	toastr.success('We will contact you shortly', '', {timeOut: 5000});
             	data.closeModal();   
             }, function(err){
                 uiconfig.showLoading(false);
             	grecaptcha.reset();
-                toastr.error('Something went wrong while submitting your application', 'Error', {timeOut: 5000});
+                toastr.error('Something went wrong while submitting your application', '', {timeOut: 5000});
             });
 		},
 		openTermsAndCondition : function(data, event){

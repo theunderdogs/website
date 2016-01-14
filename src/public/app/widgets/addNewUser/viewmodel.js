@@ -231,6 +231,7 @@ define(function(require) {
             var validObservable = ko.validatedObservable(this);
 
     		if(!validObservable.isValid()){
+                toastr.error('Please fix the errors before submitting', '', {timeOut: 3000});
     			return validObservable.errors.showAllMessages();
     			//var v = ko.validation.group(data);
     			//return v.showAllMessages(); 
@@ -273,13 +274,13 @@ define(function(require) {
                     uiConfig.showLoading(false);
                 	console.log(result);
 
-                	toastr.success('New user has been added', 'User added', {timeOut: 5000});
+                	toastr.success('User added/updated successfully', '', {timeOut: 5000});
                     router.navigate('users');
 	            }, function(err){
                     uiConfig.showLoading(false);
                     console.log(err);
 	                //throw new Error('Error saving user', err);
-                    toastr.error(err.responseJSON.message, 'Oops!', {timeOut: 5000});
+                    toastr.error(err.responseJSON.message, '', {timeOut: 5000});
 	            });
     		});
     	}

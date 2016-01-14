@@ -86,6 +86,7 @@ define(function(require) {
             if(!validObservable.isValid()){
                 this.captchaResponse(null);
                 grecaptcha.reset();
+                toastr.error('Please fix the errors before submitting', '', {timeOut: 3000});
                 return validObservable.errors.showAllMessages();
                 //var v = ko.validation.group(data);
                 //return v.showAllMessages(); 
@@ -96,7 +97,7 @@ define(function(require) {
             //check if the application is already submitted
             var key = this.firstName() + this.lastName() + this.phone() + this.email();
             if(storage.local(key)){
-                return toastr.info('Looks like you have already submitted your application', 'Application already submitted', {timeOut: 5000});
+                return toastr.info('Looks like you have already submitted your application', '', {timeOut: 5000});
             }
 
             //verify captcha
@@ -122,14 +123,14 @@ define(function(require) {
               uiconfig.showLoading(false);
               storage.local(key, key);
 
-            	toastr.success('We will contact you shortly', 'Application received', {timeOut: 5000});
+            	toastr.success('We will contact you shortly', '', {timeOut: 5000});
 
                 router.navigate('');
                 //https://github.com/CodeSeven/toastr
             //toastr.success('We do have the Kapua suite available.', 'Turtle Bay Resort', {timeOut: 5000})
             }, function(err){
                 grecaptcha.reset();
-                toastr.error('Something went wrong while submitting your application', 'Error', {timeOut: 5000});
+                toastr.error('Something went wrong while submitting your application', '', {timeOut: 5000});
                 //throw new Error('Error submitting application', err);
             });
     	}

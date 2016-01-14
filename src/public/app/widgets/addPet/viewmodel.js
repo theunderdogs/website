@@ -264,6 +264,7 @@ define(function (require) {
     		var validObservable = ko.validatedObservable(data);
 
     		if(!validObservable.isValid()){
+                toastr.error('Please fix the errors before submitting', '', {timeOut: 3000});
     			return validObservable.errors.showAllMessages();
     			//var v = ko.validation.group(data);
     			//return v.showAllMessages(); 
@@ -308,13 +309,13 @@ define(function (require) {
     			services.savePet(formData).then(function(result){
     				uiconfig.showLoading(false);
                 	console.log(result);
-                	toastr.success('New pet has been added', 'Pet added', {timeOut: 5000});
+                	toastr.success('Pet added/updated successfully', '', {timeOut: 5000});
                     router.navigate('pets');
 	            }, function(err){
 	            	uiconfig.showLoading(false);
 	                console.log(err);
 	                //throw new Error('Error saving user', err);
-                    toastr.error('Something went wrong while saving pet', 'Oops!', {timeOut: 5000});
+                    toastr.error('Something went wrong while saving pet', '', {timeOut: 5000});
 	            });
     		});
     	}
